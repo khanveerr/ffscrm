@@ -1,0 +1,689 @@
+<div class="container-fluid">
+  <div class="nk-content-inner">
+    <div class="nk-content-body">
+      <div class="nk-block-head nk-block-head-sm">
+        <div class="nk-block-between">
+          <div class="nk-block-head-content">
+            <h3 class="nk-block-title page-title">Net Promoter Score</h3>
+            <div class="nk-block-des text-soft">
+              <!-- <p>You have total 2,595 cities.</p> -->
+            </div>
+          </div>
+          <!-- .nk-block-head-content -->
+          <div class="nk-block-head-content">
+            <div class="toggle-wrap nk-block-tools-toggle">
+              <a
+                href="#"
+                class="btn btn-icon btn-trigger toggle-expand mr-n1"
+                data-target="pageMenu"
+                ><em class="icon ni ni-menu-alt-r"></em
+              ></a>
+              <div class="toggle-expand-content" data-content="pageMenu">
+                <ul class="nk-block-tools g-3">
+                  <li>
+                    <div class="nk-cov-data">
+                      <div class="amount amount-sm fs-em11">
+                        NA : <span class="text-soft">{{ score_NA }}</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>&nbsp;</li>
+                  <li>
+                    <div class="nk-cov-data">
+                      <div class="amount amount-sm fs-em11">
+                        0 - 3 : <span class="text-soft">{{ score_0_3 }}</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>&nbsp;</li>
+                  <li>
+                    <div class="nk-cov-data">
+                      <div class="amount amount-sm fs-em11">
+                        4 - 6 : <span class="text-soft">{{ score_4_6 }}</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>&nbsp;</li>
+                  <li>
+                    <div class="nk-cov-data">
+                      <div class="amount amount-sm fs-em11">
+                        7 - 8 : <span class="text-soft">{{ score_7_8 }}</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>&nbsp;</li>
+                  <li>
+                    <div class="nk-cov-data">
+                      <div class="amount amount-sm fs-em11">
+                        9 - 10 : <span class="text-soft">{{ score_9_10 }}</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>&nbsp;</li>
+                  <li>
+                    <div class="nk-cov-data">
+                      <div class="amount amount-sm fs-em11">
+                        Average NPS : <span class="text-soft">{{ average_nps_score }}</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>&nbsp;</li>
+                  <li class="nk-block-tools-opt">
+                    <div class="drodown">
+                      <a
+                        href="#"
+                        class="dropdown-toggle btn btn-icon btn-primary"
+                        data-toggle="modal"
+                        data-target="#add_nps"
+                        ng-click="resetForm()"
+                        ><em class="icon ni ni-plus"></em>Add
+                        NPS&nbsp;&nbsp;&nbsp;&nbsp;</a
+                      >
+                    </div>
+                  </li>
+                  <li class="nk-block-tools-opt">
+                    <div class="drodown">
+                      <a
+                        href="#"
+                        class="btn btn-icon btn-secondary"
+                        ng-click="toggle_filter()"
+                        ><em class="icon ni ni-filter"></em
+                        >Filters&nbsp;&nbsp;&nbsp;&nbsp;</a
+                      >
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- .toggle-wrap -->
+          </div>
+          <!-- .nk-block-head-content -->
+        </div>
+        <!-- .nk-block-between -->
+      </div>
+
+      <div
+        class="nk-block {{ show_filter == true ? 'mb-20' : '' }}"
+        ng-show="show_filter"
+      >
+        <div class="row g-gs">
+          <div class="col-xxl-12">
+            <div class="card card-bordered card-preview">
+              <div class="card-inner">
+                <div class="row gy-4">
+                  <div
+                    class="col-sm-2"
+                  >
+                    <div class="form-group">
+                      <label class="form-label">Site Name</label>
+                      <div class="form-control-wrap">
+                        <input
+                          type="text"
+                          class="form-control"
+                          tabindex="-1"
+                          ng-model="keyword"
+                          ng-change="searchLeads(1)"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-1">
+                    <div class="form-group">
+                      <label class="form-label">From</label>
+                      <div class="form-control-wrap">
+                        <input type="text" class="form-control" tabindex="-1" ng-model="from_date" datepicker="" dp-format="dd-mm-yyyy">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-1">
+                    <div class="form-group">
+                      <label class="form-label">To</label>
+                      <div class="form-control-wrap">
+                        <input type="text" class="form-control" tabindex="-1" ng-model="to_date" ng-change="searchLeads(1)" datepicker="" dp-format="dd-mm-yyyy">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label class="form-label">Feedback Taken By</label>
+                      <div class="form-control-wrap">
+                        <select
+                          class="form-control form-control-lg"
+                          tabindex="-1"
+                          aria-hidden="true"
+                          ng-model="user_filter"
+                          ng-change="searchLeads(1)"
+                        >
+                          <option value="">Select</option>
+                          <option
+                            value="{{ user.id }}"
+                            ng-repeat="user in users"
+                            >{{ user.name }}</option
+                          >
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label class="form-label">Industry</label>
+                      <div class="form-control-wrap">
+                        <select
+                          class="form-control form-control-lg"
+                          tabindex="-1"
+                          aria-hidden="true"
+                          ng-model="industry_filter"
+                          ng-change="searchLeads(1)"
+                        >
+                          <option value="">Select</option>
+                          <option
+                            value="{{ key }}"
+                            ng-repeat="(key,value) in industries"
+                            >{{ value }}</option
+                          >
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label class="form-label">Location</label>
+                      <div class="form-control-wrap">
+                        <select
+                          class="form-control form-control-lg"
+                          tabindex="-1"
+                          aria-hidden="true"
+                          ng-model="city_filter"
+                          ng-change="searchLeads(1)"
+                        >
+                          <option value="">Select</option>
+                          <option
+                            value="{{ city.id }}"
+                            ng-repeat="city in cities"
+                            >{{ city.name }}</option
+                          >
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label class="form-label" for="score_cat">Score Category</label>
+                      <div class="form-control-wrap">
+                        <select
+                          name="score_cat"
+                          class="form-control"
+                          ng-model="score_cat_filter"
+                          ng-change="searchLeads(1)"
+                        >
+                          <option value="">Select</option>
+                          <option value="NA">NA</option>
+                          <option value="0_3">0 - 3</option>
+                          <option value="4_6">4 - 6</option>
+                          <option value="7_8">7 - 8</option>
+                          <option value="9_10">9 - 10</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- .nk-block-head -->
+      <div class="nk-block pt-0">
+        <div class="card card-bordered card-preview">
+          <div class="card-inner">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Site Name</th>
+                    <th scope="col">Feedback Taken By</th>
+                    <th scope="col">Date of Interaction</th>
+                    <th scope="col">NPS Score</th>
+                    <!-- <th scope="col">Status</th> -->
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="nps in nps_data track by $index">
+                    <th scope="row">{{ $index + 1 }}</th>
+
+                    <td>
+                      {{ nps.company_name }}
+                    </td>
+                    <td>
+                      {{ nps.user_name }}
+                    </td>
+                    <td>
+                      {{ nps.interaction_date_str }}
+                    </td>
+                    <td>
+                      {{ nps.score == -1 ? 'NA' : nps.score }}
+                    </td>
+                    <!-- <td>
+                      {{ nps.status == 1 ? 'Active' : 'Inactive' }}
+                    </td> -->
+                    <td>
+                      <div class="tb-odr-btns d-md-inline">
+                        <a
+                          href="#"
+                          class="btn btn-sm btn-primary"
+                          ng-click="edit_nps(nps.id)"
+                          data-toggle="modal"
+                          data-target="#add_nps"
+                          ><em class="icon ni ni-pen"></em
+                        ></a>
+                        <a
+                          href="#"
+                          class="btn btn-sm btn-danger"
+                          ng-click="delete_nps(nps.id)"
+                          ><em class="icon ni ni-trash"></em
+                        ></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr ng-show="nps_data.length <= 0">
+                    <td colspan="4">Sorry, no nps found</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <lead-pagination ng-show="nps_data.length > 0"></lead-pagination>
+          </div>
+        </div>
+        <!-- .card-preview -->
+      </div>
+      <!-- .nk-block -->
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="add_nps">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{ updateNPS == true ? 'Edit' : 'Add' }} NPS
+        </h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <em class="icon ni ni-cross"></em>
+        </a>
+      </div>
+      <div class="modal-body">
+        <form class="form-validate is-alter" name="npsForm" novalidate>
+          <div class="row gy-4">
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="group_code">Group Code</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    name="group_code"
+                    class="form-control"
+                    ng-model="npsData.group_code"
+                    tabindex="2"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="site_code">Site Code</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    name="site_code"
+                    class="form-control"
+                    ng-model="npsData.site_code"
+                    tabindex="2"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="company_name"
+                  >Site Name</label
+                >
+                <div class="form-control-wrap">
+                  <!-- <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    name="company_name"
+                    ng-model="npsData.company_name"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option
+                      value="{{ company.name }}"
+                      ng-repeat="company in companies"
+                      >{{ company.name }}</option
+                    >
+                  </select> -->
+                  <input
+                    type="text"
+                    name="company_name"
+                    class="form-control"
+                    ng-model="npsData.company_name"
+                    tabindex="1"
+                    required
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="npsForm.company_name.$error"
+                    ng-if="npsForm.company_name.$touched"
+                  >
+                    <div ng-message="required">Please select your company</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="client_spoc">Name of Client SPOC</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    name="client_spoc"
+                    class="form-control"
+                    ng-model="npsData.client_spoc"
+                    tabindex="2"
+                    required
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="npsForm.client_spoc.$error"
+                    ng-if="npsForm.client_spoc.$touched"
+                  >
+                    <div ng-message="required">Please enter client spoc</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="interaction_date"
+                  >Date of Interaction</label
+                >
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    name="interaction_date"
+                    class="form-control"
+                    ng-model="npsData.interaction_date"
+                    datepicker=""
+                    dp-format="yyyy-mm-dd"
+                    tabindex="3"
+                    required
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="npsForm.interaction_date.$error"
+                    ng-if="npsForm.interaction_date.$touched"
+                  >
+                    <div ng-message="required">
+                      Please select date of interaction
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="interaction_type">Type of Interaction</label>
+                <div class="form-control-wrap">
+                  <select
+                    name="interaction_type"
+                    class="form-control"
+                    ng-model="npsData.interaction_type"
+                    tabindex="4"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="Call">Call</option>
+                    <option value="In Person Meeting">In Person Meeting</option>
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="npsForm.interaction_type.$error"
+                    ng-if="npsForm.interaction_type.$touched"
+                  >
+                    <div ng-message="required">Please select interaction type</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="city">Location</label>
+                <div class="form-control-wrap">
+                  <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    name="city"
+                    ng-model="npsData.city"
+                    tabindex="5"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option
+                      value="{{ city.id }}"
+                      ng-repeat="city in cities"
+                      >{{ city.name }}</option
+                    >
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="npsForm.city.$error"
+                    ng-if="npsForm.city.$touched"
+                  >
+                    <div ng-message="required">Please select city</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="industry">Industry</label>
+                <div class="form-control-wrap">
+                  <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    ng-model="npsData.industry"
+                    name="industry"
+                    tabindex="6"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option
+                      value="{{ key }}"
+                      ng-repeat="(key,value) in industries"
+                      >{{ value }}</option
+                    >
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="npsForm.industry.$error"
+                    ng-if="npsForm.industry.$touched"
+                  >
+                    <div ng-message="required">Please select industry</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-label" for="industry">On a scale of 0 to 10, how likely are you to recommend SILA's services to a project similar to yours<br />(NPS Score)</label>
+                <div class="preview-block">
+                  <!-- <span class="preview-title overline-title"></span> -->
+                  <div class="g-4 align-center flex-wrap">
+                    <div class="g" style="padding-right: 0.3rem !important;">
+                      <div class="custom-control custom-control-sm custom-radio">
+                        <input type="radio" class="custom-control-input" tabindex="7" value="-1" ng-model="npsData.score" name="radioSize" required id="scoreNA">
+                        <label class="custom-control-label" for="scoreNA">NA</label>
+                      </div>
+                    </div>
+                    <div class="g" style="padding-right: 0.3rem !important;">
+                      <div class="custom-control custom-control-sm custom-radio">
+                        <input type="radio" class="custom-control-input" tabindex="7" value="0" ng-model="npsData.score" name="radioSize" required id="score0">
+                        <label class="custom-control-label" for="score0">0</label>
+                      </div>
+                    </div>
+                    <div class="g" style="padding-right: 0.3rem !important;">
+                      <div class="custom-control custom-control-sm custom-radio">
+                        <input type="radio" class="custom-control-input" tabindex="8" value="1" ng-model="npsData.score" name="radioSize" id="score1">
+                        <label class="custom-control-label" for="score1">1</label>
+                      </div>
+                    </div>
+                    <div class="g" style="padding-right: 0.3rem !important;">
+                      <div class="custom-control custom-control-sm custom-radio">
+                        <input type="radio" class="custom-control-input" tabindex="9" name="radioSize" value="2" ng-model="npsData.score" id="score2">
+                        <label class="custom-control-label" for="score2">2</label>
+                      </div>
+                    </div>
+                    <div class="g" style="padding-right: 0.3rem !important;">
+                      <div class="custom-control custom-control-sm custom-radio">
+                        <input type="radio" class="custom-control-input" tabindex="10" name="radioSize" value="3" ng-model="npsData.score" id="score3">
+                        <label class="custom-control-label" for="score3">3</label>
+                      </div>
+                    </div>
+
+                    <div class="g" style="padding-right: 0.3rem !important;">
+                      <div class="custom-control custom-control-sm custom-radio">
+                        <input type="radio" class="custom-control-input" tabindex="11" name="radioSize" value="4" ng-model="npsData.score" id="score4">
+                        <label class="custom-control-label" for="score4">4</label>
+                      </div>
+                    </div>
+
+                    <div class="g" style="padding-right: 0.3rem !important;">
+                      <div class="custom-control custom-control-sm custom-radio">
+                        <input type="radio" class="custom-control-input" tabindex="12" name="radioSize" value="5" ng-model="npsData.score" id="score5">
+                        <label class="custom-control-label" for="score5">5</label>
+                      </div>
+                    </div>
+
+                    <div class="g" style="padding-right: 0.3rem !important;">
+                      <div class="custom-control custom-control-sm custom-radio">
+                        <input type="radio" class="custom-control-input" tabindex="13" name="radioSize" value="6" ng-model="npsData.score" id="score6">
+                        <label class="custom-control-label" for="score6">6</label>
+                      </div>
+                    </div>
+
+                    <div class="g" style="padding-right: 0.3rem !important;">
+                      <div class="custom-control custom-control-sm custom-radio">
+                        <input type="radio" class="custom-control-input" tabindex="14" name="radioSize" value="7" ng-model="npsData.score" id="score7">
+                        <label class="custom-control-label" for="score7">7</label>
+                      </div>
+                    </div>
+
+                    <div class="g" style="padding-right: 0.3rem !important;">
+                      <div class="custom-control custom-control-sm custom-radio">
+                        <input type="radio" class="custom-control-input" tabindex="15" name="radioSize" value="8" ng-model="npsData.score" id="score8">
+                        <label class="custom-control-label" for="score8">8</label>
+                      </div>
+                    </div>
+
+                    <div class="g" style="padding-right: 0.3rem !important;">
+                      <div class="custom-control custom-control-sm custom-radio">
+                        <input type="radio" class="custom-control-input" tabindex="16" name="radioSize" value="9" ng-model="npsData.score" id="score9">
+                        <label class="custom-control-label" for="score9">9</label>
+                      </div>
+                    </div>
+
+                    <div class="g" style="padding-right: 0.3rem !important;">
+                      <div class="custom-control custom-control-sm custom-radio">
+                        <input type="radio" class="custom-control-input" tabindex="17" name="radioSize" value="10" ng-model="npsData.score" id="score10">
+                        <label class="custom-control-label" for="score10">10</label>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div
+                    class="help-block"
+                    ng-messages="npsForm.radioSize.$error"
+                    ng-if="npsForm.radioSize.$touched"
+                  >
+                    <div ng-message="required">Please select score</div>
+                  </div>
+              </div>
+            </div>
+
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-label" for="industry">Comments/Improvement Areas</label>
+                <div class="form-control-wrap">
+                  <textarea
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    ng-model="npsData.comments"
+                    name="comments"
+                     tabindex="18"
+                  >
+                  </textarea>
+                  
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-label" for="potential">Potential for More Business or a Client Referral</label>
+                <div class="preview-block">
+                  <!-- <span class="preview-title overline-title"></span> -->
+                  <div class="g-4 align-center flex-wrap">
+                    <div class="g">
+                      <div class="custom-control custom-control-sm custom-radio">
+                        <input type="radio" tabindex="19" class="custom-control-input" value="1" ng-model="npsData.potential" name="potential" id="potentialYes">
+                        <label class="custom-control-label" for="potentialYes">Yes</label>
+                      </div>
+                    </div>
+                    <div class="g">
+                      <div class="custom-control custom-control-sm custom-radio">
+                        <input type="radio" class="custom-control-input" tabindex="20" value="0" ng-model="npsData.potential" name="potential" id="potentialNo">
+                        <label class="custom-control-label" for="potentialNo">No</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-primary"
+                  ng-click="save_nps()"
+                  ng-disabled="!npsForm.$valid"
+                  data-dismiss="modal"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- <div class="modal-footer bg-light">
+          <span class="sub-text">Modal Footer Text</span>
+        </div> -->
+    </div>
+  </div>
+</div>

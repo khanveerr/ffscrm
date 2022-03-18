@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add/Edit Cost Centre</h3>
+        <form name="costCentreForm" novalidate>
+            
+            <div class="form-group" ng-class="{ 'has-error': costCentreForm.site_id.$touched && costCentreForm.site_id.$invalid }">
+                
+                <select class="form-control" name="site_id" ng-model="site_id" ng-options="site.id as site.name for site in sites" required>
+                    <option value="">Site Name</option>
+                </select>
+
+                <div class="help-block" ng-messages="costCentreForm.site_id.$error" ng-if="costCentreForm.site_id.$touched">
+                    <p ng-message="required">Your site name is required.</p>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': costCentreForm.name.$touched && costCentreForm.name.$invalid }">
+                
+                <input type="hidden" ng-model="cost_centre_id">
+
+                <input type="text" class="form-control" name="name" placeholder="Cost Centre" ng-model="name" required>
+
+                <div class="help-block" ng-messages="costCentreForm.name.$error" ng-if="costCentreForm.name.$touched">
+                    <p ng-message="required">Your cost centre is required.</p>
+                </div>
+
+            </div>
+            <button class="btn btn-primary" ng-click="addCostCentre()" ng-disabled="!costCentreForm.$valid">Submit</button>
+        </form>
+    </div>
+</div>

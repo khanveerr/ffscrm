@@ -1,0 +1,79 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add/Edit Inventory</h3>
+        <form name="inventoryForm" novalidate>
+            
+            <div class="row">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.site_id.$touched && inventoryForm.site_id.$invalid }">
+                    
+                    <select class="form-control" name="site_id" ng-model="site_id" ng-options="site.id as site.name for site in sites" required>
+                        <option value="">Site Name</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="inventoryForm.site_id.$error" ng-if="inventoryForm.site_id.$touched">
+                        <p ng-message="required">Your site name is required.</p>
+                    </div>
+
+                </div>
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.department_id.$touched && inventoryForm.department_id.$invalid }">
+                    
+                    <select class="form-control" name="department_id" ng-model="department_id" ng-options="department.id as department.name for department in departments" required>
+                        <option value="">Department</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="inventoryForm.department_id.$error" ng-if="inventoryForm.department_id.$touched">
+                        <p ng-message="required">Your department name is required.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.repair_cost.$touched && inventoryForm.repair_cost.$invalid }">
+                    
+                    <input type="text" class="form-control" name="repair_cost" placeholder="Repair Cost" ng-model="repair_cost" required>
+
+                    <div class="help-block" ng-messages="inventoryForm.repair_cost.$error" ng-if="inventoryForm.repair_cost.$touched">
+                        <p ng-message="required">Your repair is required.</p>
+                    </div>
+
+                </div>
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.employee_id.$touched && inventoryForm.employee_id.$invalid }">
+                    
+                    <select class="form-control" name="employee_id" ng-model="employee_id" ng-options="employee.id as employee.name for employee in employees" required>
+                        <option value="">User</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="inventoryForm.employee_id.$error" ng-if="inventoryForm.employee_id.$touched">
+                        <p ng-message="required">Your employee name is required.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-12" ng-class="{ 'has-error': inventoryForm.assigned_date.$touched && inventoryForm.assigned_date.$invalid }">
+                    
+                    <datepicker date-format="yyyy-MM-dd">
+                        <input type="text" class="form-control mydatepicker" name="assigned_date" placeholder="Assigned Date" ng-model="assigned_date" required>
+                    </datepicker>
+
+                    <div class="help-block" ng-messages="inventoryForm.assigned_date.$error" ng-if="inventoryForm.assigned_date.$touched">
+                        <p ng-message="required">Your assigned date is required.</p>
+                    </div>
+
+                </div>
+
+            </div>
+           
+            <button class="btn btn-primary" ng-click="addAssignInventory()" ng-disabled="!inventoryForm.$valid">Submit</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,157 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add/Edit Inventory</h3>
+        <form name="inventoryForm" novalidate>
+            
+            <div class="row">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.company_id.$touched && inventoryForm.company_id.$invalid }">
+                    
+                    <select class="form-control" name="company_id" ng-model="company_id" ng-options="company.id as company.name for company in companies" required>
+                        <option value="">Company Name</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="inventoryForm.company_id.$error" ng-if="inventoryForm.company_id.$touched">
+                        <p ng-message="required">Your company name is required.</p>
+                    </div>
+
+                </div>
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.request_from_id.$touched && inventoryForm.request_from_id.$invalid }">
+                    
+                    <select class="form-control" name="request_from_id" ng-model="request_from_id" ng-options="employee.id as employee.name for employee in employees" required>
+                        <option value="">Request From</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="inventoryForm.request_from_id.$error" ng-if="inventoryForm.request_from_id.$touched">
+                        <p ng-message="required">Your request from name is required.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.approved_by_id.$touched && inventoryForm.approved_by_id.$invalid }">
+                    
+                    <select class="form-control" name="approved_by_id" ng-model="approved_by_id" ng-options="employee.id as employee.name for employee in employees" required>
+                        <option value="">Approved By</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="inventoryForm.approved_by_id.$error" ng-if="inventoryForm.approved_by_id.$touched">
+                        <p ng-message="required">Your approved by is required.</p>
+                    </div>
+
+                </div>
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.category_id.$touched && inventoryForm.category_id.$invalid }">
+                    
+                    <select class="form-control" name="category_id" ng-model="category_id" ng-options="category.id as category.name for category in categories" required>
+                        <option value="">Category</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="inventoryForm.category_id.$error" ng-if="inventoryForm.category_id.$touched">
+                        <p ng-message="required">Your category name is required.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-12" ng-class="{ 'has-error': inventoryForm.product_description.$touched && inventoryForm.product_description.$invalid }">
+                    
+                    <input type="text" class="form-control" name="product_description" placeholder="Product Description" ng-model="product_description" required>
+
+                    <div class="help-block" ng-messages="inventoryForm.product_description.$error" ng-if="inventoryForm.product_description.$touched">
+                        <p ng-message="required">Your product description is required.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.vendor_id.$touched && inventoryForm.vendor_id.$invalid }">
+                    
+                    <select class="form-control" name="vendor_id" ng-model="vendor_id" ng-options="vendor.id as vendor.name for vendor in vendors" required>
+                        <option value="">Vendor</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="inventoryForm.vendor_id.$error" ng-if="inventoryForm.vendor_id.$touched">
+                        <p ng-message="required">Your vendor name is required.</p>
+                    </div>
+
+                </div>
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.brand_id.$touched && inventoryForm.brand_id.$invalid }">
+                    
+                    <select class="form-control" name="brand_id" ng-model="brand_id" ng-options="brand.id as brand.name for brand in brands" required>
+                        <option value="">Brand</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="inventoryForm.brand_id.$error" ng-if="inventoryForm.brand_id.$touched">
+                        <p ng-message="required">Your vendor name is required.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.serial_no.$touched && inventoryForm.serial_no.$invalid }">
+                    
+                    <input type="text" class="form-control" name="serial_no" placeholder="Serial No." ng-model="serial_no" required>
+
+                    <div class="help-block" ng-messages="inventoryForm.serial_no.$error" ng-if="inventoryForm.serial_no.$touched">
+                        <p ng-message="required">Your serial number is required.</p>
+                    </div>
+
+                </div>
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.model_no_id.$touched && inventoryForm.model_no_id.$invalid }">
+                    
+                    <select class="form-control" name="model_no_id" ng-model="model_no_id" ng-options="model_no.id as model_no.name for model_no in model_nos" required>
+                        <option value="">Model No</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="inventoryForm.model_no_id.$error" ng-if="inventoryForm.model_no_id.$touched">
+                        <p ng-message="required">Your model numder is required.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.asset_code.$touched && inventoryForm.asset_code.$invalid }">
+                    
+                    <input type="text" class="form-control" name="asset_code" placeholder="Asset Code" ng-model="asset_code" required>
+
+                    <div class="help-block" ng-messages="inventoryForm.asset_code.$error" ng-if="inventoryForm.asset_code.$touched">
+                        <p ng-message="required">Your asset code is required.</p>
+                    </div>
+
+                </div>
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.purchase_cost.$touched && inventoryForm.purchase_cost.$invalid }">
+                    
+                    <input type="text" class="form-control" name="purchase_cost" placeholder="Purchase Cost" ng-model="purchase_cost" required>
+
+                    <div class="help-block" ng-messages="inventoryForm.purchase_cost.$error" ng-if="inventoryForm.purchase_cost.$touched">
+                        <p ng-message="required">Your purchase cost is required.</p>
+                    </div>
+
+                </div>
+
+            </div>
+           
+            <button class="btn btn-primary" ng-click="addInventory()" ng-disabled="!inventoryForm.$valid">Submit</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,1280 @@
+
+<div class="row">
+
+		<div class="col s12 m6 l3 pad-left-zero left-sidebar">
+
+			<div class="card-panel mycard">
+
+				<div class="card small z-depth-0" ng-model="client_details">
+					<h5>
+						<a class="right star-bg cursor-pointer" data-target="rate_customer_modal" ng-click="setClient(client_details)" modal>{{ client_rating }}</a>
+						<a class="right modal-trigger" data-target="add_reminder"><i class="material-icons alert-icon">add_alert</i></a>
+						<span class="cursor-pointer" data-target="client_name_modal" ng-click="setClient(client_details)" modal>{{client_details.firstname}} {{client_details.lastname}}</span> <small class="font-size-12" ng-if="client_details.city"> | <a class="cursor-pointer" ng-click="setCity()" data-target="city_modal" modal>{{ cities[client_details.city] }}</a></small> <small class="font-size-12" ng-else> | <a class="cursor-pointer" data-target="city_modal" modal>Add city</a> </small>
+					</h5>
+					<p class="margin-top-5 margin-bottom-5">
+						<a class="right cursor-pointer" data-target="update_contact" ng-click="setClient(client_details)" modal><i class="material-icons">mod_edit</i></a>
+						<img src="img/phone.png" />
+						{{client_details.primary_contact_no}}
+					</p>
+					<p class="margin-top-5 margin-bottom-5">
+						<a class="right tooltipped cursor-pointer" data-target="update_email" ng-click="setClient(client_details)" modal><i class="material-icons">mod_edit</i></a>
+						<img src="img/email.png" />
+						{{client_details.primary_email_id}}
+					</p>
+					<p class="margin-top-5 margin-bottom-5">
+						<a class="right cursor-pointer" data-target="update_address" ng-click="loadAddress(client_details._id)" modal><i class="material-icons">mod_edit</i></a>
+						<img src="img/home.png" />
+						<span ng-show="client_details.defaultAddress">
+						{{client_details.defaultAddress.address}} <span ng-show="client_details.defaultAddress.location">,{{client_details.defaultAddress.location}}</span><span ng-show="client_details.defaultAddress.landmark">,{{client_details.defaultAddress.landmark}}</span><span ng-show="client_details.defaultAddress.city">, {{ cities[client_details.defaultAddress.city]}}</span></span>
+					</p>
+				</div>
+
+				<div class="divider"></div>
+
+
+				<div class="card small z-depth-0">
+
+					<p>
+						<strong class="dropdown-button cursor-pointer" data-activates='clientTypeDropdown' dropdown>Customer Type: </strong>
+						{{ customer_label }}
+						<ul id='clientTypeDropdown' class='dropdown-content client_type'>
+						    <li><a href="javascript:void(0);" ng-click="setClientType('HWC')"><b>HWC</b> (Handle With Care - fussy customer)</a></li>
+						    <li><a href="javascript:void(0);" ng-click="setClientType('VIP')"><b>VIP</b> (Very Imp Person, High Revenue, High Frequency)</a></li>
+						    <li><a href="javascript:void(0);" ng-click="setClientType('CIP')"><b>CIP</b> (Commercially Imp Person, High Revenue, Low Frequency)</a></li>
+						    <li><a href="javascript:void(0);" ng-click="setClientType('FT')"><b>FT</b> (First Timer)</a></li>
+						</ul>
+					</p>
+
+
+					<p>
+						<strong class="dropdown-button cursor-pointer" data-activates='invoiceModeDropdown' dropdown>Invoice Mode: </strong>
+						{{ invoice_mode }}
+						<ul id='invoiceModeDropdown' class='dropdown-content'>
+						    <li><a href="javascript:void(0);" ng-click="setInvoiceMode('Single')">Single</a></li>
+						    <li><a href="javascript:void(0);" ng-click="setInvoiceMode('Multiple')">Multiple</a></li>
+						</ul>
+					</p>
+
+					<p>
+						<strong class="dropdown-button cursor-pointer" data-activates='invoiceTypeDropdown' dropdown>Invoice Type: </strong>
+						{{ invoice_type }}
+						<ul id='invoiceTypeDropdown' class='dropdown-content'>
+						    <li><a href="javascript:void(0);" ng-click="setInvoiceType('Client')">Client</a></li>
+						    <li><a href="javascript:void(0);" ng-click="setInvoiceType('Partner')">Partner</a></li>
+						    <li><a href="javascript:void(0);" ng-click="setInvoiceType('Both')">Both</a></li>
+						</ul>
+					</p>
+
+					<p>
+						<strong class="dropdown-button cursor-pointer" data-activates='custTypeDropdown' dropdown>Client Type: </strong>
+						{{ cust_type==0 ? 'Existing Client' : 'New Client' }}
+						<ul id='custTypeDropdown' class='dropdown-content client_type'>
+						    <li><a href="javascript:void(0);" ng-click="setCustType(0)">Existing Client</a></li>
+						    <li><a href="javascript:void(0);" ng-click="setCustType(1)">New Client</a></li>
+						</ul>
+					</p>
+
+				</div>
+
+				<div class="divider"></div>
+
+				<div class="card small z-depth-0">
+					
+					<p>
+						<strong>Promocode: </strong> <a data-target="show_referrals" class="cursor-pointer" modal>{{ promocode }}</a>
+					</p>
+
+					<p>
+						<strong>Balance Points: </strong> {{ wallet_balance }}
+					</p>
+
+					<p>
+						<strong>Used Points: </strong> {{ used_amount }}
+					</p>
+
+
+				</div>
+
+				<div class="divider"></div>
+
+				<div class="card small z-depth-0">
+
+					<p>
+						<strong>History</strong><br />
+						{{ '2016-11-10T00:00:00.000Z' | date:'dd/MM/yyyy' }}
+						{{ '2016-11-01T00:55:00.000Z' | date:'HH:mm' }}
+					</p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="col s12 m6 l6">
+			
+			<h5 class="center-align">Customer Id: {{ customerId }}&nbsp;&nbsp;&nbsp;<a data-target="customer_id_temp" class="cursor-pointer" modal><img src="img/edit.png" width="12" /></a></h5>
+
+			<ul class="collapsible popout services_list" data-collapsible="accordion" ng-model="service_details_arr">
+			    <li ng-repeat="serviceObj in service_details_arr | filter: { status: 0 }" ng-click="setService(serviceObj);setServiceIndex($index)">
+			      <div class="collapsible-header" ng-class="serviceObj.is_amc==1 ? 'light-grey' : ''">
+				<a class="right margin-top-5" ng-click="editService(serviceObj._id);setServiceIndex($index)"><img src="img/edit.png" /></a>
+				<a class="right margin-top-5" ng-click="deleteService($index)"><img src="img/delete.png" /></a>
+				<a class="right margin-top-5" ng-click="setCancellation()"><img src="img/close.png" /></a>
+				<a class="right margin-top-5" ng-if="serviceObj.service_status==3"><img src="img/tick_circle.gif" /></a>
+				<a tooltipped class="right margin-top-5 tooltipped" ng-if="serviceObj.service_status==1" data-position="top" data-delay="50" data-tooltip="Job Started"><i class="material-icons green-text">pause_circle_outline</i></a>
+				<a tooltipped class="right margin-top-5 tooltipped" ng-if="serviceObj.service_status==-1" data-position="top" data-delay="50" data-tooltip="Job Complaint"><i class="material-icons red-text">report_problem</i></a>
+				<a tooltipped class="right margin-top-5 tooltipped" ng-if="serviceObj.service_status==2" data-position="top" data-delay="50" data-tooltip="Job Completed"><i class="material-icons blue-text">done_all</i></a>
+				<h5 class="inline-block new-font" ng-show="serviceObj.service_id">
+					{{ services_options[serviceObj.service_id] }} |
+					<small>{{ variant_options[serviceObj.variant_type_id] }}</small>
+					&nbsp;&nbsp;&nbsp;<a class="modal-trigger" ng-show="isServiceEditable" ng-click="setServiceIndex($index)" data-target="service_name_modal" modal>edit</a>
+				</h5>
+				<h5 ng-hide="serviceObj.service_id"><span class="margin-top-5 left">No Service Name</span>
+				<a class="left" ng-show="isServiceEditable" class="modal-trigger" data-target="service_name_modal" modal><img src="img/edit.png" /></a>
+				</h5>
+			      </div>
+			     <div class="collapsible-body service_body">
+					<a class="waves-effect waves-light blue btn right margin-top-15 amcbtn modal-trigger" data-target="view_all_amcs" ng-show="serviceObj.is_amc" ng-click="loadAllAMC(serviceObj._id)" modal>View All AMCs</a>
+
+				<p ng-repeat="date in serviceObj.service_date track by $index">
+					<strong>Service Date: </strong>{{ date | date:'dd MMMM, yyyy' }} at {{serviceObj.service_time[$index] | date:'HH:mm a' }}&nbsp;&nbsp;&nbsp;<a class="modal-trigger" ng-show="isServiceEditable" ng-click="setServiceDate($index)" data-target="reschedule_service" modal><img src="img/edit.png" width="12" /></a>
+					<span ng-if="serviceObj.service_date.length > 1">
+					<br />
+					<strong>Team Deployment: </strong>{{serviceObj.team_leader[$index]}} +{{serviceObj.supervisor[$index]}} + {{serviceObj.janitor[$index]}}&nbsp;&nbsp;&nbsp;<a class="modal-trigger" ng-click="setDeploymentDuration(serviceObj.team_leader[$index],serviceObj.supervisor[$index],serviceObj.janitor[$index],$index)" ng-show="isServiceEditable" data-target="update_deployment_duration" modal><img src="img/edit.png" width="12" /></a>
+					</span>
+				</p>
+
+				<p ng-hide="serviceObj.service_date.length > 0">
+					<strong>Service Date: </strong>
+					<a class="modal-trigger" ng-show="isServiceEditable" ng-click="addServiceDate($index)" data-target="reschedule_service" modal><img src="img/edit.png" width="12" /></a>
+				</p>
+
+				<p ng-if="serviceObj.additional_variant">
+					<strong>Additional Variant: </strong>{{ serviceObj.additional_variant }}
+				</p>
+
+				<p ng-show="serviceObj.contract_start_date">
+					<strong>Contract Start Date: </strong>{{ serviceObj.contract_start_date | date:'dd MMMM, yyyy' }}<br />
+					<strong>Contract End Date: </strong>{{ serviceObj.contract_end_date | date:'dd MMMM, yyyy' }}
+				</p>
+
+				<p>
+					<strong>Team Deployment: </strong>{{serviceObj.no_of_team_leader}} +{{serviceObj.no_of_supervisor}} + {{serviceObj.no_of_janitor}}&nbsp;&nbsp;&nbsp;<a class="modal-trigger" ng-click="setDeployment(serviceObj.no_of_team_leader,serviceObj.no_of_supervisor,serviceObj.no_of_janitor)" ng-show="isServiceEditable" data-target="update_deployment" modal><img src="img/edit.png" width="12" /></a>
+					<!-- 1 - Team Leader (Hardik) <br />
+					3 - Janitor (Mandar, Jaynath, Sunil) -->
+				</p>
+
+				<p ng-if="serviceObj.promo_code.length > 0">
+					<strong>Promocode Applied: </strong>{{ serviceObj.promo_code }}
+				</p>
+				<p ng-else>
+					<strong>Enter Promocode: </strong>
+					<input type="text" name="promo_code" ng-model="promo_code[$index]" style="width: 25%;" />
+					<a class="cursor-pointer" ng-click="apply_promocode_not_closed(serviceObj,$index)">apply</a>
+					<!-- <a class="cursor-pointer" ng-click="remove_promocode(serviceObj,$index)">remove</a> -->
+				</p>
+
+				<p>
+					<strong>Additional Notes: </strong>&nbsp;&nbsp;&nbsp;<a class="modal-trigger" ng-show="isServiceEditable" data-target="update_remark" modal><img src="img/add.png" width="12" /></a><br />
+					<span ng-repeat="rem in serviceObj.crm_remark">
+						{{ rem.remark }}<br />
+					</span>
+
+				</p>
+
+				<p ng-if="serviceObj.ops_remark.length > 0">
+					<strong>Operations Remark: </strong><br />
+					<span ng-repeat="orem in serviceObj.ops_remark">
+						{{ orem.remark }}<br />
+					</span>
+
+				</p>
+
+				<p ng-if="serviceObj.accounts_remark.length > 0">
+					<strong>Operations Remark: </strong><br />
+					<span ng-repeat="orem in serviceObj.accounts_remark">
+						{{ orem.added_on | date:'dd MMMM, yyyy' }} - {{ orem.remark }}<br />
+					</span>
+
+				</p>
+
+
+				</div>
+			    </li>
+
+			  </ul>
+
+			<div class="center margin-top-20">
+				<button class="waves-effect waves-light btn blue" ng-click="saveLead()" ng-show="isServiceAdded==true && isUpdateLead == false">Save</button>
+				<button class="waves-effect waves-light btn blue" ng-click="updateLead()" ng-show="isUpdateLead==true && isServiceAdded == true">Update</button>
+				<button class="waves-effect waves-light btn tooltipped modal-trigger" ng-click="resetSelect()" data-target="add_service">Add</button>
+			</div>
+
+		</div>
+
+		<div class="col s12 m6 l3 pad-right-zero right-sidebar">
+			<div class="card-panel mycard">
+
+				<div class="card small z-depth-0">
+					<div class="row margin-bottom-0">
+						<div class="col l6 pad-left-zero">
+							<p>
+								<strong>Lead Owner</strong><br />
+								{{ lead_owner }}
+							</p>
+						</div>
+						<div class="col l6 pad-left-zero">
+							<p>
+								<strong class="dropdown-button cursor-pointer" data-activates='demoDropdown' dropdown >Lead Source</strong><br />
+								<select ng-model="lead_source" class="browser-default new-select-css" ng-change="setLeadSource(lead_source)">
+								    <option value="" disabled selected>Select</option>
+								    <option value="{{ key }}" ng-repeat="(key, value) in lead_source_options">{{ value }}</option>
+								</select>
+
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="divider"></div>
+
+				<div class="card small z-depth-0">
+
+					<p>
+						<a class="right tooltipped modal-trigger" data-target="update_leadstage" ng-hide="isServiceClosed"><i class="material-icons">mod_edit</i></a>
+						<strong>Lead Stage</strong>
+					</p>
+					<div id="lead-stage-scrollpane" class="lead-scroll-pane">
+						<div class="collection" ng-model="lead_history_obj">
+						    <a class="collection-item" ng-repeat="ld in lead_history_obj | orderBy: '-updated_on'">
+							<span class="badge {{ lead_stage_color[lead_stage_options[ld.lead_stage]] }}">{{ lead_stage_options[ld.lead_stage] }}</span><strong>{{ ld.updated_on | date:'dd MMMM yyyy' }}</strong>
+						    </a>
+						    <!-- <a href="#!" class="collection-item">
+							<span class="badge orange">cold</span><strong>1 January 2017</strong></strong>
+						    </a> -->
+						</div>
+					</div>
+
+				</div>
+
+				<div class="divider"></div>
+
+				<div class="card small z-depth-0">
+					<p>
+						<strong>Billing Details</strong><br />
+						<span>{{ billing_name }}</span>&nbsp;&nbsp;&nbsp;<a data-target="billing_name_temp" class="cursor-pointer" modal><img src="img/edit.png" width="12" /></a><br />
+						<span>{{ billing_address }}</span>&nbsp;&nbsp;&nbsp;<a data-target="billing_address_temp" class="cursor-pointer" modal><img src="img/edit.png" width="12" /></a>
+					</p>
+				</div>
+
+				<div class="divider"></div>
+
+				<div class="card small z-depth-0">
+
+					<table id="amount_table">
+						<tr>
+							<td>Base Rate</td>
+							<td><strong>Rs. {{base_rate}}</strong>&nbsp;&nbsp;&nbsp;<a ng-show="isServiceEditable" data-target="base_rate_temp"  class="cursor-pointer" modal><img src="img/edit.png" width="12" /></a></td>
+						</tr>
+						<tr>
+							<td>Discount</td>
+							<td><strong>Rs. {{ discount }}</strong>&nbsp;&nbsp;&nbsp;<a ng-show="isServiceEditable" data-target="discount_temp" class="cursor-pointer" modal><img src="img/edit.png" width="12" /></a></td>
+						</tr>
+						<!-- <tr>
+							<td>Promocode Discount</td>
+							<td><strong>Rs. {{ promocode_discount }}</strong></td>
+						</tr> -->
+						<tr>
+							<td>Invoice Amount (Pre Tax)</td>
+							<td><strong>Rs. {{ pre_taxed_cost }}</strong></td>
+						</tr>
+						<tr>
+							<td>Client Payment Expected</td>
+							<td><strong>Rs. {{ client_payment_expected }}</strong>&nbsp;&nbsp;&nbsp;<a ng-show="isServiceEditable" data-target="cpe_temp" class="cursor-pointer" modal><img src="img/edit.png" width="12" /></a></td>
+						</tr>
+						<tr>
+							<td>Invoice Amount (Post Tax)</td>
+							<td><strong>Rs. {{post_taxed_cost}}</strong></td>
+						</tr>
+						<tr>
+							<td>Partner Comission</td>
+							<td><strong>Rs. {{partner_comission}}</strong></td>
+						</tr>
+					</table>
+
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+	<div id="add_service" class="modal modal-fixed-footer modal_lg">
+	    <div class="modal-content">
+	    	<h4>Add Service</h4>
+	    	<div class="row margin-bottom-0">
+	    		<div class="input-field col l6">
+	    			<div class="row margin-bottom-5">
+	    				<div class="input-field col l6">
+							<select ng-model="lead_stage">
+							    <option value="" disabled selected>Select</option>
+							    <option value="{{ key }}" ng-repeat="(key, value) in lead_stage_options">{{ value }}</option>
+							</select>
+							<label>Lead Stage</label>
+						</div>
+						<div class="input-field col l6">
+							<select ng-model="lead_stage_remark">
+							    <option value="" disabled selected>Select</option>
+							    <option value="{{ key }}" ng-repeat="(key,value) in lead_stage_remark_options">{{ value }}</option>
+							    <!-- <option value="1">Not Reachable</option>
+							    <option value="2">Cancelled</option>
+							    <option value="3">Low Budget</option>
+							    <option value="4">Out Of Scope</option>
+							    <option value="5">Client - Call Back</option>
+							    <option value="6">No Requirement</option>
+							    <option value="7">Email Sent</option>
+							    <option value="8">SMS Sent</option>
+							    <option value="9">Quote Shared</option>
+							    <option value="10">Inspection Scheduled</option>
+							    <option value="11">Confirmed</option> -->
+							</select>
+							<label>Lead Stage Remark</label>
+						</div>
+	    			</div>
+
+					<div class="row margin-bottom-5">
+						<div class="input-field col l6">
+							<select ng-model="service_inquiry" class="browser-default" ng-change="getVariantType(service_inquiry)">
+							    <option value="" disabled selected>Service</option>
+							    <option value="{{ key }}" ng-repeat="(key,value) in services_options">{{ value }}</option>
+							</select>
+							<!-- <label>Service</label> -->
+						</div>
+						<div class="input-field col l6">
+							<select ng-model="variant_type" class="browser-default" id="variant_type_id" ng-change="getServicePrice(variant_type)">
+							    <option value="" disabled selected>Variant Type</option>
+
+							    <option value="{{ vt.id }}" ng-repeat="vt in service_varianttype">{{ vt.name }}</option>
+							</select>
+							<!-- <label>Variant Type</label> -->
+						</div>
+					</div>
+
+					<div class="row margin-bottom-5">
+						<div class="input-field col l12">
+							<input id="additional_variant" ng-model="additional_variant" type="text">
+							<label for="additional_variant">Additional Variant</label>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="input-field col l4">
+							<input type="checkbox" id="is_amc" ng-model='checkStatus' ng-click='doIfChecked(checkStatus)' />
+      						<label for="is_amc">Is AMC?</label>
+						</div>
+					</div>
+
+					<div class="row margin-bottom-5">
+						<div class="input-field col l4" ng-hide="checkStatus">
+							<input type="text" name="service_date" id="service_date" class="mydatepicker" ng-model="service_date" />
+							<label for="service_date">Service Date</label>
+						</div>
+						<div class="input-field col l4" ng-hide="checkStatus">
+							<input id="service_time" ng-model="service_time" data-autoclose="true" input-clock data-twelvehour="false" type="text">
+							<label for="service_time">Service Time</label>
+						</div>
+						<!-- <div class="input-field col l4" ng-hide="checkStatus">
+							<input type="text" name="no_of_service" id="no_of_service1" ng-model="no_of_service" />
+							<label for="no_of_service1">No of Service</label>
+						</div> -->
+						<div class="input-field col l4" ng-hide="checkStatus">
+							<input id="duration" type="text" ng-model="duration">
+							<label for="duration">Duration</label>
+						</div>
+						<div class="input-field col l4" ng-show="checkStatus">
+							<input id="service_time" ng-model="service_time" data-autoclose="true" input-clock data-twelvehour="false" type="text">
+							<label for="service_time">Service Time</label>
+						</div>
+						<div class="input-field col l4" ng-show="checkStatus">
+							<input type="text" name="contract_start_date" class="mydatepicker" id="contract_start_date" ng-model="contract_start_date" format="yyyy-mm-dd" />
+							<label for="contact_start_date">Contract Start Date</label>
+						</div>
+						<div class="input-field col l4" ng-show="checkStatus">
+							<input type="text" name="contract_end_date" class="mydatepicker" id="contract_end_date" ng-model="contract_end_date" format="yyyy-mm-dd" />
+							<label for="contact_end_date">Contract End Date</label>
+						</div>
+					</div>
+
+					<div class="row margin-bottom-5" ng-show="checkStatus">
+						<div class="input-field col l6">
+							<select ng-model="frequency" ng-change="calcNoOfService()">
+							    <option value="" disabled selected>Select</option>
+							    <option value="5">Mon to Fri</option>
+							    <option value="6">Mon to Sat</option>
+							    <option value="2">Sat to Sun</option>
+							    <option value="1">Daily</option>
+							    <option value="7">Weekly</option>
+							    <option value="15">Fortnightly</option>
+							    <option value="30">Monthly</option>
+							    <option value="90">Quaterly</option>
+							    <option value="-1">Other</option>
+							</select>
+							<label>Frequency</label>
+						</div>
+						<div class="input-field col l6">
+							<input type="text" name="no_of_service" id="no_of_service" ng-model="no_of_service" />
+							<label for="no_of_service">No of Service</label>
+						</div>
+					</div>
+
+
+					<div class="row margin-bottom-5">
+						<div class="input-field col l4">
+							<input id="supervisor" type="text" ng-model="supervisor">
+							<label for="supervisor">Supervisor</label>
+						</div>
+						<div class="input-field col l4">
+							<input id="teamleader" type="text" ng-model="teamleader">
+							<label for="teamleader">Teamleader</label>
+						</div>
+						<div class="input-field col l4">
+							<input id="janitor" type="text" ng-model="janitor">
+							<label for="janitor">Janitor</label>
+						</div>
+					</div>
+
+	    		</div>
+
+	    		<div class="input-field col l6">
+
+					<div class="row margin-bottom-5">
+						<div class="input-field col l12">
+							<textarea id="additional_notes" rows="1" ng-model="additional_notes" class="materialize-textarea"></textarea>
+							<label for="additional_notes">Additional Notes</label>
+						</div>
+					</div>
+
+					<div class="row margin-bottom-5">
+						<div class="input-field col l12">
+							<input id="partner_id" ng-model="partner_id" type="text">
+							<label for="partner_id">Partner Id</label>
+						</div>
+					</div>
+
+					<!-- <div class="row margin-bottom-5">
+						<div class="input-field col l6">
+							<input id="billing_name" type="text" ng-model="billing_name">
+							<label for="billing_name">Billing Name</label>
+						</div>
+						<div class="input-field col l6">
+							<input id="billing_email" type="text" ng-model="billing_email">
+							<label for="billing_email">Billing Email</label>
+						</div>
+					</div>
+
+					<div class="row margin-bottom-5">
+						<div class="input-field col l12">
+							<textarea id="billing_address" rows="1" ng-model="billing_address" class="materialize-textarea"></textarea>
+							<label for="billing_address">Billing Address</label>
+						</div>
+					</div> -->
+
+					<div class="row margin-bottom-5">
+						<div class="input-field col l12">
+							<input id="base_rate" type="text" value="0" ng-model="base_rate">
+							<label class="active" for="base_rate">Base Rate</label>
+						</div>
+						<!-- <div class="input-field col l6">
+							<input id="discount" type="text" ng-model="discount" ng-change="calcPostTax()">
+							<label for="discount">Discount</label>
+						</div> -->
+						<!-- <div class="input-field col l6">
+							<input id="promocode" type="text" ng-model="promocode">
+							<label for="promocode">Promocode</label>
+						</div> -->
+					</div>
+
+					<div class="row">
+						<div class="input-field col l7">
+							<input type="checkbox" id="is_promocode_discount" ng-model='is_promocode_discount' ng-click='promocodeDiscountStatus(is_promocode_discount)' />
+      						<label for="is_promocode_discount">Decuct from Wallet?</label>
+						</div>
+					</div>
+
+					<div class="row margin-bottom-5">
+						<div class="input-field col l6">
+							<input id="promo_code" type="text" value="" ng-blur="apply_promocode()" ng-model="promo_code">
+							<label class="active" for="promo_code">Promocode</label>
+						</div>
+						<div class="input-field col l6">
+							<input id="discount" type="text" ng-model="discount" ng-change="calcPostTax()">
+							<label  class="active" for="discount">Discount</label>
+						</div>
+						<!-- <div class="input-field col l6">
+							<input id="promocode_discount" type="text" value="0" ng-model="promocode_discount">
+							<label class="active" for="promocode_discount">Promocode Discount</label>
+						</div> -->
+					</div>
+
+					<div class="row margin-bottom-5">
+						<div class="input-field col l6">
+							<input id="client_paymnent_expected" value="0" type="text" ng-model="client_payment_expected" ng-change="calcDiscount()">
+							<label class="active" for="client_paymnent_expected">Client Payment Expected</label>
+						</div>
+						<div class="input-field col l6">
+							<input id="partner_commision" type="text" value="0" ng-model="partner_comission">
+							<label class="active" for="partner_commision">Partner Comission</label>
+						</div>
+					</div>
+
+
+
+	    		</div>
+	    	</div>
+
+
+
+
+
+	    </div>
+	    <div class="modal-footer center">
+			<a href="" class=" modal-action waves-effect waves-green btn float-none" ng-click="saveService()">Ok</a>
+			<a href="" class=" modal-action modal-close waves-effect waves-green btn-flat float-none">Close</a>
+	    </div>
+	</div>
+
+
+	<div id="service_name_modal" class="modal modal_md">
+	    <div class="modal-content">
+			<div class="row margin-bottom-5">
+				<div class="input-field col l6">
+					<select ng-model="service_inquiry" class="browser-default" ng-change="getVariantType(service_inquiry)">
+					    <option value="" disabled selected>Service</option>
+					    <option value="{{ key }}" ng-repeat="(key,value) in services_options">{{ value }}</option>
+					</select>
+					<!-- <label>Service</label> -->
+				</div>
+				<div class="input-field col l6">
+					<select ng-model="variant_type" class="browser-default" id="variant_type_id" ng-change="getServicePrice(variant_type)">
+					    <option value="" disabled selected>Variant Type</option>
+
+					    <option value="{{ vt.id }}" ng-repeat="vt in service_varianttype">{{ vt.name }}</option>
+					</select>
+					<!-- <label>Variant Type</label> -->
+				</div>
+			</div>
+
+			<div class="row margin-bottom-5">
+				<div class="input-field col l12">
+					<input id="additional_variant" ng-model="additional_variant" type="text">
+					<label for="additional_variant">Additional Variant</label>
+				</div>
+			</div>
+
+			<div class="row margin-bottom-5">
+				<div class="input-field col l6">
+					<input id="base_rate" type="text" value="0" ng-model="base_rate">
+					<label class="active" for="base_rate">Base Rate</label>
+				</div>
+				<div class="input-field col l6">
+					<input id="discount" type="text" ng-model="discount" ng-change="calcPostTax()">
+					<label for="discount">Discount</label>
+				</div>
+			</div>
+
+			<div class="row margin-bottom-5">
+				<div class="input-field col l6">
+					<input id="client_paymnent_expected" value="0" type="text" ng-model="client_payment_expected" ng-change="calcDiscount()">
+					<label class="active" for="client_paymnent_expected">Client Payment Expected</label>
+				</div>
+				<div class="input-field col l6">
+					<input id="partner_commision" type="text" value="0" ng-model="partner_comission">
+					<label class="active" for="partner_commision">Partner Comission</label>
+				</div>
+			</div>
+
+	    </div>
+	    <div class="modal-footer">
+			<a href="" class=" modal-action waves-effect waves-green btn" ng-click="updateServiceName()">Update</a>
+			<a href="" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+	    </div>
+	  </div>
+
+
+	<div id="update_leadstage" class="modal modal_md">
+	    <div class="modal-content">
+			<div class="row margin-bottom-5">
+				<div class="input-field col l6">
+					<select ng-model="lead_stage" class="browser-default" ng-change="checkLeadStage(lead_stage)">
+					    <option value="" disabled selected>Select</option>
+					    <option value="{{ key }}" ng-repeat="(key, value) in lead_stage_options">{{ value }}</option>
+					</select>
+					<!-- <label>Lead Stage</label> -->
+				</div>
+				<div class="input-field col l6">
+					<select ng-model="lead_stage_remark" class="browser-default">
+					    <option value="" disabled selected>Select</option>
+					    <option value="{{ key }}" ng-repeat="(key,value) in lead_stage_remark_options">{{ value }}</option>
+					</select>
+					<!-- <label>Lead Stage Remark</label> -->
+				</div>
+			</div>
+
+			<div class="row" ng-show="isClosedService">
+				<div class="input-field col l4">
+					<input type="checkbox" id="is_amc" ng-model='checkStatus' ng-click='doIfChecked(checkStatus)' />
+						<label for="is_amc">Is AMC?</label>
+				</div>
+			</div>
+
+			<div class="row" ng-show="isClosedService">
+				
+				<div class="input-field col l4" ng-hide="checkStatus">
+					<input type="text" name="service_date" id="service_date" class="mydatepicker" ng-model="service_date" />
+					<label for="service_date">Service Date</label>
+				</div>
+				<div class="input-field col l4" ng-hide="checkStatus">
+					<input id="service_time" ng-model="service_time" data-autoclose="true" input-clock data-twelvehour="false" type="text">
+					<label for="service_time">Service Time</label>
+				</div>
+				<!-- <div class="input-field col l4" ng-hide="checkStatus">
+					<input type="text" name="no_of_service" id="no_of_service1" ng-model="no_of_service" />
+					<label for="no_of_service1">No of Service</label>
+				</div> -->
+				<div class="input-field col l4" ng-hide="checkStatus">
+					<input id="duration" type="text" ng-model="duration">
+					<label for="duration">Duration</label>
+				</div>
+				<div class="input-field col l4" ng-show="checkStatus">
+					<input id="service_time" ng-model="service_time" data-autoclose="true" input-clock data-twelvehour="false" type="text">
+					<label for="service_time">Service Time</label>
+				</div>
+				<div class="input-field col l4" ng-show="checkStatus">
+					<input type="text" name="contract_start_date" class="mydatepicker" id="contract_start_date" ng-model="contract_start_date" format="yyyy-mm-dd" />
+					<label for="contact_start_date">Contract Start Date</label>
+				</div>
+				<div class="input-field col l4" ng-show="checkStatus">
+					<input type="text" name="contract_end_date" class="mydatepicker" id="contract_end_date" ng-model="contract_end_date" format="yyyy-mm-dd" />
+					<label for="contact_end_date">Contract End Date</label>
+				</div>
+
+
+			</div>
+
+			<div class="row margin-bottom-5" ng-show="checkStatus">
+				<div class="input-field col l6">
+					<select ng-model="frequency" class="browser-default" ng-change="calcNoOfService()">
+					    <option value="" disabled selected>Select</option>
+					    <option value="5">Mon to Fri</option>
+					    <option value="6">Mon to Sat</option>
+					    <option value="2">Sat to Sun</option>
+					    <option value="1">Daily</option>
+					    <option value="7">Weekly</option>
+					    <option value="15">Fortnightly</option>
+					    <option value="30">Monthly</option>
+					    <option value="90">Quaterly</option>
+					    <option value="-1">Other</option>
+					</select>
+					<label>Frequency</label>
+				</div>
+				<div class="input-field col l6">
+					<input type="text" name="no_of_service" id="no_of_service" ng-model="no_of_service" />
+					<label for="no_of_service">No of Service</label>
+				</div>
+			</div>
+
+	    </div>
+	    <div class="modal-footer">
+			<a href="" class=" modal-action waves-effect waves-green btn" ng-click="updateLeadStage()">Update</a>
+			<a href="" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+	    </div>
+	  </div>
+
+
+	<div id="update_contact" class="modal modal_md">
+	    <div class="modal-content">
+		<div class="row">
+			<div class="input-field col l10">
+				<input id="mobile_no" ng-model="mobile_no" type="text">
+				<label for="mobile_no">Enter Mobile Number</label>
+			</div>
+			<div class="input-field col l2">
+				<button type="button" class="btn grey" ng-hide="isEditMobile" ng-click="addMobileNumber();"><i class="material-icons">add</i></button>
+				<button type="button" class="btn grey" ng-show="isEditMobile" ng-click="editMobileNumber();"><i class="material-icons">done</i></button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col l12">
+
+				<table class="bordered">
+					<thead>
+					  <tr>
+					      <th>Client Mobile No.</th>
+					  </tr>
+					</thead>
+
+					<tbody>
+					  <tr ng-repeat="(key,value) in contacts track by $index">
+					    <td>
+						<input name="contact_group" type="radio" id="radio{{ value }}" value="{{ value }}" ng-click="setPhoneNo(value)" />
+						<label for="radio{{ value }}">{{ value }}</label>
+						<a class="cursor-pointer" ng-click="editMobile(value,$index)" class="right"><img src="img/edit.png" /></a>
+					    </td>
+					  </tr>
+					</tbody>
+				      </table>
+
+			</div>
+		</div>
+	    </div>
+	    <div class="modal-footer">
+		<!-- <a href="" class=" modal-action waves-effect waves-green btn">Ok</a> -->
+		<a href="" class=" modal-action modal-close waves-effect waves-green btn">Close</a>
+	    </div>
+	  </div>
+
+
+	  <div id="view_all_amcs" class="modal modal-fixed-footer modal_lg">
+	    <div class="modal-content">
+			<div class="row">
+				<div class="col l12">
+
+					<table class="bordered">
+						<thead>
+						  <tr>
+							<th>AMC No.</th>
+							<th>Service Name</th>
+							<th>Service Date</th>
+							<th>Service Time</th>
+							<th>Actions</th>
+						  </tr>
+						</thead>
+
+						<tbody>
+						  <tr ng-repeat="amc in amc_services" ng-class="amc.is_done==1 ? 'amc-done-bg-color' : ''">
+						    <td>{{ amc.amc_label }}</td>
+						    <td>{{ services_options[amc.service_id] }}</td>
+						    <td>
+						    	<span ng-repeat="asd in amc.service_date">
+						    		<a class="modal-trigger" ng-hide="amc.is_done" ng-click="setAMCServiceDate($index,amc._id,amc)" data-target="reschedule_amc_service" modal>{{ asd | date:'dd MMMM yyyy' }}</a>
+						    		<span ng-show="amc.is_done">{{ asd | date:'dd MMMM yyyy' }}</span><br />
+						    	</span>
+						    </td>
+						    <td>
+						    	<span ng-repeat="ast in amc.service_time">
+						    		{{ ast | date:'HH:mm a' }}<br />
+						    	</span>
+						    </td>
+						    <td><span ng-hide="amc.is_done"><a ng-click="deleteLeadAMCService(amc._id,$index,amc)"><img src="img/delete.png" /></a></span></td>
+						  </tr>
+						</tbody>
+					      </table>
+
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+		<a href="" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+	    </div>
+	  </div>
+
+	  <div id="reschedule_amc_service" class="modal modal_md">
+	    <div class="modal-content">
+			<div class="row">
+				<div class="input-field col l6" ng-hide="checkStatus">
+					<input type="text" name="service_date" id="service_date" class="mydatepicker" ng-model="amc_service_date" />
+					<label for="service_date">Service Date</label>
+				</div>
+				<div class="input-field col l6" ng-hide="checkStatus">
+					<input id="service_time" ng-model="amc_service_time" data-autoclose="true" data-container="body" input-clock data-twelvehour="false" type="text">
+					<label for="service_time">Service Time</label>
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+			<a class=" modal-action waves-effect waves-green btn" ng-click="rescheduleEditLeadAMCService()">Update</a>
+			<a class=" modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+	    </div>
+	  </div>
+
+
+	  <div id="cancel_service_modal" class="modal modal_sm">
+	    <div class="modal-content">
+			<div class="row">
+				<div class="input-field col l12">
+					<select id="cancellation_reason" ng-model="cancellation_reason" ng-change="checkCancellation(cancellation_reason)" class="browser-default">
+					    <option value="" disabled selected>Select Cancellation Reason</option>
+					    <option value="{{ key }}" ng-repeat="(key,value) in cancellation_reasons">{{ value }}</option>
+					</select>
+				</div>
+				<div class="input-field col l12" ng-show="isOther">
+					<input id="other_cancellation_reason" ng-model="other_cancellation_reason" type="text">
+					<label for="other_cancellation_reason">Other Cancellation Reason</label>
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+			<a class=" modal-action waves-effect waves-green btn" ng-click="cancelService()">Update</a>
+			<a class=" modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+	    </div>
+	  </div>
+
+
+	<div id="update_email" class="modal modal_md">
+	    <div class="modal-content">
+		<div class="row">
+			<div class="input-field col l10">
+				<input id="email_id" ng-model="email_id" type="email">
+				<label for="email_id">Enter Email Id</label>
+			</div>
+			<div class="input-field col l2">
+				<button type="button" class="btn grey" ng-hide="isEmailEdit" ng-click="addEmailId()"><i class="material-icons">add</i></button>
+				<button type="button" class="btn grey" ng-show="isEmailEdit" ng-click="editEmailId()"><i class="material-icons">done</i></button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col l12">
+				<table class="bordered">
+					<thead>
+					  <tr>
+					      <th>Client Email Id</th>
+					  </tr>
+					</thead>
+
+					<tbody ng-model ="emails">
+					  <tr ng-repeat="(key,value) in emails track by $index">
+					    <td>
+						<input name="email_group" type="radio" id="email{{ value }}" ng-click="setEmail(value)" value="{{ value }}" />
+						<label for="email{{ value }}">{{ value }}</label>
+						<a class="cursor-pointer" ng-click="editEmail(value,$index)" class="right"><img src="img/edit.png" /></a>
+					    </td>
+					  </tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	    </div>
+	    <div class="modal-footer">
+		<!-- <a href=""class=" modal-action waves-effect waves-green btn">Ok</a> -->
+		<a href="" class=" modal-action modal-close waves-effect waves-green btn">Close</a>
+	    </div>
+	  </div>
+
+	  <div id="add_reminder" class="modal modal_md">
+	    <div class="modal-content">
+			<div class="row">
+				<div class="input-field col l10">
+					<input input-date id="reminder" type="text" ng-model="reminder" container="body" format="yyyy-mm-dd" select-years="15" >
+					<label for="reminder">Reminder Date</label>
+				</div>
+				<div class="input-field col l2">
+					<a class=" modal-action modal-close waves-effect waves-green btn" ng-click="setReminder()">Ok</a>
+				</div>
+			</div>
+	    </div>
+	  </div>
+
+	  <div id="show_referrals" class="modal modal_md">
+	    <div class="modal-content">
+			<div class="row">
+				
+				<div class="col l12">
+
+					<table class="bordered">
+
+						<thead>
+						  <tr>
+						      <th>Referral Name</th>
+						      <th>Amount</th>
+						  </tr>
+						</thead>
+
+						<tbody>
+							<tr ng-repeat="referral in referrals">
+								<td>{{ referral.name }}</td>
+								<td>{{ referral.amount }}</td>
+							</tr>
+						</tbody>
+					
+					</table>
+
+				</div>
+	    	</div>
+	  	</div>
+	  </div>
+
+	  <div id="reschedule_service" class="modal modal_md">
+	    <div class="modal-content">
+			<div class="row">
+				<div class="input-field col l6" ng-hide="checkStatus">
+					<input type="text" name="service_date" id="service_date" class="mydatepicker" ng-model="service_date" />
+					<label for="service_date">Service Date</label>
+				</div>
+				<div class="input-field col l6" ng-hide="checkStatus">
+					<input id="service_time" ng-model="service_time" data-autoclose="true" data-container="body" input-clock data-twelvehour="false" type="text">
+					<label for="service_time">Service Time</label>
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+			<a class=" modal-action waves-effect waves-green btn" ng-click="rescheduleService()">Update</a>
+			<a class=" modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+	    </div>
+	  </div>
+
+	  <div id="client_name_modal" class="modal modal_md">
+	    <div class="modal-content">
+			<div class="row">
+				<div class="input-field col l6" ng-hide="checkStatus">
+					<input type="text" name="firstname" id="firstname" ng-model="firstname" />
+					<label for="firstname">Firstname</label>
+				</div>
+				<div class="input-field col l6" ng-hide="checkStatus">
+					<input id="lastname" ng-model="lastname" type="text">
+					<label for="lastname">Lastname</label>
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+			<a class=" modal-action waves-effect waves-green btn" ng-click="updateClientDetails()">Update</a>
+			<a class=" modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+	    </div>
+	  </div>
+
+
+	  <div id="update_deployment" class="modal modal_md">
+	    <div class="modal-content">
+			<div class="row">
+				<div class="input-field col l4">
+					<input id="supervisor" type="text" ng-model="supervisor">
+					<label for="supervisor" class="active">Supervisor</label>
+				</div>
+				<div class="input-field col l4">
+					<input id="teamleader" type="text" ng-model="teamleader">
+					<label for="teamleader" class="active">Teamleader</label>
+				</div>
+				<div class="input-field col l4">
+					<input id="janitor" type="text" ng-model="janitor">
+					<label for="janitor" class="active">Janitor</label>
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+			<a class=" modal-action waves-effect waves-green btn" ng-click="updateDeployment()">Update</a>
+			<a class=" modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+	    </div>
+	  </div>
+
+	  <div id="update_deployment_duration" class="modal modal_md">
+	    <div class="modal-content">
+			<div class="row">
+				<div class="input-field col l4">
+					<input id="supervisor" type="text" ng-model="supervisor">
+					<label for="supervisor" class="active">Supervisor</label>
+				</div>
+				<div class="input-field col l4">
+					<input id="teamleader" type="text" ng-model="teamleader">
+					<label for="teamleader" class="active">Teamleader</label>
+				</div>
+				<div class="input-field col l4">
+					<input id="janitor" type="text" ng-model="janitor">
+					<label for="janitor" class="active">Janitor</label>
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+			<a class=" modal-action waves-effect waves-green btn" ng-click="updateDeploymentDuration()">Update</a>
+			<a class=" modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+	    </div>
+	  </div>
+
+	  <div id="update_remark" class="modal modal_md">
+	    <div class="modal-content">
+			<div class="row">
+				<div class="input-field col l12">
+					<textarea rows="2" ng-model="additional_notes" class="materialize-textarea"></textarea>
+					<label for="additional_notes">Additional Notes</label>
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+			<a class=" modal-action waves-effect waves-green btn" ng-click="updateRemark()">Update</a>
+			<a class=" modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+	    </div>
+	  </div>
+
+
+	<div id="update_address" class="modal modal_md">
+	    <div class="modal-content">
+
+		<div ng-show="isNewAddress || isEditAddress">
+			<h5>Add Address</h5>
+			<div class="row margin-bottom-5">
+				<div class="input-field col l12">
+					<textarea id="client_address" ng-model="address" class="materialize-textarea"></textarea>
+					<label for="client_address">Enter your address</label>
+				</div>
+			</div>
+			<div class="row margin-bottom-5">
+				<div class="input-field col l12">
+					<input id="location" ng-model="location" type="text">
+					<label for="location">Enter your location</label>
+				</div>
+			</div>
+		    <div class="row margin-bottom-5">
+				<div class="input-field col l4">
+					<input id="landmark" ng-model="landmark" type="text">
+					<label for="landmark">Enter your landmark</label>
+				</div>
+				<div class="input-field col l4">
+					<input id="pincode" ng-model="pincode" type="text">
+					<label for="pincode">Enter your pincode</label>
+				</div>
+				<div class="input-field col l4">
+					<select id="city" ng-model="city" class="browser-default">
+					    <option value="" disabled selected>City</option>
+					    <option value="{{ key }}" ng-repeat="(key,value) in cities" ng-selected="key==city">{{ value }}</option>
+					    <!-- <option value="1">Mumbai</option>
+					    <option value="2">Bangalore</option>
+					    <option value="3">New Delhi</option> -->
+					</select>
+					<!-- <label for="city">City</label> -->
+				</div>
+			</div>
+			<div class="row center margin-bottom-5">
+				<div class="input-field col l12">
+					<button ng-show="isNewAddress" ng-hide="isEditAddress" class="waves-effect waves-light btn" ng-click="saveAddress()">Save</button>
+					<button ng-show="isEditAddress" ng-hide="isNewAddress" class="waves-effect waves-light btn" ng-click="updateAddress()">Update</button>
+					<button class="waves-effect waves-light btn grey" ng-click="cancelAddAddress()">Cancel</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="row" ng-hide="isNewAddress || isEditAddress">
+			<div class="col l12">
+
+				<table class="bordered">
+					<thead>
+					  <tr>
+					      <th>
+					      	Select Address
+					      	<button class="waves-effect waves-light btn right" ng-click="addNewAddress()">Add Address</button>
+					      </th>
+					  </tr>
+					</thead>
+
+					<tbody>
+					  <tr ng-repeat="ad in client_details.address_details">
+					    <td>
+						<input name="address_group" type="radio" id="address{{$index}}" ng-click="changeAddress(ad)" />
+						<label for="address{{$index}}">{{ad.address}} <span ng-show="ad.location">, {{ad.location}}</span> <span ng-show="ad.landmark">,{{ad.landmark}}</span>, <span ng-show="ad.city">{{ cities[ad.city]}}</span></label>
+						<a class="cursor-pointer" ng-click="editAddress(ad,$index)" class="right"><img src="img/edit.png" /></a>
+					    </td>
+					  </tr>
+					</tbody>
+				      </table>
+
+			</div>
+		</div>
+	    </div>
+	    <div class="modal-footer">
+		<!-- <a class=" modal-action waves-effect waves-green btn">Ok</a> -->
+		<a class=" modal-action modal-close waves-effect waves-green btn margin-left-10">Close</a>
+		<a ng-show="isUpdateLead && isAddressSelected" class=" modal-action waves-effect waves-green btn" ng-click="updateServiceAddress()">Update</a>
+	    </div>
+	  </div>
+
+
+    <div id="show_lead_stage_modal" class="modal">
+	    <div class="modal-content">
+	      <h4>Deep Cleaning</h4>
+
+	      <div class="collection">
+		    <a href="#!" class="collection-item"><span class="badge red">hot</span><strong>10 January 2017: </strong>Client is interested but he told us price is too high, client will call back and confirm</a>
+		    <a href="#!" class="collection-item"><span class="badge orange">cold</span><strong>1 January 2017: </strong> Client is busy. Call back on <strong>10 January 2017</strong></a>
+		  </div>
+
+
+	    </div>
+	    <div class="modal-footer">
+	      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+	    </div>
+	  </div>
+
+	<div id="base_rate_temp" class="modal modal_sm">
+	    <div class="modal-content">
+			<div class="row">
+				<div class="input-field col l12">
+					<input type="text" ng-model="base_rate">
+					<label>Base Rate</label>
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+			<a ng-show="isUpdateLead" class=" modal-action waves-effect waves-green btn" ng-click="updateBaseRate()">Update</a>
+			<a ng-hide="isUpdateLead" class=" modal-action modal-close waves-effect waves-green btn">Close</a>
+	    </div>
+	</div>
+
+
+	<div id="billing_name_temp" class="modal modal_sm">
+	    <div class="modal-content">
+			<div class="row">
+				<div class="input-field col l12">
+					<input type="text" ng-model="billing_name">
+					<label>Billing Name</label>
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+			<a ng-show="isUpdateLead" class=" modal-action waves-effect waves-green btn" ng-click="updateBillingName()">Update</a>
+			<a ng-hide="isUpdateLead" class=" modal-action modal-close waves-effect waves-green btn">Close</a>
+	    </div>
+	</div>
+
+	<div id="rate_customer_modal" class="modal modal_sm">
+	    <div class="modal-content">
+	    	<h5>Rate Client</h5>
+			<div class="row">
+				<div class="input-field col l12">
+					<div star-rating ng-model="client_rating" on-rating-select="rateQuality(client_rating)" class="center-align"></div>
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+			<a ng-show="isUpdateLead" class=" modal-action waves-effect waves-green btn" ng-click="updateClientRating()">Update</a>
+			<a ng-hide="isUpdateLead" class=" modal-action modal-close waves-effect waves-green btn">Close</a>
+	    </div>
+	</div>
+
+	<div id="customer_id_temp" class="modal modal_sm">
+	    <div class="modal-content">
+			<div class="row">
+				<div class="input-field col l12">
+					<input type="text" ng-model="customerId">
+					<label>Customer Id</label>
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+			<a ng-show="isUpdateLead" class=" modal-action waves-effect waves-green btn" ng-click="updateCustomerId()">Update</a>
+			<a ng-hide="isUpdateLead" class=" modal-action modal-close waves-effect waves-green btn">Close</a>
+	    </div>
+	</div>
+
+	<div id="city_modal" class="modal modal_sm">
+	    <div class="modal-content">
+			<div class="row">
+				<div class="input-field col l12">
+					<select id="city_val" ng-model="city_val" ng-change="updateCityView(city_val)" class="browser-default margin-top-10">
+					    <option value="" disabled selected>City</option>
+					    <option value="{{ key }}" ng-repeat="(key,value) in cities" ng-selected="key==city_val">{{ value }}</option>
+					    <!-- <option value="1">Mumbai</option>
+					    <option value="2">Bangalore</option>
+					    <option value="3">New Delhi</option> -->
+					</select>
+					<label class="active">Select City</label>
+				</div>
+			</div>
+
+	    </div>
+	    <div class="modal-footer">
+			<a ng-show="isUpdateLead" class=" modal-action waves-effect waves-green btn" ng-click="updateCity()">Update</a>
+			<a ng-hide="isUpdateLead" class=" modal-action modal-close waves-effect waves-green btn">Close</a>
+	    </div>
+	</div>
+
+	<div id="billing_address_temp" class="modal modal_sm">
+	    <div class="modal-content">
+			<div class="row">
+				<div class="input-field col l12">
+					<textarea ng-model="billing_address" row="1" class="materialize-textarea" placeholder="Billing Address"></textarea>
+					<label>Billing Address</label>
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+			<a ng-show="isUpdateLead" class=" modal-action waves-effect waves-green btn" ng-click="updateBillingAddress()">Update</a>
+			<a ng-hide="isUpdateLead" class=" modal-action modal-close waves-effect waves-green btn">Close</a>
+	    </div>
+	</div>
+
+	<div id="discount_temp" class="modal modal_sm">
+	    <div class="modal-content">
+			<div class="row">
+				<div class="input-field col l12">
+					<input type="text" ng-model="discount">
+					<label>Discount</label>
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+			<a ng-show="isUpdateLead" class=" modal-action waves-effect waves-green btn" ng-click="updateDiscount()">Update</a>
+			<a ng-hide="isUpdateLead" class=" modal-action modal-close waves-effect waves-green btn">Close</a>
+	    </div>
+	</div>
+
+
+	<div id="cpe_temp" class="modal modal_sm">
+	    <div class="modal-content">
+			<div class="row">
+				<div class="input-field col l12">
+					<input type="text" ng-model="client_payment_expected">
+					<label>Client Payment Expected</label>
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+			<a ng-show="isUpdateLead" class=" modal-action waves-effect waves-green btn" ng-click="updateClientPaymentExpected()">Update</a>
+			<a ng-hide="isUpdateLead" class=" modal-action modal-close waves-effect waves-green btn">Close</a>
+	    </div>
+	</div>
+
+
+	<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script> -->
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script> -->
+
+	<script type="text/javascript">
+
+		$(document).ready(function(){
+			$(".button-collapse").sideNav();
+			$('.collapsible').collapsible();
+			$('.modal-trigger').leanModal();
+			$('select').material_select();
+			$("#lead-stage-scrollpane").mCustomScrollbar({
+				autoHideScrollbar:true,
+				theme:"dark-2"
+			});
+			$('.mydatepicker').pickadate({
+			    selectMonths: true, // Creates a dropdown to control month
+			    selectYears: 15, // Creates a dropdown of 15 years to control year
+			    format: 'yyyy-mm-dd',
+					onSet: function () {
+			        //this.close();
+			    },
+			    onClose: function(){
+			        $('.mydatepicker').blur();
+			        $('.picker').blur();
+			        $('.mydatepicker').stop();
+				},
+				container: '#datepicker_placeholder'
+			});
+
+			$("input").on('click',function(){
+				if($(this).val()==0) {
+					$(this).select();
+				}
+			});
+
+			//alert($("body").height());
+
+			// var ht = parseInt($(document).height()) - (parseInt($("nav").height())+20);
+			// $(".left-sidebar").css({"min-height":ht+"px"});
+			// $(".left-sidebar > div").css({"min-height":ht+"px"});
+			// $(".right-sidebar").css({"min-height":ht+"px"});
+			// $(".right-sidebar > div").css({"min-height":ht+"px"});
+
+		});
+
+	</script>

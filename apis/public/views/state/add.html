@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add/Edit State</h3>
+        <form name="stateForm" novalidate>
+            
+            <div class="form-group" ng-class="{ 'has-error': stateForm.zone_id.$touched && stateForm.zone_id.$invalid }">
+                
+                <select class="form-control" name="zone_id" ng-model="zone_id" ng-options="zone.id as zone.zone_name for zone in zones" required>
+                    <option value="">Zone Name</option>
+                </select>
+
+                <div class="help-block" ng-messages="stateForm.zone_id.$error" ng-if="stateForm.zone_id.$touched">
+                    <p ng-message="required">Your zone name is required.</p>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': stateForm.name.$touched && stateForm.name.$invalid }">
+                
+                <input type="hidden" ng-model="state_id">
+
+                <input type="text" class="form-control" name="name" placeholder="State Name" ng-model="name" required>
+
+                <div class="help-block" ng-messages="stateForm.name.$error" ng-if="stateForm.name.$touched">
+                    <p ng-message="required">Your state name is required.</p>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': stateForm.code.$touched && stateForm.code.$invalid }">
+                
+                <input type="text" class="form-control" name="code" placeholder="State Code" ng-model="code" required>
+
+                <div class="help-block" ng-messages="stateForm.code.$error" ng-if="stateForm.code.$touched">
+                    <p ng-message="required">Your state code is required.</p>
+                </div>
+
+            </div>
+           
+
+           
+
+           
+
+
+            <button class="btn btn-primary" ng-click="addState()" ng-disabled="!stateForm.$valid">Submit</button>
+        </form>
+    </div>
+</div>

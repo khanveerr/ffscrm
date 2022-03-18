@@ -1,0 +1,85 @@
+<div class="row margin-bottom-0">
+	<div class="col s12 m2 l2">&nbsp;</div>
+    <div class="col s12 m8 l8">
+      <div class="card">
+        <div class="card-content">
+
+        	<div ng-show="isFeedbackGiven==true">
+        		<p>Thank you for your feedback.</p>
+        	</div>
+
+        	<div ng-hide="showFeedbackForm">
+        		<p>You have already filled this form.</p>
+        	</div>
+			
+			<div ng-show="showFeedbackForm&&isFeedbackGiven==false">
+
+	        	<div class="row margin-bottom-5">
+	        		<div class="col l12 light-grey">
+	        			<h5>Order Id: {{ orderId }}</h5>
+	        		</div>
+	        		<div class="col l12">
+	    				<div star-rating ng-model="rating" on-rating-select="rateQuality(rating)" class="center-align"></div>
+	        		</div>
+	        		<div class="col l12">
+						<p class="font-size-20">What did you like ?</p>
+	        		</div>
+					<div class="col l12 margin-bottom-30">
+						
+						<div class="row margin-bottom-5">
+							
+							<div class="input-field col s12 m12 l4">
+								<input type="checkbox" id="serviceQuality" ng-model='serviceQuality' ng-change="setServiceQuality(serviceQuality)" />
+		      					<label for="serviceQuality">Quality of Service</label>
+							</div>
+
+							<div class="input-field col s12 m12 l3">
+								<input type="checkbox" id="punctuality" ng-model='punctuality' ng-change="setPunctuality(punctuality)" />
+		      					<label for="punctuality">Punctuality</label>
+							</div>
+
+							<div class="input-field col s12 m12 l5">
+								<input type="checkbox" id="grooming" ng-model='grooming' ng-change="setGrooming(grooming)" />
+		      						<label for="grooming">Grooming</label>
+							</div>
+
+						</div>
+
+						<div class="row margin-bottom-5">
+							
+							<div class="input-field col s12 m12 l4">
+								<input type="checkbox" id="detailAttention" ng-model='detailAttention' ng-change="setDA(detailAttention)" />
+	      						<label for="detailAttention">Attention to Detail</label>
+							</div>
+
+							<div class="input-field col s12 m12 l3">
+								<input type="checkbox" id="productKnowledge" ng-model='productKnowledge' ng-change="setPK(productKnowledge)" />
+	      						<label for="productKnowledge">Product Knowledge</label>
+							</div>
+
+							<div class="input-field col s12 m12 l5">
+								<input type="checkbox" id="commsCoords" ng-model='commsCoords' ng-change="setCC(commsCoords)" />
+	      						<label for="commsCoords">Communication &amp; Coordination</label>
+							</div>
+
+						</div>
+
+					</div>
+
+					<div class="input-field col s12 m12 l12">
+						<textarea id="client_feedback" rows="1" ng-model="client_feedback" class="materialize-textarea"></textarea>
+						<label for="client_feedback">Additional Feedback</label>
+	        		</div>
+
+	        	</div>
+
+        	</div>
+
+        </div>
+        <div class="card-action center-align" ng-show="showFeedbackForm&&isFeedbackGiven==false">
+        	<button class="btn waves-effect blue" ng-click="submitFeedback()">SUBMIT FEEDBACK</button>
+        </div>
+      </div>
+    </div>
+	<div class="col s12 m2 l2">&nbsp;</div>
+</div>

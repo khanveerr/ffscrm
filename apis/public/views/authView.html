@@ -1,0 +1,21 @@
+<div class="col-md-4 hidden-sm hidden-xs">
+    &nbsp;
+</div>
+<div class="col-md-4 col-sm-12 col-xs-12  margin-top-100">
+    <p class="login_form_head">
+        <img src="images/logo.png" width="100" />
+        <span>Procurement</span>
+    </p>
+    <div class="well login_form">
+        <h3>Login</h3>
+        <form>
+            <div class="form-group">
+                <input type="email" class="form-control" placeholder="Email" ng-model="auth.email">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Password" ng-model="auth.password">
+            </div>
+            <button class="btn btn-primary" ng-click="auth.login()">Submit</button>
+        </form>
+    </div>
+</div>

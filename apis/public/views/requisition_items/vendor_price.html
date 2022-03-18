@@ -1,0 +1,78 @@
+<div class="row">
+    <div class="col-md-12">
+
+        <form name="itemPriceForm" novalidate>
+
+            <div class="row">
+
+                <input type="hidden" ng-model="item_price_id">
+
+                <div class="form-group col-md-5" ng-class="{ 'has-error': itemPriceForm.vendor_id.$touched && itemPriceForm.vendor_id.$invalid }">
+                    <label for="vendor_id">Vendor</label>
+                    <select class="form-control" name="vendor_id" ng-model="vendor_id" ng-options="vendor.id as vendor.vendor_name for vendor in vendors" required>
+                        <option value="">Select</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="itemPriceForm.vendor_id.$error" ng-if="itemPriceForm.vendor_id.$touched">
+                        <p ng-message="required">Your vendor name is required.</p>
+                    </div>
+
+                </div>
+
+                <div class="form-group col-md-4" ng-class="{ 'has-error': itemPriceForm.rate.$touched && itemPriceForm.rate.$invalid }">
+                    <label for="rate">Rate</label>
+                    <input type="text" class="form-control" id="rate" name="rate" placeholder="Rate" ng-model="rate" required>
+                    <div class="help-block" ng-messages="itemPriceForm.rate.$error" ng-if="itemPriceForm.rate.$touched">
+                        <p ng-message="required">Your rate is required.</p>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    
+                    <button class="btn btn-primary" ng-click="savePrice()" style="margin-top: 30px;" ng-disabled="!itemPriceForm.$valid">Submit</button>
+
+                </div>
+
+            </div>
+    
+        </form>
+        
+        <div class="row">
+            
+            <div class="col-md-12">
+
+                <table class="table">
+
+                    <thead>
+                        <th>Sr. No.</th>
+                        <th>Vendor Name</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="item_price in item_prices">
+                            <td>{% $index+1 %}</td>
+                            <td>{% item_price.vendor_name %}</td>
+                            <td><a href="javascript:void(0)" ng-click="update_price(item_price)">{% item_price.rate %}</td>
+                            <td>
+                                <span class="badge badge-danger cursor-pointer" ng-if="item_price.status == 0" ng-click="update_status(item_price,1)">Inactive</span>
+                                <span class="badge badge-success cursor-pointer" ng-if="item_price.status == 1" ng-click="update_status(item_price,0)">Active</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" ng-if="item_prices.length <= 0">
+                                Sorry, no records found.
+                            </td>
+                        </tr>
+                    </tbody>
+                    
+                </table>
+                
+            </div>
+
+        </div>
+
+
+    </div>
+</div>

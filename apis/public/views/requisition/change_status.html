@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-md-12">
+
+        <h3>Update Status</h3>
+
+        <form name="statusForm" novalidate>
+
+            <div class="row">
+
+                <input type="hidden" ng-model="item_price_id">
+
+                <div class="form-group col-md-9" ng-class="{ 'has-error': statusForm.status.$touched && statusForm.status.$invalid }">
+                    <select class="form-control" name="status" ng-model="status" ng-options="st.status as st.name for st in statuses" required>
+                    </select>
+
+                    <div class="help-block" ng-messages="statusForm.status.$error" ng-if="statusForm.status.$touched">
+                        <p ng-message="required">Your status is required.</p>
+                    </div>
+
+                </div>
+
+                <div class="form-group col-md-3">
+                    
+                    <button class="btn btn-primary" ng-click="updateStatus()" ng-disabled="!statusForm.$valid">Submit</button>
+
+                </div>
+
+            </div>
+    
+        </form>
+    
+
+
+    </div>
+</div>

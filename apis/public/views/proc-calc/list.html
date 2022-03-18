@@ -1,0 +1,72 @@
+<div class="row">
+    <!-- <div class="col-md-1 hidden-sm hidden-xs">
+        &nbsp;
+    </div> -->
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">List</div>
+
+            <div class="panel-body" ng-init="ct.getProcDetails()">
+                
+                <div class="action_btns">
+                    <button class="btn btn-primary pull-right" ng-click="ct.addProcCalc()" style="margin-bottom: 10px;">Add</button>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table" ng-if="ct.proc_details">
+                        <thead>
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>User</th>
+                                <th>Company</th>
+                                <th width="25%;">Cost Centre</th>
+                                <th width="20%;">Type</th>
+                                <th>Action</th>
+                                <th>Export</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="proc_detail in ct.proc_details">
+                                <td>{% $index+1 %}</td>
+                                <td>{% proc_detail.user_name %}</td>
+                                <td>{% proc_detail.company_name %}</td>
+                                <td>{% proc_detail.cost_centre_name %}</td>
+                                <td>{% proc_detail.type %}</td>
+                                <td><a href="/procurement/calculator/list/{% proc_detail.id %}">View Items</a></td>
+                                <td>
+                                    <a href="javascript:void(0)" ng-click="ct.export(proc_detail.id,'pdf')">
+                                        <img src="images/pdf-icon.jpg" />
+                                    </a>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="javascript:void(0)" ng-click="ct.export(proc_detail.id,'excel')">
+                                        <img src="images/excel-icon.png" />
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" ng-if="ct.proc_details.length <= 0">
+                                    Sorry, no records found
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <ul class="pagination" ng-if="ct.showPagination">
+                    <li ng-show="ct.currentPage != 1"><a href="javascript:void(0)" ng-click="ct.getProcDetails(1)">&laquo;</a></li>
+                    <li ng-show="ct.currentPage != 1"><a href="javascript:void(0)" ng-click="ct.getProcDetails(ct.currentPage-1)">&lsaquo; Prev</a></li>
+                    <li ng-repeat="i in ct.range" ng-class="{active : ct.currentPage == i}">
+                        <a href="javascript:void(0)"" ng-click="ct.getProcDetails(i)">{%i%}</a>
+                    </li>
+                    <li ng-show="ct.currentPage != ct.totalPages"><a href="javascript:void(0)" ng-click="ct.getProcDetails(ct.currentPage+1)">Next &rsaquo;</a></li>
+                    <li ng-show="ct.currentPage != ct.totalPages"><a href="javascript:void(0)" ng-click="ct.getProcDetails(ct.totalPages)">&raquo;</a></li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+    <!-- <div class="col-md-1 hidden-sm hidden-xs">
+        &nbsp;
+    </div> -->
+</div>

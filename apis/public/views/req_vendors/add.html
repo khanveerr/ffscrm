@@ -1,0 +1,141 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add/Edit Vendor</h3>
+        <form name="vendorForm" novalidate>
+
+            <div class="form-group" ng-class="{ 'has-error': vendorForm.zone_id.$touched && vendorForm.zone_id.$invalid }">
+                    
+                <select class="form-control" name="zone_id" ng-model="zone_id" ng-options="zone.id as zone.zone_name for zone in zones" required>
+                    <option value="">Zone</option>
+                </select>
+
+                <div class="help-block" ng-messages="vendorForm.zone_id.$error" ng-if="vendorForm.zone_id.$touched">
+                    <p ng-message="required">Your zone is required.</p>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': vendorForm.state_id.$touched && vendorForm.state_id.$invalid }">
+                
+                <select class="form-control" name="state_id" ng-model="state_id" ng-options="state.id as state.name for state in states" required>
+                    <option value="">State Name</option>
+                </select>
+
+                <div class="help-block" ng-messages="vendorForm.state_id.$error" ng-if="vendorForm.state_id.$touched">
+                    <p ng-message="required">Your state name is required.</p>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': vendorForm.item_type_id.$touched && vendorForm.item_type_id.$invalid }">
+                    
+                <select class="form-control" name="item_type_id" ng-model="item_type_id" ng-options="item_type.id as item_type.name for item_type in item_types" required>
+                    <option value="">Item Type</option>
+                </select>
+
+                <div class="help-block" ng-messages="vendorForm.item_type_id.$error" ng-if="vendorForm.item_type_id.$touched">
+                    <p ng-message="required">Your item type is required.</p>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': vendorForm.name.$touched && vendorForm.name.$invalid }">
+                
+                <input type="hidden" ng-model="vendor_id">
+
+                <input type="text" class="form-control" name="name" placeholder="Name" ng-model="name" required>
+
+                <div class="help-block" ng-messages="vendorForm.name.$error" ng-if="vendorForm.name.$touched">
+                    <p ng-message="required">Your vendor name is required.</p>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': vendorForm.address.$touched && vendorForm.address.$invalid }">
+                
+                <textarea class="form-control" name="address" placeholder="Address" ng-model="address" required></textarea>
+
+                <div class="help-block" ng-messages="vendorForm.address.$error" ng-if="vendorForm.address.$touched">
+                    <p ng-message="required">Your vendor address is required.</p>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': vendorForm.pincode.$touched && vendorForm.pincode.$invalid }">
+                
+                <input type="text" class="form-control" name="pincode" placeholder="Pincode" ng-model="pincode">
+
+                <div class="help-block" ng-messages="vendorForm.pincode.$error" ng-if="vendorForm.pincode.$touched">
+                    <!-- <p ng-message="required">Your pincode is required.</p> -->
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': vendorForm.email.$touched && vendorForm.email.$invalid }">
+                
+                <input type="email" class="form-control" name="email" placeholder="Email" ng-model="email">
+
+                <div class="help-block" ng-messages="vendorForm.email.$error" ng-if="vendorForm.email.$touched">
+                    <!-- <p ng-message="required">Your vendor email is required.</p> -->
+                    <p ng-message="email">Invalid email id</p>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': vendorForm.gst_no.$touched && vendorForm.gst_no.$invalid }">
+                
+                <input type="text" class="form-control" name="gst_no" placeholder="Gst no." ng-model="gst_no" required>
+
+                <div class="help-block" ng-messages="vendorForm.gst_no.$error" ng-if="vendorForm.gst_no.$touched">
+                    <p ng-message="required">Your vendor gst no is required.</p>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': vendorForm.pan_no.$touched && vendorForm.pan_no.$invalid }">
+                
+                <input type="text" class="form-control" name="pan_no" placeholder="Pan no." ng-model="pan_no" ng-pattern="/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/">
+
+                <div class="help-block" ng-messages="vendorForm.pan_no.$error" ng-if="vendorForm.pan_no.$touched">
+                    <!-- <p ng-message="required">Your vendor pan no is required.</p> -->
+                    <p ng-message="pattern">Invalid Pan No.</p>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': vendorForm.code.$touched && vendorForm.code.$invalid }">
+                
+                <input type="text" class="form-control" name="code" placeholder="Vendor Code" ng-model="code" required>
+
+                <div class="help-block" ng-messages="vendorForm.code.$error" ng-if="vendorForm.code.$touched">
+                    <p ng-message="required">Your vendor code is required.</p>
+                </div>
+
+            </div>
+
+
+            <div class="form-group" ng-class="{ 'has-error': vendorForm.contact_person.$touched && vendorForm.contact_person.$invalid }">
+                
+                <input type="text" class="form-control" name="contact_person" placeholder="Contact Person" ng-model="contact_person" required>
+
+                <div class="help-block" ng-messages="vendorForm.contact_person.$error" ng-if="vendorForm.contact_person.$touched">
+                    <p ng-message="required">Your contact person is required.</p>
+                </div>
+
+            </div>
+
+
+            <div class="form-group" ng-class="{ 'has-error': vendorForm.contact_no.$touched && vendorForm.contact_no.$invalid }">
+                
+                <input type="text" class="form-control" name="contact_no" placeholder="Contact No." ng-model="contact_no" required>
+
+                <div class="help-block" ng-messages="vendorForm.contact_no.$error" ng-if="vendorForm.contact_no.$touched">
+                    <p ng-message="required">Your contact person is required.</p>
+                </div>
+
+            </div>
+
+            <button class="btn btn-primary" ng-click="addVendor()" ng-disabled="!vendorForm.$valid">Submit</button>
+        </form>
+    </div>
+</div>

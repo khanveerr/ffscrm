@@ -1,0 +1,92 @@
+<!-- <div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Dashboard</div>
+        </div>
+    </div>
+</div> -->
+    
+<div class="row">
+
+    <div class="col-md-12">
+
+        <div class="row">
+
+            <div class="col-md-3" ng-if="currentUser.user_type == 'A' || currentUser.user_type == 'S'">
+                
+                <a href="/list/masters" class="main-nav">
+                    <i class="fas fa-database"></i><br />
+                    Masters
+                </a>
+
+            </div>
+
+            <div class="col-md-3" ng-if="currentUser.user_type == 'A'">
+                
+                <a href="/inventories" class="main-nav">
+                    <i class="fas fa-warehouse"></i><br />
+                    Assets Inventory
+                </a>
+
+            </div>
+
+            <div class="col-md-3" ng-if="currentUser.user_type == 'A' || currentUser.user_type == 'S'">
+                
+                <a href="/procurement/calculator" class="main-nav">
+                    <i class="fas fa-calculator"></i><br />
+                    Procurement Calculator
+                </a>
+
+            </div>
+
+            <div class="col-md-3">
+                
+                <a href="/procure/items" class="main-nav">
+                    <i class="fas fa-cart-plus"></i><br />
+                    Procure
+                </a>
+
+            </div>
+
+            <div class="col-md-3">
+                
+                <a href="/requisition/request" class="main-nav">
+                    <i class="fas fa-tasks"></i><br />
+                    Requisition
+                </a>
+
+            </div>
+
+            <div class="col-md-3">
+                
+                <a href="/request/quote" class="main-nav">
+                    <i class="fas fa-file-alt"></i><br />
+                    Request Quote
+                </a>
+
+            </div>
+
+            <div class="col-md-3" ng-if="currentUser.user_type == 'A'">
+                
+                <a href="/requisition/report" class="main-nav">
+                    <i class="fas fa-chart-bar"></i><br />
+                    Report
+                </a>
+
+            </div>
+
+            <div class="col-md-3" ng-if="currentUser.user_type == 'A' || currentUser.user_type == 'S'">
+                
+                <a href="/supplier/list" class="main-nav">
+                    <i class="fas fa-list-alt"></i><br />
+                    Suppliers List
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+    
+</div>
+

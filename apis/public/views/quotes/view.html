@@ -1,0 +1,72 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Quote Details</h3>
+		
+		<div class="row">
+
+			<div class="col-md-12">
+				
+				<strong>Product Name: </strong> {% product_name %}
+
+			</div>
+			
+		</div>
+
+		<div class="row">
+
+			<div class="col-md-6">
+				
+				<strong>Quantity: </strong> {% quantity %}
+
+			</div>
+
+			<div class="col-md-6">
+				
+				<strong>Unit: </strong> {% unit %}
+
+			</div>
+			
+		</div>
+
+		<div class="row">
+
+			<div class="col-md-12">
+				
+				<strong>Rate: </strong> {% rate %}
+
+			</div>
+			
+		</div>
+
+		<!-- <div class="row">
+
+			<div class="col-md-12">
+				
+				<strong>Do you need Credit Payment Facility?: </strong> {% is_credit == 1 ? 'Yes' : 'No' %}
+
+			</div>
+			
+		</div>
+
+		<div class="row">
+
+			<div class="col-md-12">
+				
+				<strong>Pincode: </strong> {% pincode %}
+
+			</div>
+			
+		</div> -->
+
+		<div class="row" ng-if="requirements">
+
+			<div class="col-md-12">
+				
+				<strong>Any other requirements?: </strong> {% requirements %}
+
+			</div>
+			
+		</div>
+
+    </div>
+</div>

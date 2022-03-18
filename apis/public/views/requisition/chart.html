@@ -1,0 +1,136 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+		
+		<div class="panel panel-default">
+            <div class="panel-body">
+    
+                <div class="row">
+					
+					<div class="col-md-2">
+
+						<label for="filter_month">Month</label>
+                        <select class="form-control" name="filter_month" id="filter_month" ng-change="filterData()" ng-model="filter_month" ng-options="month.value as month.name for month in ct.report_months" required>
+                            <option value="">Select Month</option>
+                        </select>
+						
+					</div>
+
+
+					<div class="col-md-2">
+
+						<label for="filter_state">State</label>
+                        <select class="form-control" name="filter_state" id="filter_state" ng-change="filterData()" ng-model="filter_state" ng-options="state.id as state.name for state in ct.states" required>
+                            <option value="">Select State</option>
+                        </select>
+						
+					</div>
+
+
+					<div class="col-md-2">
+
+						<label for="filter_billing_type">Billing Type</label>
+                        <select class="form-control" name="filter_billing_type" ng-change="filterData()" id="filter_billing_type" ng-model="filter_billing_type" ng-options="billing_type.value as billing_type.name for billing_type in ct.billing_types" required>
+                            <option value="">Select Type</option>
+                        </select>
+						
+					</div>
+
+
+					<div class="col-md-2">
+
+						<label for="filter_item_type">Item Type</label>
+                        <select class="form-control" name="filter_item_type" ng-change="filterData()" id="filter_item_type" ng-model="filter_item_type" ng-options="item_type.id as item_type.name for item_type in ct.item_types" required>
+                            <option value="">Select Type</option>
+                        </select>
+						
+					</div>
+
+
+					<div class="col-md-2">
+
+						<label for="filter_item_type">Sites</label>
+	                    <select class="form-control" name="filter_site" id="filter_site" ng-change="filterData()" ng-model="filter_site" ng-options="site.id as site.name for site in ct.sites" required>
+	                        <option value="">Select Site</option>
+	                    </select>
+						
+					</div>
+
+					<div class="col-md-2">
+
+						<label for="filter_chargeable_type">Chargeable Type</label>
+                        <select class="form-control" name="filter_chargeable_type" ng-change="filterData()" id="filter_chargeable_type" ng-model="filter_chargeable_type" ng-options="chargeable_type.value as chargeable_type.name for chargeable_type in ct.chargeable_types" required>
+                            <option value="">Select Type</option>
+                        </select>
+						
+					</div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+		
+		<div class="panel panel-default">
+            <div class="panel-body">
+    
+                <div id="stacked_bar_chart"></div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row" ng-if="ct.tbl_sites.length > 0">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">Sites</div>
+            <div class="panel-body">
+    
+                <div class="table-responsive">
+                        
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                            	<th>Id</th>
+                            	<th>Name</th>
+                            	<th>Sales</th>
+                            	<th>Purchase</th>
+                            	<th>Profit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+							
+							<tr ng-repeat="site in ct.tbl_sites">
+								<td>{% site.id %}</td>
+								<td>{% site.name %}</td>
+								<td>{% site.report_data.sales[1] %}</td>
+								<td>{% site.report_data.purchase[1] %}</td>
+								<td>{% site.report_data.profit[1] %}</td>
+							</tr>
+
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                            	<th></th>
+                            	<th>Total</th>
+                                <th>{% ct.total_tbl_sales %}</th>
+                                <th>{% ct.total_tbl_purchase %}</th>
+                                <th>{% ct.total_tbl_profit %}</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,285 @@
+<div class="container-fluid">
+  <div class="nk-content-inner">
+    <div class="nk-content-body">
+      <div class="nk-block-head nk-block-head-sm">
+        <div class="nk-block-between">
+          <div class="nk-block-head-content">
+            <h3 class="nk-block-title page-title">KAP Calendar</h3>
+            <div class="nk-block-des text-soft">
+              <!-- <p>You have total 2,595 users.</p> -->
+            </div>
+          </div>
+          <!-- .nk-block-head-content -->
+          <div class="nk-block-head-content">
+            <div class="toggle-wrap nk-block-tools-toggle">
+              <a
+                href="#"
+                class="btn btn-icon btn-trigger toggle-expand mr-n1"
+                data-target="pageMenu"
+                ><em class="icon ni ni-menu-alt-r"></em
+              ></a>
+              <div class="toggle-expand-content" data-content="pageMenu">
+                <ul class="nk-block-tools g-3">
+                  <li class="nk-block-tools-opt">
+                    <div class="drodown">
+                      <a
+                        href="#"
+                        class="dropdown-toggle btn btn-icon btn-primary"
+                        data-toggle="modal"
+                        data-target="#add_kap"
+                        ><em class="icon ni ni-plus"></em>Add
+                        KAP&nbsp;&nbsp;&nbsp;&nbsp;</a
+                      >
+                     
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- .toggle-wrap -->
+          </div>
+          <!-- .nk-block-head-content -->
+        </div>
+        <!-- .nk-block-between -->
+      </div>
+
+      
+      <!-- .nk-block-head -->
+      <div class="nk-block pt-0">
+        <div class="card card-bordered card-preview">
+          <div class="card-inner">
+            <div class="row gy-4">
+              <div class="col-sm-8">
+                <div ui-calendar="uiConfig.calendar" ng-model="eventSources" calendar="myCalendar"></div>
+              </div>
+              <div class="col-sm-4">
+                <h3 class="nk-block-title page-title" style="margin-bottom: 20px;">Add / Edit KAP</h3>
+                <form class="form-validate is-alter" name="kapForm" novalidate>
+                  <div class="row gy-4">
+        
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label class="form-label" for="company_name"
+                          >Company Name</label
+                        >
+                        <div class="form-control-wrap">
+                          <select
+                            class="form-control form-control-lg"
+                            aria-hidden="true"
+                            name="company_name"
+                            ng-model="leadData.company_name"
+                            required
+                          >
+                            <option value="">Select</option>
+                            <option
+                              value="{{ company.id }}"
+                              ng-repeat="company in companies"
+                              >{{ company.name }}</option
+                            >
+                          </select>
+                          <div
+                            class="help-block"
+                            ng-messages="kapForm.company_name.$error"
+                            ng-if="kapForm.company_name.$touched"
+                          >
+                            <div ng-message="required">Please select your company</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+        
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label class="form-label" for="kap_date">KAP Date</label>
+                        <div class="form-control-wrap">
+                          <input
+                            type="text"
+                            class="form-control"
+                            ng-model="leadData.kap_date"
+                            name="kap_date"
+                            datepicker=""
+                            dp-format="yyyy-mm-dd"
+                            required
+                          />
+                          <div
+                            class="help-block"
+                            ng-messages="kapForm.kap_date.$error"
+                            ng-if="kapForm.kap_date.$touched"
+                          >
+                            <div ng-message="required">
+                              Please select your KAP date
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+        
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label class="form-label" for="activity">Activity</label>
+                        <div class="form-control-wrap">
+                          <textarea
+                            class="form-control"
+                            name="activity"
+                            ng-model="leadData.activity"
+                            required
+                          ></textarea>
+                          <div
+                            class="help-block"
+                            ng-messages="kapForm.activity.$error"
+                            ng-if="kapForm.activity.$touched"
+                          >
+                            <div ng-message="required">Please enter your activity</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+        
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <button
+                          type="button"
+                          class="btn btn-lg btn-primary"
+                          ng-click="save_kap()"
+                          data-dismiss="modal"
+                          ng-disabled="!kapForm.$valid"
+                          ng-hide="is_editable"
+                        >
+                          Save
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-lg btn-primary"
+                          ng-click="update_kap()"
+                          data-dismiss="modal"
+                          ng-disabled="!kapForm.$valid"
+                          ng-show="is_editable"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- .card-preview -->
+      </div>
+      <!-- .nk-block -->
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade show" tabindex="-1" id="add_kap">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add KAP</h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <em class="icon ni ni-cross"></em>
+        </a>
+      </div>
+      <div class="modal-body">
+        <form class="form-validate is-alter" name="kapForm" novalidate>
+          <div class="row gy-4">
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-label" for="company_name"
+                  >Company Name</label
+                >
+                <div class="form-control-wrap">
+                  <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    name="company_name"
+                    ng-model="leadData.company_name"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option
+                      value="{{ company.id }}"
+                      ng-repeat="company in companies"
+                      >{{ company.name }}</option
+                    >
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="kapForm.company_name.$error"
+                    ng-if="kapForm.company_name.$touched"
+                  >
+                    <div ng-message="required">Please select your company</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-label" for="kap_date">KAP Date</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="leadData.kap_date"
+                    name="kap_date"
+                    datepicker=""
+                    dp-format="yyyy-mm-dd"
+                    required
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="kapForm.kap_date.$error"
+                    ng-if="kapForm.kap_date.$touched"
+                  >
+                    <div ng-message="required">
+                      Please select your KAP date
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-label" for="activity">Activity</label>
+                <div class="form-control-wrap">
+                  <textarea
+                    class="form-control"
+                    name="activity"
+                    ng-model="leadData.activity"
+                    required
+                  ></textarea>
+                  <div
+                    class="help-block"
+                    ng-messages="kapForm.activity.$error"
+                    ng-if="kapForm.activity.$touched"
+                  >
+                    <div ng-message="required">Please enter your activity</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-primary"
+                  ng-click="save_kap()"
+                  data-dismiss="modal"
+                  ng-disabled="!kapForm.$valid"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

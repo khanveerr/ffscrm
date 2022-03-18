@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add/Edit Company</h3>
+        <form name="companyForm" novalidate>
+            <div class="form-group" ng-class="{ 'has-error': companyForm.name.$touched && companyForm.name.$invalid }">
+                
+                <input type="hidden" ng-model="company_id">
+
+                <input type="text" class="form-control" name="name" placeholder="Company" ng-model="name" required>
+
+                <div class="help-block" ng-messages="companyForm.name.$error" ng-if="companyForm.name.$touched">
+                    <p ng-message="required">Your company name is required.</p>
+                </div>
+
+            </div>
+            <button class="btn btn-primary" ng-click="addCompany()" ng-disabled="!companyForm.$valid">Submit</button>
+        </form>
+    </div>
+</div>

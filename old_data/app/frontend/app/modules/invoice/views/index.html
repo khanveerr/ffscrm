@@ -1,0 +1,259 @@
+<div bgcolor="#f6f8f1; color:#500050 !important">
+    <table cellspacing="0" cellpadding="0" border="1" align="center" style="width:80%">
+        <tbody>
+            <tr>
+                <td bgcolor="white" style="padding:20px 30px 80px 30px">
+                    <table cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff" align="center" style="margin-top:10px;width:100%;max-width:600px;padding:50px 0 0px 0px">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <table cellspacing="0" cellpadding="0" border="0" align="left" style="width:40%;padding:0px 0 0 0">
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding:0 0 0px 5px;font-family:" neris="" light",arial;font-size:18px;min-height:auto;width:50px"=""></td>
+                                                <td>Hello <span style="padding:0px 0 0 0px;font-family:" neris="" semibold",arial;font-size:18px;width:50px;min-height:0px"="">{{ invoiceobj['billing_name'] }}</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table border="0" align="right" style="width:50%;max-width:100%;float:right">
+                                        <tbody>
+                                            <tr>
+                                                <td align="right" style="padding:0px 0 0px 0px;font-family:" neris="" light",arial;font-size:12px"="">INVOICE NO.<span style="padding:0px 0 0px 0px;border:none;border-collapse:collapse;font-family:" roboto",sans-serif;font-size:12px;font-weight:700;width:80px;text-align:right"="">{{ invoiceobj['invoice_id'] }}</span><p align="right" valign="top" style="padding:0px 0 0px 0px;border:none;font-family:" roboto",sans-serif;font-size:12px;width:100px;text-align:right"=""></p>{{ cdate }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:10px 0 10px 0"><hr width="100%" size="1" color="#fec11f">
+                                    <div class="" style="width:40%;float:left">  
+                                        <a target="_blank" href="http://www.mrhomecare.in">  
+                                            <img height="35" width="156" alt="Mr Home Care logo" src="https://www.mrhomecare.in/wp-content/themes/mrhomecare/mhc-lib/img/logo.png" class="CToWUd">  
+                                        </a>  
+                                        <p style="font-size:12px;font-family:" roboto",sans-serif;"="">    
+                                            <span style="font-weight:700">Mister Homecare Services Private Limited</span> <br>
+                                            Gordhan Building, 2nd Floor,<br>    
+                                            Dr. Parekh Street, Prathana Samaj <br>
+                                            Mumbai - 400004<br>    
+                                            <span style="font-weight:700;">Ph: </span>9022070070<br>     
+                                            <span style="font-weight:700;">Email ID: </span>customercare@mrhomecare.in  
+                                        </p>
+                                    </div>
+                                    <table border="0" align="right" style="padding:0 24px 10px 9px;width:55%;max-width:60%">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <table border="0" style="width:50%;max-width:100%;">
+                                                        <tbody>
+                                                            <tr></tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <table border="0" style="" align="right" valign="top">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td valign="top" align="left" style="padding:0px 0 0px 10px;font-family:" roboto",sans-serif;font-size:14px;font-weight:700;line-height:1em"="">Bill To:</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding:0 0 0px 0px">
+                                                                    <p align="left" style="padding:0px 0 0px 0px;border:none;overflow:hidden;font-family:" roboto",sans-serif;font-size:12px;width:200px;min-height:120px"="">
+                                                                        <b>{{ invoiceobj['billing_name'] }}</b><br><br>
+                                                                        {{ invoiceobj['billing_address'] }}<br>
+                                                                        <b>Ph:</b> 
+                                                                        <a target="_blank" value="{{ invoiceobj['billing_phone_no'] }}" href="tel:{{ invoiceobj['billing_phone_no'] }}">{{ invoiceobj['billing_phone_no'] }}</a><br>
+                                                                        <b>Email ID:</b> 
+                                                                        {{ invoiceobj['billing_email_id'] }}<br>
+                                                                    </p>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:20px 0 0px 0">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width:100px"><hr width="100%" size="1px" color="#fec11f" align="left" style="display:inline-block"></td>
+                                                <td style="width:50px !important;text-align:center !important;">
+                                                    <h6 style="display:inline;color:#fec11f;font-size:18px;padding:0 0px 0 0px">Booking Details</h6>
+                                                </td>
+                                                <td style="width:100px"><hr width="100%" size="1px" color="#fec11f" align="right" style="display:inline-block"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <span style="font-family:" neris="" thin",arial;font-size:15px;font-weight:400;padding:0px="" 0="" 20px="" 20px"="">
+                                        <table border="0" style="color:black;font-size:14px;font-family:" neris="" thin",arial"="">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Service:</td>
+                                                    <td ng-if="invoiceobj['servicedata']['servicenames'].length > 0">{{ invoiceobj['servicedata']['servicenames'] | joinBy:',' }}</td>
+                                                    <td ng-else-if="invoiceobj['servicedata']['servicenames'].length > 0">
+                                                        {{ invoiceobj['servicedata']['servicenames'] | joinBy:',' }},{{ invoiceobj['amcdata']['servicenames'] | joinBy:',' }}
+                                                    </td>
+                                                </tr>
+                                                <tr></tr>
+                                            </tbody>
+                                        </table>
+                                    </span>
+                                    <table width="100%" border="0" style="border-collapse:collapse;font-family:" roboto",sans-serif;color:black;font-size:12px"="">
+                                        <tbody>
+                                            <tr width="100%" style="font-weight:500;font-size:14px;background:#fec11f;color:white;height:30px">
+                                                <td align="center" style="width:10px"><strong>Sr.No.</strong></td><td align="center"><strong>Service Breakup</strong></td>
+                                                <td align="center">
+                                                    <strong>Quantity</strong>
+                                                </td>
+                                                <td align="center">
+                                                    <strong>Rate</strong>
+                                                </td>
+                                                <td align="center">
+                                                    <strong>Amount</strong>
+                                                </td>
+                                            </tr>
+                                            <tr cellpadding="1">
+                                                <td></td>
+                                                <td align="center" style="font-weight:700;font-size:14px;padding-top:1%;padding-bottom:1%" colspan="1"></td>
+                                            </tr>
+                                            <tr ng-repeat="stb in service_tax_breakup">  
+                                                <td align="center">{{ stb['cnt'] }}</td>  
+                                                <td align="left">{{ stb['value'] }}</td>  
+                                                <td align="center">{{ stb['quantity'] }}</td>  
+                                                <td align="center">Rs. {{ stb['pre_taxed_cost'] }}</td>  
+                                                <td align="right">Rs. {{ stb['pre_taxed_cost_1'] }}</td>
+                                            </tr>
+                                            <tr>  
+                                                <td align="center"></td>  
+                                                <td align="left">
+                                                    <strong>Pre Tax Total  </strong>
+                                                </td>
+                                                <td align="center"></td>  
+                                                <td align="center"></td>  
+                                                <td align="right">Rs. {{ pre_taxed_cost_total }}</td>
+                                            </tr>
+                                            <tr>  
+                                                <td align="center"></td>  
+                                                <td align="left">Service Tax @ 14 % 2016-17</td>  
+                                                <td></td>  
+                                                <td></td>  
+                                                <td align="right">Rs. {{ service_tax }}</td>
+                                            </tr>
+                                            <tr>  
+                                                <td align="center"></td>  
+                                                <td align="left">Swachh Bharat Cess @ 0.5 % 2016-17</td>  
+                                                <td></td>  
+                                                <td></td>  
+                                                <td align="right">Rs. {{ sb_tax }}</td>
+                                            </tr>
+                                            <tr>  
+                                                <td align="center"></td>  
+                                                <td align="left">Krishi Kalyan Cess @ 0.5 % 2016-17</td>  
+                                                <td></td>  
+                                                <td></td>  
+                                                <td align="right">Rs. {{ kk_tax }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:50px"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr style="border-bottom:1px solid #fec11f">
+                                                <td></td>
+                                                <td></td>
+                                                <td align="right" style="padding:0 10px 0 0" colspan="2"></td>
+                                                <td>
+                                                    <strong><p style="border:none;float:center;text-align:center"></p></strong>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom:1px solid #fec11f">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td align="right" style="padding:0 10px 0 0">
+                                                    <strong>Net Payable</strong>
+                                                </td>
+                                                <td align="right">
+                                                    <p style="border:none;float:center;font-weight:700;text-align:right;">Rs. {{ taxed_cost_total }}</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">MHC ST No.: AAJCM6704HSD001</td>
+                                                <td></td>
+                                                <td align="right" style="font-size:14px;padding:0 10px 0 0"></td>
+                                                <td>
+                                                    <strong>
+                                                        <p type="text" style="border:none;float:center;text-align:center;font-weight:700"></p>
+                                                    </strong>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">Company PAN No.: AAJCM6704H</td>
+                                                <td align="right" colspan="3">
+                                                    <a target="_blank" style="padding:1%;border:1px solid #fec11f;color:black;background-color:#fec11f;text-decoration:none" href="https://www.instamojo.com/@silagroup/bb18b5306b7b4888b3e82d45e7026a17">Click to pay online</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4"></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="" style="margin-left:5%;width:95%">  
+                        <p style=" text-decoration: underline">Declaration</p>  
+                        <p> We declare that this invoice shows the actual price of the service provided and that all the particulars are true and correct.</p>
+                    </div>
+                    <table style="margin-left:5%;width:95%" border="0" align="center">
+                        <tbody>
+                            <tr>
+                                <td style="padding:20px 0 0px 0">  
+                                    <p>Kindly address the cheque to - 
+                                        <b>Mister Homecare Services Pvt. Ltd.</b>
+                                    </p>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table width="100%" border="0" align="center">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <h2 align="center" width="100%" style="border-collapse:collapse;font-family:" roboto",sans-serif;color:black;font-weight:300;font-size:14px"="" border="0"></h2>
+                                    <table align="center">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <a target="_blank" href="https://twitter.com/misterhomecare">
+                                                        <img alt="Twitter" src="http://engine.mrhomecare.net/images/twitter.png" style="width:20px;padding:2px 0 0 0;border:0;display:inline" class="CToWUd">
+                                                    </a>
+                                                    <a target="_blank" href="https://www.facebook.com/MisterHomecare/">
+                                                        <img alt="Facebook" src="http://engine.mrhomecare.net/images/facebook.png" style="width:20px;padding:2px 0 0 0;border:0;display:inline" class="CToWUd">
+                                                    </a>
+                                                    <a target="_blank" href="https://www.linkedin.com/company/mr-homecare">
+                                                        <img alt="Facebook" src="http://engine.mrhomecare.net/images/linkedin.png" style="width:20px;padding:2px 0 0 0;border:0;display:inline" class="CToWUd">
+                                                    </a>
+                                                    <a target="_blank" href="https://www.instagram.com/mrhomecare/">
+                                                        <img alt="Facebook" src="http://engine.mrhomecare.net/images/instagram.png" style="width:20px;padding:2px 0 0 0;border:0;display:inline" class="CToWUd">
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p align="center" style="font-family:" roboto",sans-serif;color:black;font-weight:300;font-size:15px"=""><i>Thanks for using our service!</i></p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="yj6qo"></div>
+    <div class="adL"></div>
+</div>

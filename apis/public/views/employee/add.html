@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add/Edit Employee</h3>
+        <form name="employeeForm" novalidate>
+             <div class="form-group" ng-class="{ 'has-error': employeeForm.company_id.$touched && employeeForm.company_id.$invalid }">
+                
+                <select class="form-control" name="company_id" ng-model="company_id" ng-options="company.id as company.name for company in companies" required>
+                    <option value="">Company Name</option>
+                </select>
+
+                <div class="help-block" ng-messages="employeeForm.company_id.$error" ng-if="employeeForm.company_id.$touched">
+                    <p ng-message="required">Your company name is required.</p>
+                </div>
+
+            </div>
+            <div class="form-group" ng-class="{ 'has-error': employeeForm.name.$touched && employeeForm.name.$invalid }">
+                
+                <input type="hidden" ng-model="employee_id">
+
+                <input type="text" class="form-control" name="name" placeholder="Employee Name" ng-model="name" required>
+
+                <div class="help-block" ng-messages="employeeForm.name.$error" ng-if="employeeForm.name.$touched">
+                    <p ng-message="required">Your employee name is required.</p>
+                </div>
+
+            </div>
+            <button class="btn btn-primary" ng-click="addEmployee()" ng-disabled="!employeeForm.$valid">Submit</button>
+        </form>
+    </div>
+</div>

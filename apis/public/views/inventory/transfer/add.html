@@ -1,0 +1,63 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add/Edit</h3>
+        <form name="inventoryForm" novalidate>
+            
+            <div class="row">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.site_id.$touched && inventoryForm.site_id.$invalid }">
+                    
+                    <select class="form-control" name="site_id" ng-model="site_id" ng-options="site.id as site.name for site in sites" required>
+                        <option value="">Site Name</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="inventoryForm.site_id.$error" ng-if="inventoryForm.site_id.$touched">
+                        <p ng-message="required">Your site name is required.</p>
+                    </div>
+
+                </div>
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.cost_centre_id.$touched && inventoryForm.cost_centre_id.$invalid }">
+                    
+                    <select class="form-control" name="cost_centre_id" ng-model="cost_centre_id" ng-options="cost_centre.id as cost_centre.name for cost_centre in cost_centres" required>
+                        <option value="">Cost Centre</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="inventoryForm.cost_centre_id.$error" ng-if="inventoryForm.cost_centre_id.$touched">
+                        <p ng-message="required">Your cost centre name is required.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.rental_amount.$touched && inventoryForm.rental_amount.$invalid }">
+                    
+                    <input type="text" class="form-control" name="rental_amount" placeholder="Rental Amount" ng-model="rental_amount" required>
+
+                    <div class="help-block" ng-messages="inventoryForm.rental_amount.$error" ng-if="inventoryForm.rental_amount.$touched">
+                        <p ng-message="required">Your rental cost is required.</p>
+                    </div>
+
+                </div>
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': inventoryForm.transferred_site_id.$touched && inventoryForm.transferred_site_id.$invalid }">
+                    
+                    <select class="form-control" name="transferred_site_id" ng-model="transferred_site_id" ng-options="site.id as site.name for site in sites" required>
+                        <option value="">Site Name</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="inventoryForm.transferred_site_id.$error" ng-if="inventoryForm.transferred_site_id.$touched">
+                        <p ng-message="required">Your transferred site name is required.</p>
+                    </div>
+
+                </div>
+
+            </div>
+           
+            <button class="btn btn-primary" ng-click="addTransferInventory()" ng-disabled="!inventoryForm.$valid">Submit</button>
+        </form>
+    </div>
+</div>

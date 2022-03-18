@@ -1,0 +1,227 @@
+<div class="container-fluid">
+  <div class="nk-content-inner">
+    <div class="nk-content-body">
+      <div class="nk-block-head nk-block-head-sm">
+        <div class="nk-block-between">
+          <div class="nk-block-head-content">
+            <h3 class="nk-block-title page-title">Cities</h3>
+            <div class="nk-block-des text-soft">
+              <!-- <p>You have total 2,595 cities.</p> -->
+            </div>
+          </div>
+          <!-- .nk-block-head-content -->
+          <div class="nk-block-head-content">
+            <div class="toggle-wrap nk-block-tools-toggle">
+              <a
+                href="#"
+                class="btn btn-icon btn-trigger toggle-expand mr-n1"
+                data-target="pageMenu"
+                ><em class="icon ni ni-menu-alt-r"></em
+              ></a>
+              <div class="toggle-expand-content" data-content="pageMenu">
+                <ul class="nk-block-tools g-3">
+                  <li class="nk-block-tools-opt">
+                    <div class="drodown">
+                      <a
+                        href="#"
+                        class="dropdown-toggle btn btn-icon btn-primary"
+                        data-toggle="modal"
+                        data-target="#add_city"
+                        ng-click="resetForm()"
+                        ><em class="icon ni ni-plus"></em>Add
+                        City&nbsp;&nbsp;&nbsp;&nbsp;</a
+                      >
+                    </div>
+                  </li>
+                  <li class="nk-block-tools-opt">
+                    <div class="drodown">
+                      <a
+                        href="#"
+                        class="btn btn-icon btn-secondary"
+                        ng-click="toggle_filter()"
+                        ><em class="icon ni ni-filter"></em
+                        >Filters&nbsp;&nbsp;&nbsp;&nbsp;</a
+                      >
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- .toggle-wrap -->
+          </div>
+          <!-- .nk-block-head-content -->
+        </div>
+        <!-- .nk-block-between -->
+      </div>
+
+      <div
+        class="nk-block {{ show_filter == true ? 'mb-20' : '' }}"
+        ng-show="show_filter"
+      >
+        <div class="row g-gs">
+          <div class="col-xxl-12">
+            <div class="card card-bordered card-preview">
+              <div class="card-inner">
+                <div class="row gy-4">
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label class="form-label">Name</label>
+                      <div class="form-control-wrap">
+                        <input
+                          type="text"
+                          class="form-control"
+                          tabindex="-1"
+                          ng-model="keyword"
+                          ng-change="searchCities(1)"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- .nk-block-head -->
+      <div class="nk-block pt-0">
+        <div class="card card-bordered card-preview">
+          <div class="card-inner">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="city in city_data track by $index">
+                    <th scope="row">{{ $index + 1 }}</th>
+
+                    <td>
+                      {{ city.name }}
+                    </td>
+                    <td>
+                      {{ city.status == 1 ? 'Active' : 'Inactive' }}
+                    </td>
+                    <td>
+                      <div class="tb-odr-btns d-md-inline">
+                        <a
+                          href="#"
+                          class="btn btn-sm btn-primary"
+                          ng-click="edit_city(city.id)"
+                          data-toggle="modal"
+                          data-target="#add_city"
+                          ><em class="icon ni ni-pen"></em
+                        ></a>
+                        <a
+                          href="#"
+                          class="btn btn-sm btn-danger"
+                          ng-click="delete_city(city.id)"
+                          ><em class="icon ni ni-trash"></em
+                        ></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr ng-show="city_data.length <= 0">
+                    <td colspan="4">Sorry, no cities found</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <lead-pagination></lead-pagination>
+          </div>
+        </div>
+        <!-- .card-preview -->
+      </div>
+      <!-- .nk-block -->
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="add_city">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{ updateUser == true ? 'Edit' : 'Add' }} City
+        </h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <em class="icon ni ni-cross"></em>
+        </a>
+      </div>
+      <div class="modal-body">
+        <form class="form-validate is-alter" name="cityForm" novalidate>
+          <div class="row gy-4">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-label" for="name">Name</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    ng-model="cityData.name"
+                    required
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="cityForm.name.$error"
+                    ng-if="cityForm.name.$touched"
+                  >
+                    <div ng-message="required">Please enter city name</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-label" for="status">Status</label>
+                <div class="form-control-wrap">
+                  <select
+                    name="status"
+                    class="form-control"
+                    ng-model="cityData.status"
+                    required
+                  >
+                    <option value=""></option>
+                    <option value="1">Active</option>
+                    <option value="0">Inactive</option>
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="cityForm.status.$error"
+                    ng-if="cityForm.status.$touched"
+                  >
+                    <div ng-message="required">Please select status</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-primary"
+                  ng-click="save_city()"
+                  ng-disabled="!cityForm.$valid"
+                  data-dismiss="modal"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- <div class="modal-footer bg-light">
+          <span class="sub-text">Modal Footer Text</span>
+        </div> -->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add/Edit Site</h3>
+        <form name="siteForm" novalidate>
+            
+            <div class="form-group" ng-class="{ 'has-error': siteForm.zone_id.$touched && siteForm.zone_id.$invalid }">
+                
+                <select class="form-control" name="zone_id" id="zone_id" ng-model="zone_id" ng-init="zone_id = zone_id" ng-options="zone.id as zone.zone_name for zone in zones" required>
+                    <option value="">Zone Name</option>
+                </select>
+
+                <div class="help-block" ng-messages="siteForm.zone_id.$error" ng-if="siteForm.zone_id.$touched">
+                    <p ng-message="required">Your zone name is required.</p>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': siteForm.state_id.$touched && siteForm.state_id.$invalid }">
+                
+                <select class="form-control" name="state_id" ng-model="state_id" ng-options="state.id as state.name for state in states" required>
+                    <option value="">State Name</option>
+                </select>
+
+                <div class="help-block" ng-messages="siteForm.state_id.$error" ng-if="siteForm.state_id.$touched">
+                    <p ng-message="required">Your state name is required.</p>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': siteForm.name.$touched && siteForm.name.$invalid }">
+                
+                <input type="hidden" ng-model="site_id">
+
+                <input type="text" class="form-control" name="name" placeholder="Site" ng-model="name" required>
+
+                <div class="help-block" ng-messages="siteForm.name.$error" ng-if="siteForm.name.$touched">
+                    <p ng-message="required">Your site name is required.</p>
+                </div>
+
+            </div>
+            
+            <div class="form-group" ng-class="{ 'has-error': siteForm.site_address.$touched && siteForm.site_address.$invalid }">
+                
+
+                <textarea type="text" class="form-control" name="site_address" placeholder="Site Address" ng-model="site_address" required></textarea>
+
+                <div class="help-block" ng-messages="siteForm.site_address.$error" ng-if="siteForm.site_address.$touched">
+                    <p ng-message="required">Your site address is required.</p>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': siteForm.billing_type.$touched && siteForm.billing_type.$invalid }">
+                
+
+                <select class="form-control" name="billing_type" ng-model="billing_type" ng-options="b_type.value as b_type.name for b_type in billing_types" required>
+                    <option value="">Billing Type</option>
+                </select>
+
+                <div class="help-block" ng-messages="siteForm.billing_type.$error" ng-if="siteForm.billing_type.$touched">
+                    <p ng-message="required">Your billing type is required.</p>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': siteForm.budgeted_amount.$touched && siteForm.budgeted_amount.$invalid }">
+
+                <input type="text" class="form-control" name="budgeted_amount" placeholder="Budgeted Amount" ng-model="budgeted_amount" required>
+
+                <div class="help-block" ng-messages="siteForm.budgeted_amount.$error" ng-if="siteForm.budgeted_amount.$touched">
+                    <p ng-message="required">Your budgeted amount is required.</p>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': siteForm.contact_person.$touched && siteForm.contact_person.$invalid }">
+
+                <input type="text" class="form-control" name="contact_person" placeholder="Contact Person" ng-model="contact_person" required>
+
+                <div class="help-block" ng-messages="siteForm.contact_person.$error" ng-if="siteForm.contact_person.$touched">
+                    <p ng-message="required">Your contact person is required.</p>
+                </div>
+
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': siteForm.contact_no.$touched && siteForm.contact_no.$invalid }">
+
+                <input type="text" class="form-control" name="contact_no" placeholder="Contact Number" ng-model="contact_no" ng-pattern="/^[7-9][0-9]{9}$/" required>
+
+                <div class="help-block" ng-messages="siteForm.contact_no.$error" ng-if="siteForm.contact_no.$touched">
+                    <p ng-message="required">Your contact number is required.</p>
+                    <p ng-message="pattern">Your contact number is invalid</p>
+                </div>
+
+            </div>
+
+
+            <button class="btn btn-primary" ng-click="addSite()" ng-disabled="!siteForm.$valid">Submit</button>
+        </form>
+    </div>
+</div>

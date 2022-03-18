@@ -1,0 +1,111 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add/Edit Quote</h3>
+        <form name="quoteForm" novalidate>
+            
+            <div class="row">
+
+                <div class="form-group col-md-12" ng-class="{ 'has-error': quoteForm.product_name.$touched && quoteForm.product_name.$invalid }">
+                    
+                    <input type="text" class="form-control" name="product_name" placeholder="Product Name" ng-model="product_name" required>
+
+                    <div class="help-block" ng-messages="quoteForm.product_name.$error" ng-if="quoteForm.product_name.$touched">
+                        <p ng-message="required">Your product name is required.</p>
+                    </div>
+
+                </div>
+            
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': quoteForm.quantity.$touched && quoteForm.quantity.$invalid }">
+                    
+                    <input type="text" class="form-control" name="quantity" placeholder="Quantity" ng-model="quantity" required>
+
+                    <div class="help-block" ng-messages="quoteForm.quantity.$error" ng-if="quoteForm.quantity.$touched">
+                        <p ng-message="required">Your quantity is required.</p>
+                    </div>
+
+                </div>
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': quoteForm.unit.$touched && quoteForm.unit.$invalid }">
+                    
+                    <input type="text" class="form-control" name="unit" placeholder="Unit" ng-model="unit" required>
+
+                    <div class="help-block" ng-messages="quoteForm.unit.$error" ng-if="quoteForm.unit.$touched">
+                        <p ng-message="required">Your unit is required.</p>
+                    </div>
+
+                </div>
+            
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-12" ng-class="{ 'has-error': quoteForm.rate.$touched && quoteForm.rate.$invalid }">
+                    
+                    <input type="text" class="form-control" name="rate" placeholder="Approx. Rate" ng-model="rate" required>
+
+                    <div class="help-block" ng-messages="quoteForm.rate.$error" ng-if="quoteForm.rate.$touched">
+                        <p ng-message="required">Your rate is required.</p>
+                    </div>
+
+                </div>
+                
+            </div>
+
+            <!-- <div class="row">
+
+                <div class="form-group col-md-8">
+                    Do you need Credit Payment Facility?
+                </div>
+
+                <div class="form-group col-md-4" ng-class="{ 'has-error': quoteForm.is_credit.$touched && quoteForm.is_credit.$invalid }">
+                    
+                    <select class="form-control" name="is_credit" ng-model="is_credit" required>
+                        <option value="">Select</option>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="quoteForm.is_credit.$error" ng-if="quoteForm.is_credit.$touched">
+                        <p ng-message="required">Your credit payment is required.</p>
+                    </div>
+
+                </div>
+                
+            </div> -->
+
+
+           <!--  <div class="row">
+
+                <div class="form-group col-md-12" ng-class="{ 'has-error': quoteForm.pincode.$touched && quoteForm.pincode.$invalid }">
+                    
+                    <input type="text" class="form-control" name="pincode" placeholder="Pincode" ng-model="pincode" required>
+
+                    <div class="help-block" ng-messages="quoteForm.pincode.$error" ng-if="quoteForm.pincode.$touched">
+                        <p ng-message="required">Your pincode is required.</p>
+                    </div>
+
+                </div>
+                
+            </div> -->
+
+
+            <div class="row">
+
+                <div class="form-group col-md-12">
+                    
+                    <textarea class="form-control" name="requirements" placeholder="Any other requirements?" ng-model="requirements"></textarea>
+
+                </div>
+                
+            </div>
+
+
+
+            <button class="btn btn-primary" ng-click="addQuote()" ng-disabled="!quoteForm.$valid">Submit</button>
+        </form>
+    </div>
+</div>

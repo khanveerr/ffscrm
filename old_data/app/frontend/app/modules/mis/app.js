@@ -1,0 +1,1 @@
+angular.module('misApp', ['appRoutes','angularMoment','MIS','HCHelper','ConfigHelper','OrderServiceHelper','LeadServiceHelper','LeadManagerServiceHelper','MISServiceHelper','CacheServiceHelper','AuthHelper','angular-page-loader']);

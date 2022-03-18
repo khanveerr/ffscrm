@@ -1,0 +1,103 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add</h3>
+        <form name="procCalcForm" novalidate>
+
+            <div class="row">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': procCalcForm.month.$touched && procCalcForm.month.$invalid }">
+                    
+                    <select class="form-control" name="month" ng-model="month" required>
+                        <option value="">Select Month</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="procCalcForm.month.$error" ng-if="procCalcForm.month.$touched">
+                        <p ng-message="required">Your month is required.</p>
+                    </div>
+
+                </div>
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': procCalcForm.year.$touched && procCalcForm.year.$invalid }">
+                    
+                    <select class="form-control" name="year" ng-model="year" ng-options="year.value as year.name for year in years" required>
+                        <option value="">Select Year</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="procCalcForm.year.$error" ng-if="procCalcForm.year.$touched">
+                        <p ng-message="required">Your year is required.</p>
+                    </div>
+
+                </div>
+
+            </div>
+            
+            <div class="row">
+
+                <div class="form-group col-md-12" ng-class="{ 'has-error': procCalcForm.company_id.$touched && procCalcForm.company_id.$invalid }">
+                    
+                    <select class="form-control" name="company_id" ng-model="company_id" ng-options="company.id as company.name for company in companies" required>
+                        <option value="">Company Name</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="procCalcForm.company_id.$error" ng-if="procCalcForm.company_id.$touched">
+                        <p ng-message="required">Your company name is required.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="form-group col-md-12" ng-class="{ 'has-error': procCalcForm.item_type_id.$touched && procCalcForm.item_type_id.$invalid }">
+                    
+                    <!-- <select class="form-control" name="item_type_id" ng-model="item_type_id" ng-options="type.id as type.name for type in item_types" required>
+                        <option value="">Type</option>
+                    </select> -->
+
+                    <tags-input ng-model="types" display-property="name" placeholder="Type" required>
+                      <auto-complete source="getTypes($query)"></auto-complete>
+                    </tags-input>
+
+                    <div class="help-block" ng-messages="procCalcForm.item_type_id.$error" ng-if="procCalcForm.item_type_id.$touched">
+                        <p ng-message="required">Your type name is required.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-12" ng-class="{ 'has-error': procCalcForm.cost_centre_id.$touched && procCalcForm.cost_centre_id.$invalid }">
+                    
+                    <select class="form-control" name="cost_centre_id" ng-model="cost_centre_id" ng-options="cost_centre.id as cost_centre.name for cost_centre in cost_centres" required>
+                        <option value="">Cost Centre</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="procCalcForm.cost_centre_id.$error" ng-if="procCalcForm.cost_centre_id.$touched">
+                        <p ng-message="required">Your cost centre name is required.</p>
+                    </div>
+
+                </div>
+
+            </div>
+            
+           
+            <button class="btn btn-primary" ng-click="addProcCalc()" ng-disabled="!procCalcForm.$valid">Submit</button>
+        </form>
+    </div>
+</div>

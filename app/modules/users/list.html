@@ -1,0 +1,275 @@
+<div class="container-fluid">
+  <div class="nk-content-inner">
+    <div class="nk-content-body">
+      <div class="nk-block-head nk-block-head-sm">
+        <div class="nk-block-between">
+          <div class="nk-block-head-content">
+            <h3 class="nk-block-title page-title">Users</h3>
+            <div class="nk-block-des text-soft">
+              <!-- <p>You have total 2,595 users.</p> -->
+            </div>
+          </div>
+          <!-- .nk-block-head-content -->
+          <div class="nk-block-head-content">
+            <div class="toggle-wrap nk-block-tools-toggle">
+              <a
+                href="#"
+                class="btn btn-icon btn-trigger toggle-expand mr-n1"
+                data-target="pageMenu"
+                ><em class="icon ni ni-menu-alt-r"></em
+              ></a>
+              <div class="toggle-expand-content" data-content="pageMenu">
+                <ul class="nk-block-tools g-3">
+                  <li class="nk-block-tools-opt">
+                    <div class="drodown">
+                      <a
+                        href="#"
+                        class="dropdown-toggle btn btn-icon btn-primary"
+                        data-toggle="modal"
+                        data-target="#add_user"
+                        ><em class="icon ni ni-plus"></em>Add
+                        User&nbsp;&nbsp;&nbsp;&nbsp;</a
+                      >
+                    </div>
+                  </li>
+                  <li class="nk-block-tools-opt">
+                    <div class="drodown">
+                      <a
+                        href="#"
+                        class="btn btn-icon btn-secondary"
+                        ng-click="toggle_filter()"
+                        ><em class="icon ni ni-filter"></em
+                        >Filters&nbsp;&nbsp;&nbsp;&nbsp;</a
+                      >
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- .toggle-wrap -->
+          </div>
+          <!-- .nk-block-head-content -->
+        </div>
+        <!-- .nk-block-between -->
+      </div>
+
+      <div
+        class="nk-block {{ show_filter == true ? 'mb-20' : '' }}"
+        ng-show="show_filter"
+      >
+        <div class="row g-gs">
+          <div class="col-xxl-12">
+            <div class="card card-bordered card-preview">
+              <div class="card-inner">
+                <div class="row gy-4">
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label class="form-label">Name</label>
+                      <div class="form-control-wrap">
+                        <input
+                          type="text"
+                          class="form-control"
+                          tabindex="-1"
+                          ng-model="keyword"
+                          ng-change="searchLeads(1)"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- .nk-block-head -->
+      <div class="nk-block pt-0">
+        <div class="card card-bordered card-preview">
+          <div class="card-inner">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">User Type</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="user in user_data track by $index">
+                    <th scope="row">{{ $index + 1 }}</th>
+
+                    <td>
+                      {{ user.name }}
+                    </td>
+                    <td>
+                      {{ user.email }}
+                    </td>
+                    <td>
+                      {{ user.user_type == 'A' ? 'Admin' : 'User' }}
+                    </td>
+                    <td>
+                      <div class="tb-odr-btns d-md-inline">
+                        <a
+                          href="#"
+                          class="btn btn-sm btn-primary"
+                          ng-click="edit_user(user.id)"
+                          data-toggle="modal"
+                          data-target="#add_user"
+                          ><em class="icon ni ni-pen"></em
+                        ></a>
+                        <a
+                          href="#"
+                          class="btn btn-sm btn-danger"
+                          ng-click="delete_user(user.id)"
+                          ><em class="icon ni ni-trash"></em
+                        ></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr ng-show="user_data.length <= 0">
+                    <td colspan="4">Sorry, no users found</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <lead-pagination></lead-pagination>
+          </div>
+        </div>
+        <!-- .card-preview -->
+      </div>
+      <!-- .nk-block -->
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="add_user">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{ updateUser == true ? 'Edit' : 'Add' }} User
+        </h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <em class="icon ni ni-cross"></em>
+        </a>
+      </div>
+      <div class="modal-body">
+        <form class="form-validate is-alter" name="userForm" novalidate>
+          <div class="row gy-4">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-label" for="name">Name</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    ng-model="userData.name"
+                    required
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="userForm.name.$error"
+                    ng-if="userForm.name.$touched"
+                  >
+                    <div ng-message="required">Please enter user name</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="email"
+                    name="email"
+                    class="form-control"
+                    ng-model="userData.email"
+                    required
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="userForm.email.$error"
+                    ng-if="userForm.email.$touched"
+                  >
+                    <div ng-message="required">Please enter user email</div>
+                    <div ng-message="email">Please enter valid user email</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-12" ng-hide="updateUser && !currentUser.user_type == 'A'">
+              <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="password"
+                    name="password"
+                    class="form-control"
+                    ng-model="userData.password"
+                    required
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="userForm.password.$error"
+                    ng-if="userForm.password.$touched"
+                  >
+                    <div ng-message="required">Please enter user password</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-label" for="user_type">User Type</label>
+                <div class="form-control-wrap">
+                  <select
+                    name="user_type"
+                    class="form-control"
+                    ng-model="userData.user_type"
+                    required
+                  >
+                    <option value=""></option>
+                    <option value="A">Admin</option>
+                    <option value="U">User</option>
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="userForm.user_type.$error"
+                    ng-if="userForm.user_type.$touched"
+                  >
+                    <div ng-message="required">Please select user type</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-primary"
+                  ng-click="save_user()"
+                  ng-disabled="!userForm.$valid"
+                  data-dismiss="modal"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- <div class="modal-footer bg-light">
+          <span class="sub-text">Modal Footer Text</span>
+        </div> -->
+    </div>
+  </div>
+</div>

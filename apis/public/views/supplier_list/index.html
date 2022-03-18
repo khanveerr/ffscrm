@@ -1,0 +1,129 @@
+<div class="row">
+    <div class="col-md-12">
+
+		<div class="panel panel-default">
+            <div class="panel-body">
+    
+                <div class="row">
+
+                    <div class="col-md-2">
+
+                        <label for="filter_year">Year</label>
+                        <select class="form-control" name="filter_year" id="filter_year" ng-model="filter_year" ng-options="year.value as year.name for year in ct.years" ng-change="ct.getSupplierList()" required>
+                            <option value="">Select Year</option>
+                        </select>
+                        
+                    </div>
+					
+					<div class="col-md-2">
+
+						<label for="filter_month">Month</label>
+                        <select class="form-control" name="filter_month" id="filter_month" ng-model="filter_month" ng-options="month.value as month.name for month in ct.months" ng-change="ct.getSupplierList()" required>
+                            <option value="">Select Month</option>
+                        </select>
+						
+					</div>
+
+
+					<div class="col-md-2">
+
+						<label for="filter_item_type">Sites</label>
+	                    <select class="form-control" name="filter_site" id="filter_site" ng-change="ct.getSupplierList()" ng-model="filter_site" ng-options="site.id as site.name for site in ct.sites" required>
+	                        <option value="">Select Site</option>
+	                    </select>
+						
+					</div>
+
+
+					<div class="col-md-2">
+
+						<label for="filter_item_type">&nbsp;</label>
+	                    <button class="btn btn-primary" ng-click="ct.exportData()" style="margin-top: 27px;">Export</button>
+						
+					</div>
+
+
+
+				</div>
+
+			</div>
+
+		</div>
+
+    </div>
+</div>
+
+
+<div class="row" ng-if="ct.supplier_list.length > 0">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+            <div class="panel-body">
+
+            	<h4 ng-if="ct.site_name">
+                    <span>Site Name: </span> {% ct.site_name %}<br />
+                    <span>{% ct.requisition_period %}
+                </h4>
+
+            	<div class="table-responsive">
+                        
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                            	<th>Sr.<br />No.</th>
+                            	<th>Sila Alias<br />Code</th>
+                                <th>Description</th>
+                                <th>HSN Codes</th>
+                                <th>GST %</th>
+                                <th>Quantities</th>
+                                <th>Rates</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+							
+							<tr ng-repeat="sl in ct.supplier_list">
+								<td>{% ($index+1) %}</td>
+								<td>{% sl.alias_code %}</td>
+								<td>{% sl.description %}</td>
+								<td>{% sl.hsn_code %}</td>
+								<td>{% sl.gst_per %} %</td>
+								<td>{% sl.total_quantity %}</td>
+								<td>{% sl.total_rate %}</td>
+								<td>{% sl.net_total %}</td>
+							</tr>
+
+                        </tbody>
+                    </table>
+
+                    <p>&nbsp;</p>
+
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                            	<th></th>
+                            	<th>Taxable Amount</th>
+                                <th>Tax Rate</th>
+                                <th>Tax Amount</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+							
+							<tr ng-repeat="ti in ct.tax_info">
+								<td>{% ti.text %}</td>
+								<td>{% ti.value %}</td>
+								<td>{% ti.tax_label %} %</td>
+								<td>{% ti.tax %}</td>
+								<td>{% ti.total %}</td>
+							</tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

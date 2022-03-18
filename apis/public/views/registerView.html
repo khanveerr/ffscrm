@@ -1,0 +1,70 @@
+<div class="col-md-8 col-md-offset-2">
+    <div class="panel panel-default">
+        <div class="panel-heading">Register</div>
+
+        <div class="panel-body">
+            <form class="form-horizontal" name="registerForm" novalidate>
+
+                <div class="form-group" ng-class="{ 'has-error': registerForm.name.$touched && registerForm.name.$invalid }">
+                    <label for="name" class="col-md-4 control-label">Name</label>
+
+                    <div class="col-md-6">
+                        <input id="name" type="text" class="form-control" name="name" ng-model="registerData.name" required autofocus>
+                        <div class="help-block" ng-messages="registerForm.name.$error" ng-if="registerForm.name.$touched">
+                            <p ng-message="required">Your name is required.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error': registerForm.email.$touched && registerForm.email.$invalid }">
+                    <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+
+                    <div class="col-md-6">
+                        <input id="email" type="email" class="form-control" name="email" required ng-model="registerData.email">
+                        <div class="help-block" ng-messages="registerForm.email.$error" ng-if="registerForm.email.$touched">
+                            <p ng-message="required">Your email is required.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error': registerForm.password.$touched && registerForm.password.$invalid }">
+                    <label for="password" class="col-md-4 control-label">Password</label>
+
+                    <div class="col-md-6">
+                        <input id="password" type="password" class="form-control" name="password" required ng-model="registerData.password">
+                        <div class="help-block" ng-messages="registerForm.password.$error" ng-if="registerForm.password.$touched">
+                            <p ng-message="required">Your password is required.</p>
+                        </div>
+                    </div>
+    
+                </div>
+                
+                <div class="form-group" ng-class="{ 'has-error': reg.errors }">
+                    <div class="help-block text-center" ng-repeat="(key, value) in reg.errors">
+                        <p>{% value[0] %}</p>
+                    </div>
+                </div>
+
+
+               <!--  <div class="form-group" ng-class="{ 'has-error': registerForm.password_confirmation.$error && registerData.password_confirmation != '' }">
+                    <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
+                    <div class="col-md-6">
+                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required ng-pattern="{% registerData.password %}" ng-model="registerData.password_confirmation">
+                        <div class="help-block" ng-messages="registerForm.password_confirmation.$error" ng-if="registerForm.password_confirmation.$touched">
+                            <p ng-message="required">Your confirm password is required.</p>
+                            <p ng-message="pattern">Your password doesn't match.</p>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="form-group">
+                    <div class="col-md-6 col-md-offset-4">
+                        <button class="btn btn-primary" ng-click="reg.registerUser(registerData)" ng-disabled="!registerForm.$valid">
+                            Register
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

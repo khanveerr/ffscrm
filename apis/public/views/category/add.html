@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add/Edit Category</h3>
+        <form name="categoryForm" novalidate>
+            <div class="form-group" ng-class="{ 'has-error': categoryForm.name.$touched && categoryForm.name.$invalid }">
+                
+                <input type="hidden" ng-model="category_id">
+
+                <input type="text" class="form-control" name="name" placeholder="Category" ng-model="name" required>
+
+                <div class="help-block" ng-messages="categoryForm.name.$error" ng-if="categoryForm.name.$touched">
+                    <p ng-message="required">Your category name is required.</p>
+                </div>
+
+            </div>
+            <button class="btn btn-primary" ng-click="addCategory()" ng-disabled="!categoryForm.$valid">Submit</button>
+        </form>
+    </div>
+</div>

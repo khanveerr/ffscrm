@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add/Edit Vendor</h3>
+        <form name="vendorForm" novalidate>
+             <div class="form-group" ng-class="{ 'has-error': vendorForm.company_id.$touched && vendorForm.company_id.$invalid }">
+                
+                <select class="form-control" name="company_id" ng-model="company_id" ng-options="company.id as company.name for company in companies" required>
+                    <option value="">Company Name</option>
+                </select>
+
+                <div class="help-block" ng-messages="vendorForm.company_id.$error" ng-if="vendorForm.company_id.$touched">
+                    <p ng-message="required">Your company name is required.</p>
+                </div>
+
+            </div>
+            <div class="form-group" ng-class="{ 'has-error': vendorForm.name.$touched && vendorForm.name.$invalid }">
+                
+                <input type="hidden" ng-model="vendor_id">
+
+                <input type="text" class="form-control" name="name" placeholder="Vendor" ng-model="name" required>
+
+                <div class="help-block" ng-messages="vendorForm.name.$error" ng-if="vendorForm.name.$touched">
+                    <p ng-message="required">Your vendor name is required.</p>
+                </div>
+
+            </div>
+            <button class="btn btn-primary" ng-click="addVendor()" ng-disabled="!vendorForm.$valid">Submit</button>
+        </form>
+    </div>
+</div>

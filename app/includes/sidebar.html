@@ -1,0 +1,126 @@
+<div class="nk-sidebar-element nk-sidebar-head">
+  <div class="nk-sidebar-brand">
+    <a href="/" class="logo-link nk-sidebar-logo">
+      <img
+        class="logo-light logo-img"
+        src="https://silagroup.co.in/dist/img/logo.png"
+        srcset="https://silagroup.co.in/dist/img/logo.png 2x"
+        alt="logo"
+      />
+      <img
+        class="logo-dark logo-img"
+        src="https://silagroup.co.in/dist/img/logo.png"
+        srcset="https://silagroup.co.in/dist/img/logo.png 2x"
+        alt="logo-dark"
+      />
+      <!-- <span class="nio-version">General</span> -->
+    </a>
+  </div>
+  <div class="nk-menu-trigger mr-n2">
+    <a
+      href="#"
+      class="nk-nav-toggle nk-quick-nav-icon d-xl-none"
+      data-target="sidebarMenu"
+      ><em class="icon ni ni-arrow-left"></em
+    ></a>
+  </div>
+</div>
+<!-- .nk-sidebar-element -->
+<div class="nk-sidebar-element">
+  <div class="nk-sidebar-content">
+    <div class="nk-sidebar-menu" data-simplebar>
+      <ul class="nk-menu">
+        <li class="nk-menu-item">
+            <a href="#" class="nk-menu-link">
+                <div class="user-toggle">
+                  <div class="user-avatar sm">
+                    <em class="icon ni ni-user-alt"></em>
+                  </div>
+                  <div class="user-info d-none d-md-block">
+                    <div class="user-status">
+                      {{ currentUser.user_type == 'A' ? 'Admin' : 'BD'
+                      }}
+                    </div>
+                    <div class="user-name">
+                      {{ currentUser.name }}
+                    </div>
+                  </div>
+                </div>
+            </a>
+        </li>
+        <!-- .nk-menu-item -->
+        <li class="nk-menu-item">
+          <a href="/leads" class="nk-menu-link">
+            <span class="nk-menu-icon"><em class="icon ni ni-list"></em></span>
+            <span class="nk-menu-text">Lead Manager</span>
+          </a>
+        </li>
+        <!-- .nk-menu-item -->
+        <li class="nk-menu-item">
+          <a href="/won_leads" class="nk-menu-link">
+            <span class="nk-menu-icon"
+              ><em class="icon ni ni-check-circle-cut"></em
+            ></span>
+            <span class="nk-menu-text">Contracts Won</span>
+          </a>
+        </li>
+        <!-- .nk-menu-item -->
+        <li class="nk-menu-item">
+          <a href="/lead_database" class="nk-menu-link">
+            <span class="nk-menu-icon"><em class="icon ni ni-db"></em></span>
+            <span class="nk-menu-text">Lead Database</span>
+          </a>
+        </li>
+        <li class="nk-menu-item">
+          <a href="/nps_survey" class="nk-menu-link">
+            <span class="nk-menu-icon"><em class="icon ni ni-reports-alt"></em></span>
+            <span class="nk-menu-text">NPS</span>
+          </a>
+        </li>
+        <li class="nk-menu-item">
+          <a href="/kap/calendar" class="nk-menu-link">
+            <span class="nk-menu-icon"><em class="icon ni ni-calender-date"></em></span>
+            <span class="nk-menu-text">KAP Calendar</span>
+          </a>
+        </li>
+        <li class="nk-menu-item">
+          <a href="/reports" class="nk-menu-link">
+            <span class="nk-menu-icon"><em class="icon ni ni-growth"></em></span>
+            <span class="nk-menu-text">Reports</span>
+          </a>
+        </li>
+        <li class="nk-menu-item has-sub" ng-show="currentUser.user_type == 'A'">
+          <a href="/users" class="nk-menu-link">
+            <span class="nk-menu-icon"><em class="icon ni ni-users"></em></span>
+            <span class="nk-menu-text">Users</span>
+          </a>
+          <!-- .nk-menu-sub -->
+        </li>
+        <li class="nk-menu-item has-sub" ng-show="currentUser.user_type == 'A'">
+          <a href="/cities" class="nk-menu-link">
+            <span class="nk-menu-icon"><em class="icon ni ni-map-pin"></em></span>
+            <span class="nk-menu-text">Cities</span>
+          </a>
+          <!-- .nk-menu-sub -->
+        </li>
+        <li class="nk-menu-item has-sub">
+          <a href="/change_password" class="nk-menu-link">
+            <span class="nk-menu-icon"><em class="icon ni ni-regen-alt"></em></span>
+            <span class="nk-menu-text">Change Password</span>
+          </a>
+          <!-- .nk-menu-sub -->
+        </li>
+        <li class="nk-menu-item">
+          <a href="#" class="nk-menu-link" ng-click="logout()">
+            <span class="nk-menu-icon"><em class="icon ni ni-signout"></em></span>
+            <span class="nk-menu-text">Sign out</span>
+          </a>
+        </li>
+      </ul>
+      <!-- .nk-menu -->
+    </div>
+    <!-- .nk-sidebar-menu -->
+  </div>
+  <!-- .nk-sidebar-content -->
+</div>
+<!-- .nk-sidebar-element -->

@@ -1,0 +1,72 @@
+<div class="row">
+    <div class="col-md-2 hidden-sm hidden-xs">
+        &nbsp;
+    </div>
+    <div class="col-md-8 col-sm-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Sites</div>
+
+            <div class="panel-body" ng-init="ct.getSites()">
+                
+                <div class="table-responsive">
+                    <input type="text" name="keyword" class="form-control pull-left col-md-8" ng-change="ct.getSites('1',keyword)" style="width: 50% !important;" ng-model="keyword" placeholder="Search site name" />
+                    <button class="btn btn-primary pull-right" ng-click="ct.addSite()">Add</button>
+                    <table class="table" ng-if="ct.sites">
+                        <thead>
+                            <tr>
+                                <!-- <th>ID</th> -->
+                                <th>Code</th>
+                                <th>Site</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="site in ct.sites track by $index">
+                                <!-- <td>{% $index+1 %}</td> -->
+                                <td>{%site.site_code%}</td>
+                                <td>{%site.name%}</td>
+                                <td>
+                                    
+                                    <a class="cursor-pointer" ng-click="ct.edit_site(site.id)">
+                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32">
+                                    <title>document-edit</title>
+                                    <path d="M26.443 12.15l-11.286 11.3-2.606-2.606 11.292-11.294 2.6 2.6zM27.15 11.443l-2.599-2.599 1.727-1.728c0.391-0.391 1.024-0.388 1.417 0.003l1.18 1.177c0.392 0.391 0.395 1.025 0.005 1.416l-1.729 1.731zM11.904 21.611l2.495 2.495-3.135 0.617 0.64-3.113zM22 10v0l-6-7h-10.997c-1.106 0-2.003 0.898-2.003 2.007v22.985c0 1.109 0.891 2.007 1.997 2.007h15.005c1.103 0 1.997-0.898 1.997-1.991v-10.009l7.58-7.58c0.784-0.784 0.786-2.054 0.010-2.83l-1.18-1.179c-0.779-0.779-2.037-0.783-2.83 0.010l-3.58 3.58zM21 19v9.007c0 0.548-0.448 0.993-1 0.993h-15c-0.545 0-1-0.446-1-0.995v-23.009c0-0.54 0.446-0.995 0.996-0.995h10.004v4.994c0 1.119 0.895 2.006 1.998 2.006h4.002l-10 10-1 5 5-1 6-6zM16 4.5l4.7 5.5h-3.703c-0.546 0-0.997-0.452-0.997-1.009v-4.491z"></path>
+                                    </svg></a>
+                                    &nbsp;&nbsp;&nbsp; 
+                                    <a class="cursor-pointer" ng-click="ct.delete_site(site.id)">
+                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 32 32">
+                                    <title>trash</title>
+                                    <path d="M29.98 6.819c-0.096-1.57-1.387-2.816-2.98-2.816h-3v-1.002c0-1.657-1.344-3-3-3h-10c-1.657 0-3 1.343-3 3v1.001h-3c-1.595 0-2.885 1.246-2.981 2.816h-0.019v2.183c0 1.104 0.896 2 2 2v0 17c0 2.209 1.791 4 4 4h16c2.209 0 4-1.791 4-4v-17c1.104 0 2-0.896 2-2v-2.182h-0.020zM10 3.002c0-0.553 0.447-1 1-1h10c0.553 0 1 0.447 1 1v1h-12v-1zM26 28.002c0 1.102-0.898 2-2 2h-16c-1.103 0-2-0.898-2-2v-17h20v17zM28 8.001v1h-24v-1.999c0-0.553 0.447-1 1-1h22c0.553 0 1 0.447 1 1v0.999zM9 28.006h2c0.553 0 1-0.447 1-1v-13c0-0.553-0.447-1-1-1h-2c-0.553 0-1 0.447-1 1v13c0 0.553 0.447 1 1 1zM9 14.005h2v13h-2v-13zM15 28.006h2c0.553 0 1-0.447 1-1v-13c0-0.553-0.447-1-1-1h-2c-0.553 0-1 0.447-1 1v13c0 0.553 0.447 1 1 1zM15 14.005h2v13h-2v-13zM21 28.006h2c0.553 0 1-0.447 1-1v-13c0-0.553-0.447-1-1-1h-2c-0.553 0-1 0.447-1 1v13c0 0.553 0.447 1 1 1zM21 14.005h2v13h-2v-13z"></path>
+                                    </svg></a>
+
+
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" ng-if="ct.sites.length <= 0" >
+                                    Sorry, no sites found
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <ul class="pagination" ng-if="ct.showPagination">
+                    <li ng-show="ct.currentPage != 1"><a href="javascript:void(0)" ng-click="ct.getSites(1)">&laquo;</a></li>
+                    <li ng-show="ct.currentPage != 1"><a href="javascript:void(0)" ng-click="ct.getSites(ct.currentPage-1)">&lsaquo; Prev</a></li>
+                    <li ng-repeat="i in ct.range" ng-class="{active : ct.currentPage == i}">
+                        <a href="javascript:void(0)"" ng-click="ct.getSites(i)">{%i%}</a>
+                    </li>
+                    <li ng-show="ct.currentPage != ct.totalPages"><a href="javascript:void(0)" ng-click="ct.getSites(ct.currentPage+1)">Next &rsaquo;</a></li>
+                    <li ng-show="ct.currentPage != ct.totalPages"><a href="javascript:void(0)" ng-click="ct.getSites(ct.totalPages)">&raquo;</a></li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 hidden-sm hidden-xs">
+        &nbsp;
+    </div>
+</div>

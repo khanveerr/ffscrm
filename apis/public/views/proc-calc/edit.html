@@ -1,0 +1,134 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add Item</h3>
+        <form name="itemForm" novalidate>
+            
+            <div class="row">
+
+                <div class="form-group col-md-12" ng-class="{ 'has-error': itemForm.searchStr.$touched && itemForm.searchStr.$invalid }">
+                    <label for="ex1">Description</label>
+                    <input type="text" class="form-control" name="description" placeholder="Description" ng-model="description" disabled>
+                    <!-- <div angucomplete id="ex1" placeholder="Description" pause="100" selectedobject="selectedItem" url="http://demo.local/api/items/all?s=" datafield="results" searchfields="name" titlefield="name" minlength="1" inputclass="form-control form-control-small"></div>
+                    <div class="help-block" ng-messages="itemForm.searchStr.$error" ng-if="itemForm.searchStr.$touched">
+                        <p ng-message="required">Your description is required.</p>
+                    </div> -->
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': itemForm.brand.$touched && itemForm.brand.$invalid }">
+                    <label for="brand">Brand</label>
+                    <input type="text" id="brand" class="form-control" name="brand" placeholder="Brand" ng-model="brand">
+                    <!-- <div class="help-block" ng-messages="itemForm.hsn_code.$error" ng-if="itemForm.hsn_code.$touched">
+                        <p ng-message="required">Your hsn code is required.</p>
+                    </div> -->
+                </div>
+                <div class="form-group col-md-6" ng-class="{ 'has-error': itemForm.unit.$touched && itemForm.unit.$invalid }">
+                    <label for="unit">Unit</label>
+                    <input type="text" id="unit" class="form-control" name="unit" placeholder="Unit" ng-model="unit">
+                    <!-- <div class="help-block" ng-messages="itemForm.hsn_code.$error" ng-if="itemForm.hsn_code.$touched">
+                        <p ng-message="required">Your hsn code is required.</p>
+                    </div> -->
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': itemForm.hsn_code.$touched && itemForm.hsn_code.$invalid }">
+                    <label for="hsn_code">HSN Code</label>
+                    <input type="text" id="hsn_code" class="form-control" name="hsn_code" placeholder="HSN Code" ng-model="hsn_code">
+                    <!-- <div class="help-block" ng-messages="itemForm.hsn_code.$error" ng-if="itemForm.hsn_code.$touched">
+                        <p ng-message="required">Your hsn code is required.</p>
+                    </div> -->
+                </div>
+                <div class="form-group col-md-6" ng-class="{ 'has-error': itemForm.gst_perc.$touched && itemForm.gst_perc.$invalid }">
+                    <label for="gst_perc">GST %</label>
+                    <input type="text" class="form-control" ng-change="calculateCharges()" id="gst_perc" name="gst_perc" placeholder="GST %" ng-model="gst_perc" required>
+                    <div class="help-block" ng-messages="itemForm.gst_perc.$error" ng-if="itemForm.gst_perc.$touched">
+                        <p ng-message="required">Your gst percentage is required.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': itemForm.cost_pre_gst.$touched && itemForm.cost_pre_gst.$invalid }">
+                    <label for="cost_pre_gst">Cost (Pre GST)</label>
+                    <input type="text" class="form-control" id="cost_pre_gst" name="cost_pre_gst" placeholder="Cost (Pre GST)" ng-model="cost_pre_gst" required>
+                    <div class="help-block" ng-messages="itemForm.cost_pre_gst.$error" ng-if="itemForm.cost_pre_gst.$touched">
+                        <p ng-message="required">Your cost pre gst is required.</p>
+                    </div>
+                </div>
+                <div class="form-group col-md-6" ng-class="{ 'has-error': itemForm.mrp.$touched && itemForm.mrp.$invalid }">
+                    <label for="mrp">MRP (if applicable)</label>
+                    <input type="text" class="form-control" id="mrp" name="mrp" ng-change="calcPreGSTMRP()" placeholder="MRP (if applicable)" ng-model="mrp" ng-required="is_mrp_entry">
+                    <div class="help-block" ng-messages="itemForm.mrp.$error" ng-if="itemForm.mrp.$touched">
+                        <p ng-message="required">Your mrp is required.</p>
+                    </div>
+                </div>
+            
+            </div>
+
+
+            <div class="row">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': itemForm.mrp_pre_gst.$touched && itemForm.mrp_pre_gst.$invalid }">
+                    <label for="mrp">MRP (Pre GST)</label>
+                    <input type="text" class="form-control" id="mrp_pre_gst" name="mrp_pre_gst" placeholder="MRP (Pre GST)" ng-model="mrp_pre_gst" ng-required="is_mrp_entry">
+                    <div class="help-block" ng-messages="itemForm.mrp_pre_gst.$error" ng-if="itemForm.mrp_pre_gst.$touched">
+                        <p ng-message="required">Your mrp pre gst is required.</p>
+                    </div>
+                </div>
+                <div class="form-group col-md-6" ng-class="{ 'has-error': (itemForm.maximum_profit_chargeable.$touched && itemForm.maximum_profit_chargeable.$invalid) || (!is_valid_mpc && is_mrp_entry) }">
+                    <label for="maximum_profit_chargeable">Maximum Profit Chargeable</label>
+                    <input type="text" class="form-control" id="maximum_profit_chargeable" name="maximum_profit_chargeable" placeholder="Maximum Profit Chargeable" ng-model="maximum_profit_chargeable" ng-required="is_mrp_entry">
+                    <div class="help-block" ng-messages="itemForm.maximum_profit_chargeable.$error" ng-if="itemForm.maximum_profit_chargeable.$touched || (!is_valid_mpc && is_mrp_entry)">
+                        <p ng-message="required">Your maximum profit chargeable is required.</p>
+                        <p ng-message="minvalue">Your maximum profit chargeable cannot be less than 0.01.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': (itemForm.profit_margin.$touched && itemForm.profit_margin.$invalid) || (!is_valid_pm && is_mrp_entry) }">
+                    <label for="profit_margin">Profit Margin %</label>
+                    <input type="text" class="form-control" id="profit_margin" name="profit_margin" ng-change="calcSellingPrice();" placeholder="Profit Margin %" ng-model="profit_margin" required>
+                    <div class="help-block" ng-messages="itemForm.profit_margin.$error" ng-if="itemForm.profit_margin.$touched || (!is_valid_pm  && is_mrp_entry)">
+                        <p ng-message="required">Your profit margin is required.</p>
+                        <p ng-message="minvalue">Your profit margin cannot be less than 0.01.</p>
+                    </div>
+                </div>
+                <div class="form-group col-md-6" ng-class="{ 'has-error': itemForm.selling_price.$touched && itemForm.selling_price.$invalid }">
+                    <label for="selling_price">Selling Price (Pre GST)</label>
+                    <input type="text" class="form-control" id="selling_price" name="selling_price" placeholder="Selling Price (Pre GST)" ng-model="selling_price" required>
+                    <div class="help-block" ng-messages="itemForm.selling_price.$error" ng-if="itemForm.selling_price.$touched">
+                        <p ng-message="required">Your selling price is required.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <input type="hidden" name="old_image_file" ng-model="old_image_file" />
+    
+                <div class="form-group col-md-6">
+                    <label for="image_file">Image</label>
+                    <div class="custom-file">
+                        <input type="file" class="form-control" id="image_file" accept=".png, .jpg, .jpeg" name="image_file" onchange="angular.element(this).scope().uploadImage(this.files)">
+                    </div>
+                    <span>{% old_image_file %}</span>
+                </div>
+
+            </div>
+
+            <button class="btn btn-primary" ng-click="updateItem()" ng-disabled="!itemForm.$valid || (!is_valid_mpc && is_mrp_entry) || (!is_valid_pm && is_mrp_entry)">Update</button>
+        </form>
+    </div>
+</div>

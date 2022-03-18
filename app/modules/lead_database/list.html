@@ -1,0 +1,1705 @@
+<div class="container-fluid">
+  <div class="nk-content-inner">
+    <div class="nk-content-body">
+      <div class="nk-block-head nk-block-head-sm">
+        <div class="nk-block-between">
+          <div class="nk-block-head-content">
+            <h3 class="nk-block-title page-title">Lead Database</h3>
+            <div class="nk-block-des text-soft">
+              <!-- <p>You have total 2,595 users.</p> -->
+            </div>
+          </div>
+          <!-- .nk-block-head-content -->
+          <div class="nk-block-head-content">
+            <div class="toggle-wrap nk-block-tools-toggle">
+              <a
+                href="#"
+                class="btn btn-icon btn-trigger toggle-expand mr-n1"
+                data-target="pageMenu"
+                ><em class="icon ni ni-menu-alt-r"></em
+              ></a>
+              <div class="toggle-expand-content" data-content="pageMenu">
+                <ul class="nk-block-tools g-3">
+                  <li>
+                    <div class="nk-cov-data">
+                      <div class="amount amount-sm fs-em11">
+                        C0 : <span class="text-soft">{{ c0_total }}</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>&nbsp;</li>
+                  <li>
+                    <div class="nk-cov-data">
+                      <div class="amount amount-sm fs-em11">
+                        C1 : <span class="text-soft">{{ c1_total }}</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>&nbsp;</li>
+                  <li>
+                    <div class="nk-cov-data">
+                      <div class="amount amount-sm fs-em11">
+                        C2 : <span class="text-soft">{{ c2_total }}</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>&nbsp;</li>
+                  <li>
+                    <div class="nk-cov-data">
+                      <div class="amount amount-sm fs-em11">
+                        C3 : <span class="text-soft">{{ c3_total }}</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>&nbsp;</li>
+                  <li ng-show="currentUser.user_type == 'A'">
+                    <a href="#" class="btn btn-white btn-outline-light" data-toggle="modal"
+                        data-target="#export_lead"
+                      ><em class="icon ni ni-download-cloud"></em
+                      ><span>Export</span></a
+                    >
+                  </li>
+                  <li class="nk-block-tools-opt">
+                    <div class="drodown">
+                      <a
+                        href="#"
+                        class="btn btn-icon btn-secondary"
+                        ng-click="toggle_filter()"
+                        ><em class="icon ni ni-filter"></em
+                        >Filters&nbsp;&nbsp;&nbsp;&nbsp;</a
+                      >
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- .toggle-wrap -->
+          </div>
+          <!-- .nk-block-head-content -->
+        </div>
+        <!-- .nk-block-between -->
+      </div>
+
+      <div
+        class="nk-block {{ show_filter == true ? 'mb-20' : '' }}"
+        ng-show="show_filter"
+      >
+        <div class="row g-gs">
+          <div class="col-xxl-12">
+            <div class="card card-bordered card-preview">
+              <div class="card-inner">
+                <div class="row gy-4">
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label class="form-label">Company Name</label>
+                      <div class="form-control-wrap">
+                        <input
+                          type="text"
+                          class="form-control"
+                          tabindex="-1"
+                          ng-model="keyword"
+                          ng-change="searchLeads(1)"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- <div class="col-sm-2">
+                    <div class="form-group">
+                      <label class="form-label">Project Type</label>
+                      <div class="form-control-wrap">
+                        <select
+                          class="form-control form-control-lg"
+                          tabindex="-1"
+                          aria-hidden="true"
+                          ng-model="project_type_filter"
+                          ng-change="searchLeads(1)"
+                        >
+                          <option value="">Select</option>
+                          <option value="Interior Contracting">IC</option>
+                          <option value="PMC">PMC</option>
+                          <option value="Advisory">Advisory</option>
+                          <option value="Other">Other</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div> -->
+
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label class="form-label">Leadowner</label>
+                      <div class="form-control-wrap">
+                        <select
+                          class="form-control form-control-lg"
+                          tabindex="-1"
+                          aria-hidden="true"
+                          ng-model="user_filter"
+                          ng-change="searchLeads(1)"
+                        >
+                          <option value="">Select</option>
+                          <option
+                            value="{{ user.id }}"
+                            ng-repeat="user in users"
+                            >{{ user.name }}</option
+                          >
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label class="form-label">Industry</label>
+                      <div class="form-control-wrap">
+                        <select
+                          class="form-control form-control-lg"
+                          tabindex="-1"
+                          aria-hidden="true"
+                          ng-model="industry_filter"
+                          ng-change="searchLeads(1)"
+                        >
+                          <option value="">Select</option>
+                          <option
+                            value="{{ key }}"
+                            ng-repeat="(key,value) in industries"
+                            >{{ value }}</option
+                          >
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label class="form-label">State</label>
+                      <div class="form-control-wrap">
+                        <!-- <select
+                          class="form-control form-control-lg"
+                          tabindex="-1"
+                          aria-hidden="true"
+                          ng-model="city_filter"
+                          ng-change="searchLeads(1)"
+                        >
+                          <option value="">Select</option>
+                          <option value="Mumbai">Mumbai</option>
+                          <option value="Rest of West India">Rest of West India</option>
+                          <option value="Bangalore">Bangalore</option>
+                          <option value="Chennai">Chennai</option>
+                          <option value="Rest of South India">Rest of South India</option>
+                          <option value="Delhi (NCR)">Delhi (NCR)</option>
+                          <option value="Rest of North India">Rest of North India</option>
+                          <option value="East India">East India</option>
+                          <option value="PAN India">PAN India</option>
+                        </select> -->
+                        <select
+                          class="form-control form-control-lg"
+                          tabindex="-1"
+                          aria-hidden="true"
+                          ng-model="state_filter"
+                          ng-change="searchLeads(1)"
+                        >
+                          <option value="">Select</option>
+                          <option
+                            value="{{ state.name }}"
+                            ng-repeat="state in states"
+                            >{{ state.name }}</option
+                          >
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label class="form-label">Leadsource</label>
+                      <div class="form-control-wrap">
+                        <select
+                          class="form-control form-control-lg"
+                          aria-hidden="true"
+                          ng-model="leadsource_filter"
+                          ng-change="searchLeads(1)"
+                        >
+                          <option value="">Select</option>
+                          <option
+                            value="{{ key }}"
+                            ng-repeat="(key,value) in leadsources"
+                            >{{ value }}</option
+                          >
+                          <option value="NA">NA</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-1">
+                    <div class="form-group">
+                      <label class="form-label">Order By</label>
+                      <div class="form-control-wrap">
+                        <select
+                          class="form-control form-control-lg"
+                          tabindex="-1"
+                          aria-hidden="true"
+                          ng-model="sort_filter"
+                          ng-change="searchLeads(1)"
+                        >
+                          <option value="">Select</option>
+                          <option value="asc">Oldest</option>
+                          <option value="desc">Newest</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- .nk-block-head -->
+      <div class="nk-block pt-0">
+        <div class="card card-bordered card-preview">
+          <div class="card-inner">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Company Name</th>
+                    <th scope="col" style="text-align: center;">
+                      Lead Owner
+                    </th>
+                    <th scope="col" style="text-align: center;">C0</th>
+                    <th scope="col" style="text-align: center;">C1</th>
+                    <th scope="col" style="text-align: center;">C2</th>
+                    <th scope="col" style="text-align: center;">C3</th>
+                    <th scope="col" style="text-align: center;">Lead Added On</th>
+                    <!-- <th scope="col">Reminder</th> -->
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-hide="loading" ng-repeat="lead in lead_data track by $index">
+                    <th style="background-color: {{ (lead.is_complete == 0 || lead.is_complete == '0') ? '#FF0000' : '#FFFFFF'  }}" scope="row">{{ lead.sr_no }}</th>
+                    <td>
+                      {{ lead.company_name }}
+                    </td>
+                    <td style="text-align: center;">
+                      {{ lead.abbr }}
+                    </td>
+                    <td style="text-align: center;">{{ lead.c0_value || 0 }}</td>
+                    <td style="text-align: center;">{{ lead.c1_value || 0 }}</td>
+                    <td style="text-align: center;">{{ lead.c2_value || 0 }}</td>
+                    <td style="text-align: center;">{{ lead.c3_value || 0 }}</td>
+                    <td style="text-align: center;">{{ lead.created_date }}</td>
+                    <!-- <td>
+                      <a
+                        href="#"
+                        ng-show="(lead.reminder && lead.reminder_date)"
+                        data-toggle="modal"
+                        data-target="#update_reminder"
+                        ng-click="setLeadId(lead.id,lead.reminder)"
+                      >
+                        {{ lead.reminder_date }}
+                      </a>
+                      <a
+                        href="#"
+                        ng-show="!(lead.reminder && lead.reminder_date)"
+                        data-toggle="modal"
+                        data-target="#update_reminder"
+                        ng-click="setLeadId(lead.id,lead.reminder)"
+                      >
+                        <em class="icon ni ni-alarm"></em>
+                      </a>
+                    </td> -->
+                    <td>
+                      <div class="tb-odr-btns d-md-inline">
+                        <a
+                          ng-show="currentUser.user_type == 'A' || currentUser.id == lead.user_id"
+                          href="#"
+                          class="btn btn-sm btn-primary"
+                          ng-click="edit_lead(lead.id)"
+                          data-toggle="modal"
+                          data-target="#add_lead"
+                          ><em class="icon ni ni-pen"></em
+                        ></a>
+                        <a
+                        ng-show="currentUser.email == 'dilip@envocare.in'"
+                          href="#"
+                          class="btn btn-sm btn-info"
+                          ng-click="show_lead_details(lead.id)"
+                          data-toggle="modal"
+                          data-target="#view_lead_details"
+                          ><em class="icon ni ni-eye-alt-fill"></em></a>
+                        <a
+                          href="#"
+                          ng-show="currentUser.user_type == 'A'"
+                          class="btn btn-sm btn-danger"
+                          ng-click="delete_lead(lead.id)"
+                          ><em class="icon ni ni-trash"></em
+                        ></a>
+                        <a
+                          ng-show="currentUser.user_type == 'A' || currentUser.id == lead.user_id"
+                          href="#"
+                          class="btn btn-sm btn-info"
+                          ng-click="move_to_open_leads(lead.id)"
+                          ><em class="icon ni ni-redo"></em
+                        ></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr ng-show="loading">
+                    <td colspan="9">
+                      <div class="d-flex justify-content-center">  <div class="spinner-border" role="status">    <span class="sr-only">Loading...</span>  </div></div>
+                    </td>
+                  </tr>
+                  <tr ng-show="lead_data.length <= 0 && !loading">
+                    <td colspan="10">Sorry, no leads found</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <lead-pagination ng-show="lead_data.length > 0 && !loading"></lead-pagination>
+          </div>
+        </div>
+        <!-- .card-preview -->
+      </div>
+      <!-- .nk-block -->
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" id="view_lead_details">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">View Lead Details</h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <em class="icon ni ni-cross"></em>
+        </a>
+      </div>
+      <div class="modal-body">
+        <form class="form-validate is-alter" name="leadFormDetails" novalidate>
+          <div class="row gy-4">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="company_name"
+                  >Company Name</label
+                >
+                <div class="form-control-wrap">
+                  {{ leadData.company_name }}
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="company_poc">Company POC</label>
+                <div class="form-control-wrap">
+                  {{ leadData.company_poc }}
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="company_poc_email"
+                  >Company POC Email</label
+                >
+                <div class="form-control-wrap">
+                  {{ leadData.company_poc_email }}
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="company_poc_mobile"
+                  >Company POC Mobile</label
+                >
+                <div class="form-control-wrap">
+                  {{ leadData.company_poc_mobile }}
+                </div>
+              </div>
+            </div>
+
+            
+
+          </div>
+        </form>
+      </div>
+      <!-- <div class="modal-footer bg-light">
+        <span class="sub-text">Modal Footer Text</span>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="add_lead">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Create Lead</h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <em class="icon ni ni-cross"></em>
+        </a>
+      </div>
+      <div class="modal-body">
+        <form class="form-validate is-alter" name="leadForm" novalidate>
+          <div class="row gy-4">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="company_name"
+                  >Company Name</label
+                >
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    name="company_name"
+                    class="form-control"
+                    ng-model="leadData.company_name"
+                    required
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="leadForm.company_name.$error"
+                    ng-if="leadForm.company_name.$touched"
+                  >
+                    <div ng-message="required">Please enter company name</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="company_poc">Company POC</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="leadData.company_poc"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="company_poc_email"
+                  >Company POC Email</label
+                >
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    name="company_poc_email"
+                    class="form-control"
+                    ng-model="leadData.company_poc_email"
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="leadForm.company_poc_email.$error"
+                    ng-if="leadForm.company_poc_email.$touched"
+                  >
+                    <div ng-message="min">
+                      Please enter company poc email or company poc mobile
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="company_poc_mobile"
+                  >Company POC Mobile</label
+                >
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="leadData.company_poc_mobile"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="user_id">Lead Owner</label>
+                <div class="form-control-wrap">
+                  <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    name="user_id"
+                    ng-model="leadData.user_id"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option
+                      value="{{ user.id }}"
+                      ng-repeat="user in users"
+                      >{{ user.name }}</option
+                    >
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="leadForm.user_id.$error"
+                    ng-if="leadForm.user_id.$touched"
+                  >
+                    <div ng-message="required">Please select leadowner</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="project_type">Project Type</label>
+                <div class="form-control-wrap">
+                  <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    name="project_type"
+                    ng-model="leadData.project_type"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="Interior Contracting">IC</option>
+                    <option value="PMC">PMC</option>
+                    <option value="Advisory">Advisory</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="leadForm.project_type.$error"
+                    ng-if="leadForm.project_type.$touched"
+                  >
+                    <div ng-message="required">Please select project type</div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+            <!-- <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="city">City</label>
+                <div class="form-control-wrap"> -->
+                  <!-- <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    name="city"
+                    ng-model="leadData.city"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Rest of West India">Rest of West India</option>
+                    <option value="Bangalore">Bangalore</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Rest of South India">Rest of South India</option>
+                    <option value="Delhi (NCR)">Delhi (NCR)</option>
+                    <option value="Rest of North India">Rest of North India</option>
+                    <option value="East India">East India</option>
+                    <option value="PAN India">PAN India</option>
+                  </select> -->
+                  <!-- <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    name="city"
+                    ng-model="leadData.city"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option
+                      value="{{ city.name }}"
+                      ng-repeat="city in cities"
+                      >{{ city.name }}</option
+                    >
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="leadForm.city.$error"
+                    ng-if="leadForm.city.$touched"
+                  >
+                    <div ng-message="required">Please select city</div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="state">State</label>
+                <div class="form-control-wrap">
+                  <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    name="state"
+                    ng-model="leadData.state"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option
+                      value="{{ state.name }}"
+                      ng-repeat="state in states"
+                      >{{ state.name }}</option
+                    >
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="leadForm.state.$error"
+                    ng-if="leadForm.state.$touched"
+                  >
+                    <div ng-message="required">Please select state</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="industry">Industry</label>
+                <div class="form-control-wrap">
+                  <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    ng-model="leadData.industry"
+                    name="industry"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option
+                      value="{{ key }}"
+                      ng-repeat="(key,value) in industries"
+                      >{{ value }}</option
+                    >
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="leadForm.industry.$error"
+                    ng-if="leadForm.industry.$touched"
+                  >
+                    <div ng-message="required">Please select industry</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="client_type">Client Type</label>
+                <div class="form-control-wrap">
+                  <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    name="client_type"
+                    ng-model="leadData.client_type"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="existing_client">Existing Client</option>
+                    <option value="new_client">New Client</option>
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="leadForm.client_type.$error"
+                    ng-if="leadForm.client_type.$touched"
+                  >
+                    <div ng-message="required">Please select client type</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="leadsource">Lead Source</label>
+                <div class="form-control-wrap">
+                  <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    ng-model="leadData.leadsource"
+                    name="leadsource"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="Existing Client">Existing Client</option>
+                    <option value="Client Reference">Client Reference</option>
+                    <option value="Inbound Call">Inbound Call</option>
+                    <option value="Website">Website</option>
+                    <option value="LinkedIn / Social Media"
+                      >LinkedIn / Social Media</option
+                    >
+                    <option value="Cold Call">Cold Call</option>
+                    <option value="Conferences">Conferences</option>
+                    <option value="BDM Relationship">BDM Relationship</option>
+                    <option value="Director Relationship"
+                      >Director Relationship</option
+                    >
+                    <option value="Email Database">Email Database</option>
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="leadForm.leadsource.$error"
+                    ng-if="leadForm.leadsource.$touched"
+                  >
+                    <div ng-message="required">Please select leadsource</div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="leadsource">Lead Source</label>
+                <div class="form-control-wrap">
+                  <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    ng-model="leadData.leadsource"
+                    name="leadsource"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option
+                      value="{{ key }}"
+                      ng-repeat="(key,value) in leadsources"
+                      >{{ value }}</option
+                    >
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="leadForm.leadsource.$error"
+                    ng-if="leadForm.leadsource.$touched"
+                  >
+                    <div ng-message="required">Please select leadsource</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="c0_value">c0</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="leadData.c0_value"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="c1_value">c1</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="leadData.c1_value"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="c2_value">c2</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="leadData.c2_value"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="c2_probability_perc"
+                  >C2 Probability (%)</label
+                >
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="leadData.c2_probability_perc"
+                    name="c2_probability_perc"
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="leadForm.c2_probability_perc.$error"
+                    ng-if="leadForm.c2_probability_perc.$touched"
+                  >
+                    <div ng-message="mandatory">
+                      Please enter c2 probability
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="c3_value">c3</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="leadData.c3_value"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-primary"
+                  ng-click="save_lead()"
+                  ng-disabled="!leadForm.$valid"
+                  data-dismiss="modal"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- <div class="modal-footer bg-light">
+          <span class="sub-text">Modal Footer Text</span>
+        </div> -->
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="update_reminder">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Reminder</h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <em class="icon ni ni-cross"></em>
+        </a>
+      </div>
+      <div class="modal-body">
+        <form class="form-validate is-alter" name="reminderForm" novalidate>
+          <div class="row gy-4">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-label" for="reminder">Reminder Date</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    name="reminder"
+                    class="form-control"
+                    ng-model="reminder"
+                    datepicker=""
+                    dp-format="yyyy-mm-dd"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-primary"
+                  ng-click="update_reminder()"
+                  data-dismiss="modal"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="add_won_lead">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Won Lead</h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <em class="icon ni ni-cross"></em>
+        </a>
+      </div>
+      <div class="modal-body">
+        <form class="form-validate is-alter" name="leadWonForm" novalidate>
+          <div class="row gy-4">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="company_name"
+                  >Company Name</label
+                >
+                <div class="form-control-wrap">
+                  <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    name="company_name"
+                    ng-model="leadData.company_name"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option
+                      value="{{ company.name }}"
+                      ng-repeat="company in companies"
+                      >{{ company.name }}</option
+                    >
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="leadWonForm.company_name.$error"
+                    ng-if="leadWonForm.company_name.$touched"
+                  >
+                    <div ng-message="required">Please select your company</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="lead_won_type"
+                  >Lead Won Type</label
+                >
+                <div class="form-control-wrap">
+                  <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    name="lead_won_type"
+                    ng-model="lead_won_type"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="15">Partial</option>
+                    <option value="-3">Closed</option>
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="leadWonForm.lead_won_type.$error"
+                    ng-if="leadWonForm.lead_won_type.$touched"
+                  >
+                    <div ng-message="required">
+                      Please select your lead won type
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="service_start_date"
+                  >Date - Service Start</label
+                >
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    name="service_start_date"
+                    class="form-control"
+                    ng-model="leadData.service_start_date"
+                    datepicker=""
+                    dp-format="yyyy-mm-dd"
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="leadWonForm.service_start_date.$error"
+                    ng-if="leadWonForm.service_start_date.$touched"
+                  >
+                    <div ng-message="min">
+                      Please select service start date
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="work_order_date"
+                  >Date - Work Order Received</label
+                >
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="leadData.work_order_date"
+                    name="work_order_date"
+                    datepicker=""
+                    dp-format="yyyy-mm-dd"
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="leadWonForm.work_order_date.$error"
+                    ng-if="leadWonForm.work_order_date.$touched"
+                  >
+                    <div ng-message="min">
+                      Please select work order date
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="c3_won_value"
+                  >Contract Value</label
+                >
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="leadData.c3_won_value"
+                    name="c3_won_value"
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="leadWonForm.c3_won_value.$error"
+                    ng-if="leadWonForm.c3_won_value.$touched"
+                  >
+                    <div ng-message="min">
+                      Please enter your won value
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="contract_renewal_date"
+                  >Contract Renewal Date</label
+                >
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="leadData.contract_renewal_date"
+                    name="contract_renewal_date"
+                    datepicker=""
+                    dp-format="yyyy-mm-dd"
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="leadWonForm.contract_renewal_date.$error"
+                    ng-if="leadWonForm.contract_renewal_date.$touched"
+                  >
+                    <div ng-message="min">
+                      Please enter your won value
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="bdm_value"
+                  >BDM Percentage Value</label
+                >
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="leadData.bdm_value"
+                    name="bdm_value"
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="leadWonForm.bdm_value.$error"
+                    ng-if="leadWonForm.bdm_value.$touched"
+                  >
+                    <div ng-message="min">
+                      Please enter your bdm percentage value
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="agp_percentage_value"
+                  >Approx. Gross Profit (%)</label
+                >
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="leadData.agp_percentage_value"
+                    name="agp_percentage_value"
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="leadWonForm.agp_percentage_value.$error"
+                    ng-if="leadWonForm.agp_percentage_value.$touched"
+                  >
+                    <div ng-message="min">
+                      Please enter your approx. gross profit
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-primary"
+                  ng-click="save_won_lead()"
+                  ng-disabled="!leadWonForm.$valid"
+                  data-dismiss="modal"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="add_lost_lead">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Transfer to Database</h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <em class="icon ni ni-cross"></em>
+        </a>
+      </div>
+      <div class="modal-body">
+        <form class="form-validate is-alter" name="leadLostForm" novalidate>
+          <div class="row gy-4">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-label" for="reason">Reason</label>
+                <div class="form-control-wrap">
+                  <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    name="reason"
+                    ng-model="leadData.reason"
+                    ng-change="otherReason(leadData.reason)"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="1">Going to competitor</option>
+                    <option value="2">Too expensive</option>
+                    <option value="3">Lead just gone cold</option>
+                    <option value="4">Waiting for the response</option>
+                    <option value="5">Other</option>
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="leadLostForm.reason.$error"
+                    ng-if="leadLostForm.reason.$touched"
+                  >
+                    <div ng-message="required">Please select your reason</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-12" ng-show="show_other_reason">
+              <div class="form-group">
+                <label class="form-label" for="other_reason"
+                  >Other Reason</label
+                >
+                <div class="form-control-wrap">
+                  <textarea
+                    class="form-control"
+                    name="other_reason"
+                    ng-model="leadData.other_reason"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="next_follow_up_date"
+                  >Next Followup Date</label
+                >
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="leadData.next_follow_up_date"
+                    name="next_follow_up_date"
+                    datepicker=""
+                    dp-format="yyyy-mm-dd"
+                    required
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="leadLostForm.next_follow_up_date.$error"
+                    ng-if="leadLostForm.next_follow_up_date.$touched"
+                  >
+                    <div ng-message="required">
+                      Please enter next followup date
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="lost_contract_value"
+                  >Potential Contact Value of Lost Lead</label
+                >
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="leadData.lost_contract_value"
+                    name="lost_contract_value"
+                    required
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="leadLostForm.lost_contract_value.$error"
+                    ng-if="leadLostForm.lost_contract_value.$touched"
+                  >
+                    <div ng-message="required">
+                      Please enter lost contract value
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="last_sales_stage"
+                  >Last Sales Stage</label
+                >
+                <div class="form-control-wrap">
+                  <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    name="last_sales_stage"
+                    ng-model="leadData.last_sales_stage"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="C0">C0</option>
+                    <option value="C1">C1</option>
+                    <option value="C2">C2</option>
+                    <option value="C3">C3</option>
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="leadLostForm.last_sales_stage.$error"
+                    ng-if="leadLostForm.last_sales_stage.$touched"
+                  >
+                    <div ng-message="required">
+                      Please select your last sales stage
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="form-label" for="lost_lead">Lost Lead</label>
+                <div class="form-control-wrap">
+                  <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    name="lost_lead"
+                    ng-model="leadData.lost_lead"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="leadLostForm.lost_lead.$error"
+                    ng-if="leadLostForm.lost_lead.$touched"
+                  >
+                    <div ng-message="required">
+                      Please select lost lead
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-primary"
+                  ng-click="save_lost_lead()"
+                  ng-disabled="!leadLostForm.$valid"
+                  data-dismiss="modal"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="view_kaps">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Company KAP's</h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <em class="icon ni ni-cross"></em>
+        </a>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Date Added On</th>
+                <th scope="col">Company Name</th>
+                <th scope="col">Activity Planned</th>
+                <th
+                  scope="col"
+                  ng-show="kaps.length > 0 && kaps[0].user_id == currentUser.id"
+                >
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="kap in kaps">
+                <td scope="row">{{ kap.created_date }}</td>
+                <td>
+                  {{ kap.company_name }}
+                </td>
+                <td>
+                  {{ kap.activity }}
+                </td>
+                <td ng-show="kap.user_id == currentUser.id">
+                  <a
+                    href="#"
+                    class="btn btn-sm btn-primary"
+                    ng-click="edit_kap(kap)"
+                    ><em class="icon ni ni-pen"></em
+                  ></a>
+                </td>
+              </tr>
+              <tr ng-show="kaps.length <= 0">
+                <td
+                  colspan="{{ kaps.length > 0 && kaps[0].user_id == currentUser.id ? 4 : 3 }}"
+                >
+                  No activity planned for this company
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer bg-light">
+        <button
+          type="button"
+          class="btn btn-lg btn-primary"
+          ng-click="add_kap()"
+        >
+          Add KAP
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="add_kap">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add KAP</h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <em class="icon ni ni-cross"></em>
+        </a>
+      </div>
+      <div class="modal-body">
+        <form class="form-validate is-alter" name="kapForm" novalidate>
+          <div class="row gy-4">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-label" for="kap_date">KAP Date</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="leadData.kap_date"
+                    name="kap_date"
+                    datepicker=""
+                    dp-format="yyyy-mm-dd"
+                    required
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="kapForm.kap_date.$error"
+                    ng-if="kapForm.kap_date.$touched"
+                  >
+                    <div ng-message="required">
+                      Please select your KAP date
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-label" for="activity">Activity</label>
+                <div class="form-control-wrap">
+                  <textarea
+                    class="form-control"
+                    name="activity"
+                    ng-model="leadData.activity"
+                    required
+                  ></textarea>
+                  <div
+                    class="help-block"
+                    ng-messages="kapForm.activity.$error"
+                    ng-if="kapForm.activity.$touched"
+                  >
+                    <div ng-message="required">Please enter your activity</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-primary"
+                  ng-click="save_kap()"
+                  ng-disabled="!kapForm.$valid"
+                  data-dismiss="modal"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="edit_kap">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit KAP</h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <em class="icon ni ni-cross"></em>
+        </a>
+      </div>
+      <div class="modal-body">
+        <form class="form-validate is-alter" name="kapForm" novalidate>
+          <div class="row gy-4">
+            <input
+              type="hidden"
+              class="form-control"
+              ng-model="kap_id"
+              name="kap_id"
+            />
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-label" for="kap_date">KAP Date</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="leadData.kap_date"
+                    name="kap_date"
+                    datepicker=""
+                    dp-format="yyyy-mm-dd"
+                    required
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="kapForm.kap_date.$error"
+                    ng-if="kapForm.kap_date.$touched"
+                  >
+                    <div ng-message="required">
+                      Please select your KAP date
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-label" for="activity">Activity</label>
+                <div class="form-control-wrap">
+                  <textarea
+                    class="form-control"
+                    name="activity"
+                    ng-model="leadData.activity"
+                    required
+                  ></textarea>
+                  <div
+                    class="help-block"
+                    ng-messages="kapForm.activity.$error"
+                    ng-if="kapForm.activity.$touched"
+                  >
+                    <div ng-message="required">Please enter your activity</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-primary"
+                  ng-click="update_kap()"
+                  ng-disabled="!kapForm.$valid"
+                  data-dismiss="modal"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" id="export_lead">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Export Leads</h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <em class="icon ni ni-cross"></em>
+        </a>
+      </div>
+        <form class="form-validate is-alter" name="leadExportForm" novalidate>
+      <div class="modal-body">
+          <div class="row gy-4">
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="form-label" for="export_type">Type</label>
+                <div class="form-control-wrap">
+                  <select
+                    class="form-control form-control-lg"
+                    aria-hidden="true"
+                    name="export_type"
+                    ng-model="export_type"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="1">All</option>
+                    <option value="2">Range</option>
+                  </select>
+                  <div
+                    class="help-block"
+                    ng-messages="leadExportForm.export_type.$error"
+                    ng-if="leadExportForm.export_type.$touched"
+                  >
+                    <div ng-message="required">
+                      Please select export type
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-4" ng-show="export_type==2">
+              <div class="form-group">
+                <label class="form-label" for="start_date">Start Date</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="start_date"
+                    name="start_date"
+                    datepicker=""
+                    dp-format="yyyy-mm-dd"
+                    required
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="leadExportForm.start_date.$error"
+                    ng-if="leadExportForm.start_date.$touched"
+                  >
+                    <div ng-message="required">
+                      Please select your start date
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-4" ng-show="export_type==2">
+              <div class="form-group">
+                <label class="form-label" for="end_date">End Date</label>
+                <div class="form-control-wrap">
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="end_date"
+                    name="end_date"
+                    datepicker=""
+                    dp-format="yyyy-mm-dd"
+                    required
+                  />
+                  <div
+                    class="help-block"
+                    ng-messages="leadExportForm.end_date.$error"
+                    ng-if="leadExportForm.end_date.$touched"
+                  >
+                    <div ng-message="required">
+                      Please select your end date
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            
+          </div>
+      </div>
+
+      <div class="modal-footer bg-light">
+        <button
+          type="button"
+          class="btn btn-lg btn-primary"
+          ng-click="export_data()"
+          data-dismiss="modal"
+        >
+          Export
+        </button>
+      </div>
+
+      </form>
+
+
+    </div>
+  </div>
+</div>

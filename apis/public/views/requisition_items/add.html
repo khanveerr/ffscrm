@@ -1,0 +1,106 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add Item</h3>
+        <form name="itemForm" novalidate>
+
+            <div class="row">
+
+                <input type="hidden" ng-model="item_id">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': itemForm.zone_id.$touched && itemForm.zone_id.$invalid }">
+                    
+                    <select class="form-control" name="zone_id" ng-model="zone_id" ng-options="zone.id as zone.zone_name for zone in zones" required>
+                        <option value="">Zone</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="itemForm.zone_id.$error" ng-if="itemForm.zone_id.$touched">
+                        <p ng-message="required">Your zone is required.</p>
+                    </div>
+
+                </div>
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': itemForm.type_id.$touched && itemForm.type_id.$invalid }">
+                    
+                    <select class="form-control" name="type_id" ng-model="type_id" ng-options="item_type.id as item_type.name for item_type in item_types" required>
+                        <option value="">Item Type</option>
+                    </select>
+
+                    <div class="help-block" ng-messages="itemForm.type_id.$error" ng-if="itemForm.type_id.$touched">
+                        <p ng-message="required">Your item type is required.</p>
+                    </div>
+
+                </div>
+
+            </div>
+            
+            <!-- <div class="row">
+
+                <div class="form-group col-md-12" ng-class="{ 'has-error': itemForm.alias_code.$touched && itemForm.alias_code.$invalid }">
+                    <label for="alias_code">Alias Code</label>
+                    <input type="text" class="form-control" id="alias_code" name="alias_code" placeholder="Alias Code" ng-model="alias_code" required>
+                    <div class="help-block" ng-messages="itemForm.alias_code.$error" ng-if="itemForm.alias_code.$touched">
+                        <p ng-message="required">Your alias code is required.</p>
+                    </div>
+                </div>
+
+            </div> -->
+
+            <div class="row">
+
+                <div class="form-group col-md-12" ng-class="{ 'has-error': itemForm.description.$touched && itemForm.description.$invalid }">
+                    <label for="ex1">Description</label>
+                    <input type="text" class="form-control" id="description" name="description" placeholder="Description" ng-model="description" required>
+                    <div class="help-block" ng-messages="itemForm.description.$error" ng-if="itemForm.description.$touched">
+                        <p ng-message="required">Your description is required.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-6" ng-class="{ 'has-error': itemForm.hsn_code.$touched && itemForm.hsn_code.$invalid }">
+                    <label for="hsn_code">HSN Code</label>
+                    <input type="text" id="hsn_code" class="form-control" name="hsn_code" placeholder="HSN Code" ng-model="hsn_code">
+                    <!-- <div class="help-block" ng-messages="itemForm.hsn_code.$error" ng-if="itemForm.hsn_code.$touched">
+                        <p ng-message="required">Your hsn code is required.</p>
+                    </div> -->
+                </div>
+                <div class="form-group col-md-6" ng-class="{ 'has-error': itemForm.gst_perc.$touched && itemForm.gst_perc.$invalid }">
+                    <label for="gst_perc">GST %</label>
+                    <input type="text" class="form-control" id="gst_perc" name="gst_perc" placeholder="GST %" ng-model="gst_perc" required>
+                    <div class="help-block" ng-messages="itemForm.gst_perc.$error" ng-if="itemForm.gst_perc.$touched">
+                        <p ng-message="required">Your gst percentage is required.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-12" ng-class="{ 'has-error': itemForm.rates.$touched && itemForm.rates.$invalid }">
+                    <label for="rates">Rate</label>
+                    <input type="text" class="form-control" id="rates" name="rates" placeholder="Rate" ng-model="rates" required>
+                    <div class="help-block" ng-messages="itemForm.rates.$error" ng-if="itemForm.rates.$touched">
+                        <p ng-message="required">Your rate is required.</p>
+                    </div>
+                </div>
+            
+            </div>
+
+
+            <div class="row">
+
+                <div class="form-group col-md-6">
+                    <label for="image_file">Image</label>
+                    <div class="custom-file">
+                        <input type="file" class="form-control" id="image_file" accept=".png, .jpg, .jpeg" name="image_file" onchange="angular.element(this).scope().uploadImage(this.files)">
+                    </div>
+                </div>
+
+            </div>
+
+            <button class="btn btn-primary" ng-click="addItem()" ng-disabled="!itemForm.$valid">Submit</button>
+        </form>
+    </div>
+</div>

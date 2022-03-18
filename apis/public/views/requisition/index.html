@@ -1,0 +1,262 @@
+<div class="row">
+    <div class="col-md-8 col-sm-12 col-xs-12">
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+    
+                <div class="row">
+
+                    <input type="hidden" ng-model="procure_master_id" name="procure_master_id" />
+
+                    <div class="col-md-3">
+                        <label for="month">Month</label>
+                        <select class="form-control" name="month" id="month" ng-model="month" ng-options="month.value as month.name for month in ct.months" ng-disabled="req_status == 3" required>
+                            <option value="">Select Month</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label for="site_id">Site</label>
+                        <select class="form-control" id="site_id" name="site_id" ng-model="site_id" ng-options="site.id as site.name for site in ct.sites" ng-disabled="req_status == 3" required>
+                            <option value="">Select Site</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label for="is_chargeable">Is Chargeable?</label>
+                        <select ng-model="is_chargeable" id="is_chargeable" ng-disabled="req_status == 3" class="form-control" ng-options="charge.value as charge.name for charge in ct.chargeable_options">
+                            <option value="">Select</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="selected_vendor">Vendors</label>
+                        <select ng-model="selected_vendor" id="selected_vendor" ng-disabled="req_status == 3" ng-change="ct.selectVendor()" class="form-control" ng-options="vendor.id as vendor.vendor_name for vendor in ct.vendors">
+                            <option value="" selected>Select</option>
+                        </select>
+                    </div>
+                    
+                </div>
+
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Procure</strong></div>
+
+            <div class="panel-body" ng-init="ct.getItems()">
+
+                <div class="row" ng-show="req_status < 3">
+                    
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="description_filter" placeholder="Description" ng-model="description_filter" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <select class="form-control" name="type_id_filter" ng-model="type_id_filter" ng-options="item_type.id as item_type.name for item_type in ct.item_types" required>
+                            <option value="">Select Type</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- <div class="action_btns">
+                    <button class="btn btn-primary pull-right" ng-click="ct.addZone()">Add</button>
+                </div> -->
+                <div id="scrollpane" class="scroll-pane mCustomScrollbar">            
+                    <div class="table-responsive">
+                        
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="40%">Item</th>
+                                    <th width="15%">Quantity</th>
+                                    <th>Vendor</th>
+                                    <th>Rate</th>
+                                    <th width="20%">Total Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in procure_items | filter: { description: description_filter, type_id: type_id_filter } track by $index" ng-if="procure_items.length > 0">
+                                    <td>
+                                        <strong>{% item.description %}</strong><br />
+                                        ₹ {% item.rate %}
+                                    </td>
+                                    <td>
+                                        <input type="number" ng-model="item.quantity" ng-change="ct.calculateVendorRate(item,item.vendor_id)" min="0" step="1"/>
+                                    </td>
+                                    <td ng-init="item.vendor_id = item.vendor_id || ''">
+                                        <select ng-model="item.vendor_id" class="custom_select" ng-change="ct.calculateVendorRate(item,item.vendor_id)">
+                                            <option value="" selected>Select</option>
+                                            <option value="{% vendor.vendor_id %}|{% vendor.rate %}" ng-repeat="vendor in item.vendors">{% vendor.vendor_name %}</option>
+                                        </select>
+                                    </td>
+                                    <td>{% item.vendor_rate %}</td>
+                                    <td>
+                                        {% item.vendor_total %}<br />
+                                        GST: {% item.gst_per %}%
+                                    </td>
+                                </tr>
+                                <tr ng-show="ct.loading">
+                                    <td colspan="6" align="center" style="background-color: #e4e4e4;">
+                                        <img src="images/loading.gif" />
+                                    </td>
+                                </tr>
+                                <tr ng-if="procure_items.length <= 0">
+                                    <td colspan="6">No items found.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-primary margin-top-15 pull-right" ng-show="!ct.is_requisition_editable" ng-disabled="ct.loading" ng-click="ct.addItems()">Add Items</button>
+                        <button class="btn btn-primary margin-top-15 pull-right" ng-show="ct.is_requisition_editable" ng-disabled="ct.loading" ng-click="ct.addItems()">Update Items</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 hidden-sm hidden-xs">
+        
+        <div class="row">
+
+            <div class="col-md-12">
+        
+                <div class="panel panel-default">
+
+                    <div class="panel-heading"><strong>Chargeable Items</strong> <!-- <a href="javascript:void(0)" class="pull-right" ng-click="ct.export('pdf')"><img src="images/pdf-icon.jpg" /></a> <a href="javascript:void(0)" class="pull-right" ng-click="ct.export('excel')"><img src="images/excel-icon.png" class="excel-icon" /></a> --></div>
+
+                    <div class="panel-body">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div id="scrollpane_right_top" class="scroll-pane-right mCustomScrollbar">
+
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Item</th>
+                                                    <th>Quantity</th>
+                                                    <th>Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="ci in ct.chargeable_items">
+                                                    <td>{% ci.description %}</td>
+                                                    <td>{% ci.quantity %}</td>
+                                                    <td>{% ci.vendor_total %}</td>
+                                                </tr>
+                                                <tr ng-if="ct.chargeable_items.length <= 0">
+                                                    <td colspan="3">No items added</td>
+                                                </tr>
+                                            </tbody>               
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        
+                        <!-- <div class="row">
+                            <div class="col-md-6">Tax</div>
+                            <div class="col-md-6 text-right">{% ct.chargeable_tax || 0 %}</div>
+                        </div> -->
+
+                        <div class="row">
+                            <div class="col-md-6"><strong>Total Price</strong></div>
+                            <div class="col-md-6 text-right">{% ct.chargeable_total || 0 %}</div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+
+            <div class="col-md-12">
+        
+                <div class="panel panel-default">
+
+                    <div class="panel-heading"><strong>Non Chargeable Items</strong> <!-- <a href="javascript:void(0)" class="pull-right" ng-click="ct.export('pdf')"><img src="images/pdf-icon.jpg" /></a> <a href="javascript:void(0)" class="pull-right" ng-click="ct.export('excel')"><img src="images/excel-icon.png" class="excel-icon" /></a> --></div>
+
+                    <div class="panel-body">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div id="scrollpane_right_bottom" class="scroll-pane-right mCustomScrollbar">
+
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Item</th>
+                                                    <th>Quantity</th>
+                                                    <th>Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="nci in ct.non_chargeable_items">
+                                                    <td>{% nci.description %}</td>
+                                                    <td>{% nci.quantity %}</td>
+                                                    <td>{% nci.vendor_total %}</td>
+                                                </tr>
+                                                <tr ng-if="ct.non_chargeable_items.length <= 0">
+                                                    <td colspan="3">No items added</td>
+                                                </tr>
+                                            </tbody>               
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        
+                        <!-- <div class="row">
+                            <div class="col-md-6">Tax</div>
+                            <div class="col-md-6 text-right">{% ct.non_chargeable_tax || 0 %}</div>
+                        </div> -->
+
+                        <div class="row">
+                            <div class="col-md-6"><strong>Total Price</strong></div>
+                            <div class="col-md-6 text-right">{% ct.non_chargeable_total || 0 %}</div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+            <div class="col-md-12">
+                
+                <button class="btn btn-success pull-right custom_btn" ng-click="submitRequest()" ng-if="ct.is_submit == true" ng-disabled="ct.loading">{% req_status == 2 ? 'Confirm' : 'Submit' %}</button>
+
+            </div>
+
+        </div>
+
+        
+        
+
+    </div>
+</div>

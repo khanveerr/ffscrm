@@ -1,0 +1,134 @@
+<div class="row">
+    <!-- <div class="col-md-1 hidden-sm hidden-xs">
+        &nbsp;
+    </div> -->
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">List</div>
+
+            <div class="panel-body" ng-init="ct.getRequisitions()">
+                
+                <div class="action_btns">
+                    <select name="fy_filter" ng-model="ct.fy_filter" class="form-control pull-left col-md-2">
+                        <option value="">Select Financial Year</option>
+                        <option value="{% fy.value %}" ng-repeat="fy in ct.financial_year">{% fy.name %}</option>
+                    </select>
+                    <select name="month_filter" ng-model="ct.month_filter" ng-change="ct.getRequisitions('1')" class="form-control pull-left col-md-2">
+                        <option value="">Select Month</option>
+                        <option value="{% month.value %}" ng-repeat="month in ct.report_months">{% month.name %}</option>
+                    </select>
+                    <input type="text" name="site_filter" ng-change="ct.getRequisitions('1')" class="form-control pull-left col-md-3" ng-model="ct.site_filter" placeholder="Enter site name" />
+                    <select name="chargeable_filter" ng-model="ct.chargeable_filter" ng-change="ct.getRequisitions('1')" class="form-control pull-left col-md-2">
+                        <option value="">Is Chargeable?</option>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                    <select name="status_filter" ng-model="ct.status_filter" ng-change="ct.getRequisitions('1')" class="form-control pull-left col-md-2">
+                        <option value="">Select Status</option>
+                        <option value="-1" ng-if="currentUser.user_type == 'F'">Draft</option>
+                        <option value="0">Pending</option>
+                        <option value="1">Processed</option>
+                        <option value="2">Delivered</option>
+                        <option value="3">Confirmed</option>
+                    </select>
+                    <button class="btn btn-primary pull-right" ng-click="ct.getRequisitionsExport()" style="margin-bottom: 10px;">Export</button>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table" ng-if="ct.requisitions">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th width="25%">Site</th>
+                                <th>Month</th>
+                                <th>Is Chargeable?</th>
+                                <th>Submitted By</th>
+                                <th>Status</th>
+                                <th ng-if="currentUser.user_type == 'A' || currentUser.user_type == 'S'">Action</th>
+                                <th ng-if="currentUser.user_type == 'A' || currentUser.user_type == 'S'">Download PO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="requisition in ct.requisitions" ng-if="(currentUser.user_type == 'A' || currentUser.user_type == 'S') && ((requisition.parent_id != 0 && requisition.proc_items == 0) || (requisition.parent_id == 0 && requisition.proc_items != 0))  && requisition.status != -1">
+                                <td>
+                                    <span ng-if="requisition.status == 0">{% requisition.req_no %}</span>
+                                    <span ng-if="requisition.status == 1 || requisition.status == 2 || requisition.status == 3">{% requisition.order_id %}</span>
+                                </td>
+                                <td><a href="javascript:void(0)" ng-click="ct.show_requisition_items(requisition.id)">{% requisition.site_name %}</a></td>
+                                <td>{% requisition.month_str %}</td>
+                                <td>{% requisition.is_chargeable == 1 ? 'Yes' : 'No' %}</td>
+                                <td>{% requisition.submitted_user %}</td>
+                                <td>
+                                    <span ng-if="(currentUser.user_type == 'A' || currentUser.user_type == 'S') && requisition.status == 0 && requisition.proc_items > 0" class="badge badge-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Pending {% requisition.proc_items %} items</span>
+                                    <span ng-if="currentUser.user_type == 'F' && requisition.status == 0" class="badge badge-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Pending</span>
+                                    <span class="badge badge-primary cursor-pointer" ng-click="ct.setStatus(requisition.id)" ng-if="requisition.status == 1 && (currentUser.user_type == 'A' || currentUser.user_type == 'S')">Proccesed</span>
+                                    <span class="badge badge-primary" ng-if="requisition.status == 1 && currentUser.user_type == 'F'">Proccesed</span>
+                                    <span class="badge label-warning" ng-if="requisition.status == 2">Delivered</span>
+                                    <span class="badge badge-success" ng-if="requisition.status == 3">Confirmed</span>
+                                </td>
+                                <td ng-if="(currentUser.user_type == 'A' || currentUser.user_type == 'S') && requisition.parent_id == 0 && requisition.proc_items > 0"><a href="/requisition/edit/{% requisition.id %}"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32">
+                                    <title>Edit Requisition</title>
+                                    <path d="M26.443 12.15l-11.286 11.3-2.606-2.606 11.292-11.294 2.6 2.6zM27.15 11.443l-2.599-2.599 1.727-1.728c0.391-0.391 1.024-0.388 1.417 0.003l1.18 1.177c0.392 0.391 0.395 1.025 0.005 1.416l-1.729 1.731zM11.904 21.611l2.495 2.495-3.135 0.617 0.64-3.113zM22 10v0l-6-7h-10.997c-1.106 0-2.003 0.898-2.003 2.007v22.985c0 1.109 0.891 2.007 1.997 2.007h15.005c1.103 0 1.997-0.898 1.997-1.991v-10.009l7.58-7.58c0.784-0.784 0.786-2.054 0.010-2.83l-1.18-1.179c-0.779-0.779-2.037-0.783-2.83 0.010l-3.58 3.58zM21 19v9.007c0 0.548-0.448 0.993-1 0.993h-15c-0.545 0-1-0.446-1-0.995v-23.009c0-0.54 0.446-0.995 0.996-0.995h10.004v4.994c0 1.119 0.895 2.006 1.998 2.006h4.002l-10 10-1 5 5-1 6-6zM16 4.5l4.7 5.5h-3.703c-0.546 0-0.997-0.452-0.997-1.009v-4.491z"></path>
+                                    </svg></a></td>
+                                <td ng-if="(currentUser.user_type == 'A' || currentUser.user_type == 'S') && requisition.parent_id != 0 && requisition.proc_items == 0"><a href="/requisition/edit/{% requisition.id %}"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32">
+                                    <title>Edit Requisition</title>
+                                    <path d="M26.443 12.15l-11.286 11.3-2.606-2.606 11.292-11.294 2.6 2.6zM27.15 11.443l-2.599-2.599 1.727-1.728c0.391-0.391 1.024-0.388 1.417 0.003l1.18 1.177c0.392 0.391 0.395 1.025 0.005 1.416l-1.729 1.731zM11.904 21.611l2.495 2.495-3.135 0.617 0.64-3.113zM22 10v0l-6-7h-10.997c-1.106 0-2.003 0.898-2.003 2.007v22.985c0 1.109 0.891 2.007 1.997 2.007h15.005c1.103 0 1.997-0.898 1.997-1.991v-10.009l7.58-7.58c0.784-0.784 0.786-2.054 0.010-2.83l-1.18-1.179c-0.779-0.779-2.037-0.783-2.83 0.010l-3.58 3.58zM21 19v9.007c0 0.548-0.448 0.993-1 0.993h-15c-0.545 0-1-0.446-1-0.995v-23.009c0-0.54 0.446-0.995 0.996-0.995h10.004v4.994c0 1.119 0.895 2.006 1.998 2.006h4.002l-10 10-1 5 5-1 6-6zM16 4.5l4.7 5.5h-3.703c-0.546 0-0.997-0.452-0.997-1.009v-4.491z"></path>
+                                    </svg></a></td>
+                                <td ng-if="(currentUser.user_type == 'A' || currentUser.user_type == 'S') && requisition.parent_id == 0 && requisition.proc_items == 0">&nbsp;</td>
+                                <td ng-if="(currentUser.user_type == 'A' || currentUser.user_type == 'S') && requisition.status > 0"><a href="javascript:void(0)" ng-click="ct.exportPO(requisition.id)"><img src="images/pdf-icon.jpg" /></a></td>
+                                <td ng-if="(currentUser.user_type == 'A' || currentUser.user_type == 'S') && requisition.status == 0">&nbsp;</td>
+
+                            </tr>
+                            <tr ng-repeat="requisition in ct.requisitions" ng-if="currentUser.user_type == 'F' && ((requisition.parent_id != 0 && requisition.proc_items == 0) || (requisition.parent_id == 0 && requisition.proc_items != 0))">
+                                <td>
+                                    <span ng-if="requisition.status == 0">{% requisition.req_no %}</span>
+                                    <span ng-if="requisition.status == 1 || requisition.status == 2 || requisition.status == 3">{% requisition.order_id %}</span>
+                                </td>
+                                <td><a href="javascript:void(0)" ng-click="ct.show_requisition_items(requisition.id)">{% requisition.site_name %}</a></td>
+                                <td>{% requisition.month_str %}</td>
+                                <td>{% requisition.is_chargeable == 1 ? 'Yes' : 'No' %}</td>
+                                <td>{% requisition.submitted_user %}</td>
+                                <td>
+                                    <!-- <span ng-if="(currentUser.user_type == 'A' || currentUser.user_type == 'S') && requisition.status == 0" class="badge badge-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Pending {% requisition.proc_items %} items</span> -->
+                                    <span ng-if="requisition.status == 0 && requisition.proc_items > 0" class="badge badge-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Pending {% requisition.proc_items %} items</span>
+                                    <a href="/procure/items/{% requisition.id %}" ng-if="currentUser.user_type == 'F' && requisition.status == -1" class="badge badge-danger" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Draft</a>
+                                    <a href="javascript:void(0)" ng-if="currentUser.user_type == 'F' && requisition.status == -1" class="pull-right" ng-click="ct.export_by_proc_id(requisition.id,'pdf')"><img src="images/pdf-icon.jpg" /></a> 
+                                    <a href="javascript:void(0)" ng-if="currentUser.user_type == 'F' && requisition.status == -1" class="pull-right" ng-click="ct.export_by_proc_id(requisition.id,'excel')"><img src="images/excel-icon.png" class="excel-icon" /></a>
+                                    <span class="badge badge-primary cursor-pointer" ng-click="ct.setStatus(requisition.id)" ng-if="requisition.status == 1 && (currentUser.user_type == 'A' || currentUser.user_type == 'S')">Proccesed</span>
+                                    <span class="badge badge-primary" ng-if="requisition.status == 1 && currentUser.user_type == 'F'">Proccesed</span>
+                                    <span class="badge label-warning" ng-if="requisition.status == 2">Delivered</span>
+                                    <span class="badge badge-success" ng-if="requisition.status == 3">Confirmed</span>
+                                </td>
+                                <td ng-if="currentUser.user_type == 'A'"><a href="/requisition/edit/{% requisition.id %}"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32">
+                                    <title>Edit Requisition</title>
+                                    <path d="M26.443 12.15l-11.286 11.3-2.606-2.606 11.292-11.294 2.6 2.6zM27.15 11.443l-2.599-2.599 1.727-1.728c0.391-0.391 1.024-0.388 1.417 0.003l1.18 1.177c0.392 0.391 0.395 1.025 0.005 1.416l-1.729 1.731zM11.904 21.611l2.495 2.495-3.135 0.617 0.64-3.113zM22 10v0l-6-7h-10.997c-1.106 0-2.003 0.898-2.003 2.007v22.985c0 1.109 0.891 2.007 1.997 2.007h15.005c1.103 0 1.997-0.898 1.997-1.991v-10.009l7.58-7.58c0.784-0.784 0.786-2.054 0.010-2.83l-1.18-1.179c-0.779-0.779-2.037-0.783-2.83 0.010l-3.58 3.58zM21 19v9.007c0 0.548-0.448 0.993-1 0.993h-15c-0.545 0-1-0.446-1-0.995v-23.009c0-0.54 0.446-0.995 0.996-0.995h10.004v4.994c0 1.119 0.895 2.006 1.998 2.006h4.002l-10 10-1 5 5-1 6-6zM16 4.5l4.7 5.5h-3.703c-0.546 0-0.997-0.452-0.997-1.009v-4.491z"></path>
+                                    </svg></a></td>
+                                <td ng-if="currentUser.user_type == 'A' && requisition.status > 0"><a href="javascript:void(0)" ng-click="ct.exportPO(requisition.id)"><img src="images/pdf-icon.jpg" /></a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" ng-if="ct.requisitions.length <= 0">
+                                    Sorry, no records found
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <ul class="pagination" ng-if="ct.showPagination">
+                    <li ng-show="ct.currentPage != 1"><a href="javascript:void(0)" ng-click="ct.getRequisitions(1)">&laquo;</a></li>
+                    <li ng-show="ct.currentPage != 1"><a href="javascript:void(0)" ng-click="ct.getRequisitions(ct.currentPage-1)">&lsaquo; Prev</a></li>
+                    <li ng-repeat="i in ct.range" ng-class="{active : ct.currentPage == i}">
+                        <a href="javascript:void(0)"" ng-click="ct.getRequisitions(i)">{%i%}</a>
+                    </li>
+                    <li ng-show="ct.currentPage != ct.totalPages"><a href="javascript:void(0)" ng-click="ct.getRequisitions(ct.currentPage+1)">Next &rsaquo;</a></li>
+                    <li ng-show="ct.currentPage != ct.totalPages"><a href="javascript:void(0)" ng-click="ct.getRequisitions(ct.totalPages)">&raquo;</a></li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+    <!-- <div class="col-md-1 hidden-sm hidden-xs">
+        &nbsp;
+    </div> -->
+</div>

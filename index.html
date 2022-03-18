@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zxx" class="js">
+  <head>
+    <base href="/" />
+    <meta charset="utf-8" />
+    <meta name="author" content="ABC" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="@@page-discription" />
+    <!-- Fav Icon  -->
+    <link rel="shortcut icon" href="/app/images/favicon.png" />
+    <!-- Page Title  -->
+    <title>Sila CRM</title>
+    <!-- StyleSheets  -->
+    <link rel="stylesheet" href="/app/assets/css/dashlite.css?ver=1.4.0" />
+    <link
+      id="skin-default"
+      rel="stylesheet"
+      href="/app/assets/css/theme.css?ver=1.4.0"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/angular-toastr@2/dist/angular-toastr.css"
+    />
+    <link rel="stylesheet" href="/app/assets/css/sweet-alert.css" />
+    <link href="/app/assets/css/datepicker.css" rel="stylesheet" />
+    <link href="/app/assets/css/custom.css" rel="stylesheet" />
+    <!-- <link rel="stylesheet" type="text/css" href="node_modules/sweetalert2/dist/sweetalert2.min.css"> -->
+    <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"/>
+  </head>
+
+  <body
+    class="nk-body"
+    ng-app="silaproject"
+    ng-controller="HeaderCtrl"
+    ng-class="authenticated == false ? 'npc-crypto ui-clean pg-auth' : 'bg-lighter npc-general has-sidebar'" ng-cloak
+  >
+    <div class="nk-app-root">
+      <!-- <div ui-view></div> -->
+      <!-- main @s -->
+      <div class="nk-main" ng-show="authenticated">
+        <!-- sidebar @s -->
+        <div
+          ng-include="'app/includes/sidebar.html'"
+          class="nk-sidebar nk-sidebar-fixed is-light"
+          data-content="sidebarMenu"
+        ></div>
+        <!-- sidebar @e -->
+        <!-- wrap @s -->
+        <div class="nk-wrap">
+          <!-- main header @s -->
+          <div class="nk-header nk-header-fixed is-light d-xl-none">
+            <div class="container-fluid">
+              <div class="nk-header-wrap">
+                <div class="nk-menu-trigger d-xl-none ml-n1">
+                  <a
+                    href="#"
+                    class="nk-nav-toggle nk-quick-nav-icon"
+                    data-target="sidebarMenu"
+                    ><em class="icon ni ni-menu"></em
+                  ></a>
+                </div>
+                <div class="nk-header-brand d-xl-none">
+                  <a href="html/crypto/index.html" class="logo-link">
+                    <img
+                      class="logo-light logo-img"
+                      src="https://silagroup.co.in/dist/img/logo.png"
+                      srcset="https://silagroup.co.in/dist/img/logo.png 2x"
+                      alt="logo"
+                    />
+                    <img
+                      class="logo-dark logo-img"
+                      src="https://silagroup.co.in/dist/img/logo.png"
+                      srcset="https://silagroup.co.in/dist/img/logo.png 2x"
+                      alt="logo-dark"
+                    />
+                    <!-- <span class="nio-version">General</span> -->
+                  </a>
+                </div>
+
+                <!-- .nk-header-news -->
+                <div class="nk-header-tools">
+                  <ul class="nk-quick-nav">
+                    <li class="dropdown user-dropdown">
+                      <a
+                        href="#"
+                        class="dropdown-toggle"
+                        data-toggle="dropdown"
+                      >
+                        <div class="user-toggle">
+                          <div class="user-avatar sm">
+                            <em class="icon ni ni-user-alt"></em>
+                          </div>
+                          <div class="user-info d-none d-md-block">
+                            <div class="user-status">
+                              {{ currentUser.user_type == 'A' ? 'Admin' : 'BD'
+                              }}
+                            </div>
+                            <div class="user-name dropdown-indicator">
+                              {{ currentUser.name }}
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+                      <div
+                        class="dropdown-menu dropdown-menu-md dropdown-menu-right dropdown-menu-s1"
+                      >
+                        <div
+                          class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block"
+                        >
+                          <div class="user-card">
+                            <div class="user-avatar">
+                              <span>{{ currentUser.abbr }}</span>
+                            </div>
+                            <div class="user-info">
+                              <span class="lead-text"
+                                >{{ currentUser.name }}</span
+                              >
+                              <span class="sub-text"
+                                >{{ currentUser.email }}</span
+                              >
+                            </div>
+                          </div>
+                        </div>
+                        <!-- <div class="dropdown-inner">
+                          <ul class="link-list">
+                            <li>
+                              <a href="./user-profile-regular.html"
+                                ><em class="icon ni ni-security"></em
+                                ><span>Change Password</span></a
+                              >
+                            </li>
+                          </ul>
+                        </div> -->
+                        <div class="dropdown-inner">
+                          <ul class="link-list">
+                            <li>
+                              <a href="#" ng-click="logout()"
+                                ><em class="icon ni ni-signout"></em
+                                ><span>Sign out</span></a
+                              >
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </li>
+                    <!-- .dropdown -->
+
+                    <!-- .dropdown -->
+                  </ul>
+                  <!-- .nk-quick-nav -->
+                </div>
+                <!-- .nk-header-tools -->
+              </div>
+              <!-- .nk-header-wrap -->
+            </div>
+            <!-- .container-fliud -->
+          </div>
+          <!-- main header @e -->
+          <!-- content @s -->
+
+          <div class="nk-content">
+            <div ui-view></div>
+          </div>
+
+          <!-- content @e -->
+          <!-- footer @s -->
+          <div class="nk-footer">
+            <div class="container-fluid">
+              <div class="nk-footer-wrap">
+                <div class="nk-footer-copyright">
+                  &copy; 2020 Sila CRM
+                </div>
+                <!-- <div class="nk-footer-links">
+                  <ul class="nav nav-sm">
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Terms</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Privacy</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Help</a>
+                    </li>
+                  </ul>
+                </div> -->
+              </div>
+            </div>
+          </div>
+
+          <!-- footer @e -->
+        </div>
+        <!-- wrap @e -->
+      </div>
+
+      <div ui-view ng-hide="authenticated"></div>
+
+      <!-- main @e -->
+    </div>
+    <!-- app-root @e -->
+    <!-- JavaScript -->
+
+    <script src="/app/assets/js/bundle.js?ver=1.4.0"></script>
+    <script src="/app/assets/js/scripts.js?ver=1.4.0"></script>
+    <script src="/app/assets/js/charts/gd-general.js?ver=1.4.0"></script>
+
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="bower_components/moment/min/moment.min.js"></script>
+
+
+    <script
+      type="text/javascript"
+      src="/app/node_modules/angular/angular.min.js"
+    ></script>
+    <script src="/app/assets/scripts/angular-animate.min.js"></script>
+    <script src="/app/assets/scripts/angular-route.min.js"></script>
+    <script src="/app/assets/scripts/angular-ui-router.min.js"></script>
+
+    <script src="/app/assets/scripts/angular-messages.min.js"></script>
+    <script src="/app/node_modules/satellizer/dist/satellizer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/angular-toastr@2/dist/angular-toastr.tpls.js"></script>
+
+    <script
+      type="text/javascript"
+      src="/app/assets/scripts/sweet-alert.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="/app/assets/scripts/SweetAlert.js"
+    ></script>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/funnel.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <script type="text/javascript" src="bower_components/angular-ui-calendar/src/calendar.js"></script>
+    <script type="text/javascript" src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+    <script type="text/javascript" src="bower_components/fullcalendar/dist/gcal.js"></script>
+
+
+    <script src="/app/app.js"></script>
+
+    <script src="/app/common/route.js"></script>
+    <script src="/app/common/headerCtrl.js"></script>
+
+    <script src="/app/modules/leads/route.js"></script>
+    <script src="/app/modules/leads/services.js"></script>
+    <script src="/app/modules/leads/leadCtrl.js"></script>
+
+    <script src="/app/modules/won_leads/route.js"></script>
+    <script src="/app/modules/won_leads/wonLeadCtrl.js"></script>
+
+    <script src="/app/modules/lead_database/route.js"></script>
+    <script src="/app/modules/lead_database/leadDBCtrl.js"></script>
+
+    <script src="/app/modules/kaps/route.js"></script>
+    <script src="/app/modules/kaps/services.js"></script>
+    <script src="/app/modules/kaps/kapCtrl.js"></script>
+
+    <script src="/app/modules/users/route.js"></script>
+    <script src="/app/modules/users/services.js"></script>
+    <script src="/app/modules/users/userCtrl.js"></script>
+
+    <script src="/app/modules/cities/route.js"></script>
+    <script src="/app/modules/cities/services.js"></script>
+    <script src="/app/modules/cities/cityCtrl.js"></script>
+
+    <script src="/app/modules/login/route.js"></script>
+    <script src="/app/modules/login/services.js"></script>
+    <script src="/app/modules/login/loginCtrl.js"></script>
+
+    <script src="/app/modules/nps/route.js"></script>
+    <script src="/app/modules/nps/services.js"></script>
+    <script src="/app/modules/nps/npsCtrl.js"></script>
+
+    <script src="/app/modules/dashboard/route.js"></script>
+    <script src="/app/modules/dashboard/services.js"></script>
+    <script src="/app/modules/dashboard/dashboardCtrl.js"></script>
+
+    <script src="/app/modules/calendar/route.js"></script>
+    <script src="/app/modules/calendar/services.js"></script>
+    <script src="/app/modules/calendar/calendarCtrl.js"></script>
+
+    <script
+      type="text/javascript"
+      src="/app/assets/scripts/bootstrap-datepicker.js"
+    ></script>
+  </body>
+</html>

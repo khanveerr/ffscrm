@@ -1,0 +1,238 @@
+<div class="container-fluid">
+    <div class="nk-content-inner">
+      <div class="nk-content-body">
+
+        <div class="nk-block-head nk-block-head-sm">
+          <div class="nk-block-between">
+            <div class="nk-block-head-content">
+              <h3 class="nk-block-title page-title">Lead Reports</h3>
+            </div>
+          </div>
+          <!-- .nk-block-between -->
+        </div>
+  
+        <!-- .nk-block-head -->
+        <div class="nk-block pt-0">
+
+            <div class="row gy-4">
+                <div class="col-sm-12">
+                    <div class="card card-bordered card-preview">
+                        <div class="card-inner">
+                            <div class="row gy-4">
+                                <div class="col-sm-3">&nbsp;</div>
+                                <div class="col-sm-6"><div id="sales_funnel"></div></div>
+                                <div class="col-sm-3">&nbsp;</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row gy-4">
+                <div class="col-sm-12">
+                    <div class="card card-bordered card-preview">
+                        <div class="card-inner">
+                            <div class="row gy-4">
+                                <div class="col-sm-12"><div id="leadownerwise_bar"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- .nk-block -->
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid" style="margin-top: 50px;">
+    <div class="nk-content-inner">
+      <div class="nk-content-body">
+
+        <div class="nk-block-head nk-block-head-sm">
+          <div class="nk-block-between">
+            <div class="nk-block-head-content">
+              <h3 class="nk-block-title page-title">Contract Closure Reports</h3>
+            </div>
+          </div>
+          <!-- .nk-block-between -->
+        </div>
+  
+        <!-- .nk-block-head -->
+        <div class="nk-block pt-0">
+
+            <div class="row gy-4">
+                <div class="col-sm-12">
+                    <div class="card card-bordered card-preview">
+                        <div class="card-inner">
+                            <div class="row gy-4">
+                                <!-- <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-label" for="financial_year">Financial Year</label>
+                                        <div class="form-control-wrap">
+                                            <select
+                                              name="financial_year"
+                                              class="form-control"
+                                              ng-model="financial_year_filter"
+                                            >
+                                              <option value="">Select</option>
+                                              <option value="2020-2021">FY2020-2021</option>
+                                              <option value="2021-2022">FY2021-2022</option>
+                                            </select>
+                                          </div>
+                                    </div>
+                                </div> -->
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-label" for="type">Select Type</label>
+                                        <div class="form-control-wrap">
+                                            <select
+                                              name="type"
+                                              class="form-control"
+                                              ng-model="type_filter"
+                                              ng-change="setType(type_filter)"
+                                            >
+                                              <option value="">Select</option>
+                                              <option value="date">By Date</option>
+                                              <option value="month">By Month</option>
+                                            </select>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2" ng-show="is_date_filter">
+                                    <div class="form-group">
+                                      <label class="form-label">From</label>
+                                      <div class="form-control-wrap">
+                                        <input type="text" class="form-control" tabindex="-1" ng-model="from_date_filter" datepicker="" dp-format="dd-mm-yyyy">
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2" ng-show="is_date_filter">
+                                    <div class="form-group">
+                                        <label class="form-label">To</label>
+                                        <div class="form-control-wrap">
+                                        <input type="text" class="form-control" tabindex="-1" ng-model="to_date_filter" datepicker="" dp-format="dd-mm-yyyy">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2" ng-show="is_month_filter">
+                                    <div class="form-group">
+                                        <label class="form-label" for="month">Month</label>
+                                        <div class="form-control-wrap">
+                                            <select
+                                              name="month"
+                                              class="form-control"
+                                              ng-model="month_filter"
+                                            >
+                                              <option value="">Select</option>
+                                              <option value="4">April</option>
+                                              <option value="5">May</option>
+                                              <option value="6">June</option>
+                                              <option value="7">July</option>
+                                              <option value="8">August</option>
+                                              <option value="9">September</option>
+                                              <option value="10">October</option>
+                                              <option value="11">November</option>
+                                              <option value="12">December</option>
+                                              <option value="1">January</option>
+                                              <option value="2">February</option>
+                                              <option value="3">March</option>
+                                            </select>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-label">&nbsp;</label>
+                                        <div class="form-control-wrap">
+                                            <button
+                                                style="height: calc(2.125rem + 2px);"
+                                                type="button"
+                                                class="btn btn-lg btn-primary"
+                                                ng-click="apply_filter()"
+                                            >
+                                                Apply
+                                            </button>
+                                        </div>
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row gy-4">
+                <div class="col-sm-12">
+                    <div class="card card-bordered card-preview">
+                        <div class="card-inner">
+                            <div class="card-head"><h6 class="title text-right"><span>Total Site Started: {{ total_site_started_value }} L</span> <span>Total Contracts Won: {{ total_contracts_won_value }} L</span></h6></div>
+                            <div class="row gy-4">
+                                <div class="col-sm-12"><div id="contractswon_sitestarted_month_bar"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row gy-4">
+                <div class="col-sm-6">
+                    <div class="card card-bordered card-preview">
+                        <div class="card-inner">
+                            <div class="card-head"><h6 class="title text-right"><span>Total: {{ total_industry_data_value }} L</span></h6></div>
+                            <div class="row gy-4">
+                                <!-- <div class="col-sm-2">&nbsp;</div> -->
+                                <div class="col-sm-12"><div id="industry_report" style="overflow: visible !important;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card card-bordered card-preview">
+                        <div class="card-inner">
+                            <div class="card-head"><h6 class="title text-right"><span>Total: {{ total_leadsource_data_value }} L</span></h6></div>
+                            <div class="row gy-4">
+                                <!-- <div class="col-sm-2">&nbsp;</div> -->
+                                <div class="col-sm-12"><div id="leadsource_report" style="overflow: visible !important;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row gy-4">
+                <div class="col-sm-12">
+                    <div class="card card-bordered card-preview">
+                        <div class="card-inner">
+                            <div class="card-head"><h6 class="title text-right"><span>Total Site Started: {{ total_site_started_report_data_value }} L</span> <span>Total Contracts Won: {{ total_contracts_won_data_value }} L</span></h6></div>
+                            <div class="row gy-4">
+                                <div class="col-sm-12"><div id="sitestarted_bar"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row gy-4">
+                <div class="col-sm-12">
+                    <div class="card card-bordered card-preview">
+                        <div class="card-inner">
+                            <div class="card-head"><h6 class="title text-right"><span>Total Contracts Won: {{ total_contracts_won_lead_count }} </span> <span>Total Sites Activated: {{ total_sites_activated_lead_count }}</span></h6></div>
+                            <div class="row gy-4">
+                                <div class="col-sm-12"><div id="contractswon_sitestarted_bar"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+
+          <!-- .card-preview -->
+        </div>
+        <!-- .nk-block -->
+      </div>
+    </div>
+  </div>
+  
