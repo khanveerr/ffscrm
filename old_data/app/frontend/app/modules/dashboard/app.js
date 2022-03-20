@@ -1,1 +1,0 @@
-angular.module('dashboardApp', ['ConfigHelper','ui.materialize','oitozero.ngSweetAlert','appRoutes','angularMoment','Dashboard','AuthHelper','LeadServiceHelper','LeadManagerServiceHelper','OrderServiceHelper','angular-page-loader']);
