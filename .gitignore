@@ -16,6 +16,5 @@ _lighthouse_ide_helper.php
 .env
 .env.backup
 
-bower_components
 certs
 old_data
