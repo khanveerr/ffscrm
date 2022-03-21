@@ -1,16 +1,10 @@
-node_modules
 apis/public/hot
 apis/public/storage
 apis/storage/*.key
-apis/vendor
 apis/.env
 apis/.env.backup
-apis/.phpunit.result.cache
 npm-debug.log
 yarn-error.log
-schema-directives.graphql
-programmatic-types.graphql
-_lighthouse_ide_helper.php
 .vscode
 
 certs
