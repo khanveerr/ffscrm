@@ -1,0 +1,28 @@
+{
+  "name": "mhccrm",
+  "description": "Crm for MHC build on MEAN stack",
+  "main": "server.js",
+  "authors": [
+    "Prashant Verma"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "mhc",
+    "crm",
+    "cleaning",
+    "pest"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/frontend/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "materialize": "^0.97.8",
+    "angular": "^1.5.8"
+  }
+}

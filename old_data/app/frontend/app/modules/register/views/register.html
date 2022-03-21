@@ -1,0 +1,76 @@
+  <div id="login-page" class="row login-width">
+    <div class="col s12 z-depth-6 card-panel">
+      <form class="login-form" ng-submit="registerUser()">
+        <div class="row margin-bottom-0">
+          <div class="input-field col s12 center">
+<!--             <img src="http://w3lessons.info/logo.png" alt="" class="responsive-img valign profile-image-login"> -->
+            <p class="login-form-text margin-bottom-5 margin-top-5"><b>Register User</b></p>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-social-person-outline prefix"></i>
+            <input id="name" type="text" class="validate" ng-model="uname">
+            <label for="name" class="center-align">Name</label>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-communication-email prefix"></i>
+            <input id="email" type="email" class="validate" ng-model="email">
+            <label for="email" class="center-align">Email</label>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <select id="city" class="validate" ng-model="city">
+              <option value="" disabled selected>City</option>
+              <option value="1">Mumbai</option>
+              <option value="2">Bangalore</option>
+              <option value="3">New Delhi</option>
+              <option value="11">Pune</option>
+            </select>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <select id="role" class="validate" ng-model="role">
+              <option value="" disabled selected>Role</option>
+              <option value="admin">Admin</option>
+              <option value="communications">Communications</option>
+              <option value="operations">Operations</option>
+              <option value="accounts">Accounts</option>
+              <option value="view">View</option>
+            </select>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-action-lock-outline prefix"></i>
+            <input id="password" type="password" class="validate" ng-model="password">
+            <label for="password">Password</label>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="mdi-action-lock-outline prefix"></i>
+            <input id="password-again" type="password" ng-model="cpassword">
+            <label for="password-again">Re-type password</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input type="submit" class="btn waves-effect waves-light col s12" value="Register" />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<script type="text/javascript">
+  
+  $(document).ready(function() {
+    $('select').material_select();
+  });
+
+</script>

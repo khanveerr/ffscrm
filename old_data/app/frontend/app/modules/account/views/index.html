@@ -1,0 +1,977 @@
+<div class="card-panel z-depth-0 filter-card">
+
+		<div class="card small padding-bottom-10">
+			<div class="row margin-bottom-0">
+				<div class="input-field col l2">
+					<select ng-model="lead_source_filter" class="browser-default margin-top-5" ng-change="filterOrders(1)">
+				      <option value="" selected>Lead Source</option>
+				      <option value="{{ key }}" ng-repeat="(key, value) in lead_source_options">{{ value }}</option>
+				    </select>
+				</div>
+				<div class="input-field col l2">
+					<select ng-model="lead_owner_filter" class="browser-default margin-top-5" ng-change="filterOrders(1)">
+				      <option value="" selected>Lead Owner</option>
+				      <option value="Abdulkader">Abdulkader Hamead</option>
+				      <option value="Axchita">Axchita Singh</option>
+				      <option value="Fatema">Fatema Patanwala</option>
+				      <option value="Leejohn">Leejohn Vaz</option>
+				      <option value="Nasreen">Nasreen Siddiqui</option>
+				      <option value="Varun">Varun Vaz</option>
+				      <option value="API">Website</option>
+				    </select>
+				</div>
+				<div class="input-field col l1">
+					<select ng-model="vendor_filter" class="browser-default margin-top-5" ng-change="filterOrders(1)">
+				      <option value="" selected>Vendor</option>
+				      <option value="{{ key }}" ng-repeat="(key, value) in vendor_options">{{ value }}</option>
+				    </select>
+				</div>
+				<div class="input-field col l3">
+					<input type="text" ng-model="keyword" class="margin-top-5" ng-change="filterOrders(1)">
+					<label class="active" for="filter_date">Name/Contact/Email</label>
+				</div>
+				<div class="input-field col l1">
+					<input type="date" placeholder="From Date" ng-model="from_date" class="datepicker margin-top-5">
+				</div>
+				<div class="input-field col l1">
+					<input type="date" placeholder="To Date" ng-model="to_date" ng-change="filterOrders(1)" class="datepicker margin-top-5">
+				</div>
+				<div class="input-field col l2">
+					<select ng-model="city_filter" class="browser-default margin-top-5" id="city_id" ng-change="filterOrders(1)">
+					    <option value="" selected>City</option>
+					    <option value="{{ key }}" ng-repeat="(key, value) in cities">{{ value }}</option>
+					</select>
+				</div>
+			</div>
+			<div class="row margin-bottom-10">
+				<div class="input-field col l2">
+					<select ng-model="service_name_filter" class="browser-default" ng-change="getVariantType(service_name_filter);filterOrders(1)">
+				      <option value="" selected>Service</option>
+				      <option value="{{ key }}" ng-repeat="(key, value) in services_options">{{ value }}</option>
+				    </select>
+				</div>
+				<div class="input-field col l2">
+					<select ng-model="variant_type_filter" class="browser-default" ng-change="filterOrders(1)" id="variant_type_id">
+					    <option value="" selected>Variant Type</option>
+					    <option value="{{ vt.id }}" ng-repeat="vt in service_varianttype">{{ vt.name }}</option>
+					</select>
+				</div>
+				<div class="input-field col l1">
+					<select ng-model="type_filter" class="browser-default">
+					    <option value="" selected>Type</option>
+					    <option value="address">Address</option>
+					    <option value="invoice">Invoice Amount</option>
+					    <option value="billing_name">Billing Name</option>
+					    <option value="billing_address">Billing Address</option>
+					    <option value="supervisor">Supervisor</option>
+					    <option value="teamleader">Team Leader</option>
+					    <option value="janitor">Janitor</option>
+					    <option value="leadid">Lead Id</option>
+					    <option value="orderid">Order Id</option>
+					</select>
+				</div>
+				<div class="input-field col l2">
+					<input type="text" ng-model="type_keyword" class="margin-top-5" ng-change="filterOrders(1)">
+					<label class="active">Enter text</label>
+				</div>
+				<div class="input-field col l2">
+					<select ng-model="payment_status_filter" class="browser-default" ng-change="filterOrders(1)" id="payment_status_filter">
+					    <option value="" selected>Payment Status</option>
+					    <option value="success" >Success</option>
+					    <option value="pending" >Pending</option>
+					    <option value="part_received" >Part Received</option>
+					    <option value="cancelled" >Cancelled</option>
+					</select>
+				</div>
+				<div class="input-field col l2">
+					<select ng-model="payment_mode_filter" class="browser-default" ng-change="filterOrders(1)" id="payment_mode_filter">
+					    <option value="" selected>Payment Mode</option>
+					    <option value="cash" >Cash</option>
+					    <option value="check" >Cheque</option>
+					    <option value="not_received" >Not Received</option>
+					</select>
+				</div>
+				<div class="input-field col l1">
+					<button class="waves-effect waves-light grey btn margin-top-5" ng-click="filterOrders(1)">
+						<i class="material-icons">search</i>
+					</button>
+				</div>
+			</div>
+	</div>
+</div>
+
+<div class="card-panel z-depth-0 filter-card">
+	<div class="card small padding-bottom-10 margin-top-0">
+		<div class="row margin-bottom-0">
+			<div class="col l12 right-align">
+				<button class="btn waves-effect waves-light red" ng-click="exportCancelledOrder()">Export Cancelled Orders</button>
+				<button class="btn waves-effect waves-light blue" ng-click="exportMaster()">Export Master</button>
+				<button class="btn waves-effect waves-light blue" ng-click="exportAll()">Export All Invoice</button>
+				<button class="btn waves-effect waves-light blue" ng-click="exportClient()">Export Client Invoice</button>
+				<button class="btn waves-effect waves-light blue" ng-click="exportPartner()">Export Partner Invoice</button>
+				<button class="btn waves-effect waves-light green" ng-click="exportOutstanding()">Outstanding Report</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<loading></loading>
+<div infinite-scroll='nextPage()' infinite-scroll-disabled='hasMoreData' infinite-scroll-distance='1'>
+<div ng-repeat="order in orders">
+<div class="row margin-bottom-0 margin-top-5">
+	<div class="col s12 m12 l2">
+		<div class="card small service-card order-card">
+
+			<div class="card-content services orders">
+              <span class="card-title" style="line-height: 16px; font-size: 14px;">
+              	C: <strong>{{ order.client_details.firstname }} {{ order.client_details.lastname }}</strong><br />
+              	B: <strong>{{ order.leadmanager_details.billing_name }}</strong>
+              </span>
+              <p>
+              	{{ order.client_details.primary_contact_no }}<br />
+              	{{ order.client_details.primary_email_id }}
+              </p>
+
+            <div class="divider margin-top-5"></div>
+
+
+			 <div class="row margin-bottom-0">
+
+				<div class="col l12 pad-left-zero">
+
+					<p class="margin-top-5"><strong class="font-size-12">Lead Source</strong>: <span class="font-size-12">{{ lead_source_options[order.leadmanager_details.leadsource] }}</span></p>
+
+				</div>
+
+			</div>
+
+			<div class="divider"></div>
+
+
+			 <div class="row">
+
+			  	<div class="col l6 pad-left-zero">
+
+	              	<p class="margin-top-5"><strong class="font-size-12">Payment Mode</strong></p>
+					<p class="font-size-12">
+						<span tooltipped ng-show="order.payment_remark" class="msg-show cursor-pointer" data-position="right" data-delay="50" data-tooltip="{{ order.payment_remark }}">{{ order.service_details.accounts_remark[order.service_details.accounts_remark.length-1] }}</span>
+						<span ng-hide="order.payment_remark">{{ order.payment_mode }}</span>
+					</p>
+
+				</div>
+
+				<div class="col l6 pad-left-zero">
+
+					<p class="margin-top-5"><strong class="font-size-12">Payment Status</strong></p>
+					<p class="font-size-12">
+						<span tooltipped ng-show="order.acount_payment_status" class="msg-show cursor-pointer" data-position="right" data-delay="50" data-tooltip="{{ order.acount_payment_status }}">{{ order.payment_status }}</span>
+						<span ng-hide="order.acount_payment_status">{{ order.payment_status }}</span>
+					</p>
+
+				</div>
+
+			</div>
+
+           <!--    <br />
+              <p><strong>Email Id</strong><br />niraj_sharma1999@yahoo.com</p>
+              <br />
+              <p><strong>Service Address</strong><br />B-1601, octacrest,lokhandwala township,kandivali eas</p> -->
+            </div>
+
+
+		</div>
+	</div>
+	<div class="col s12 m12 l5">
+		<div class="card small service-card">
+		    <!-- Card Content -->
+			<div class="card-content services">
+
+		    	<div class="row">
+
+		    		<div class="col l12 pad-left-zero">
+
+		    			<!-- <span ng-if="order.service_details.crm_remark[0].remark" tooltipped class="tooltipped right cursor-pointer" data-position="top" data-delay="50" data-tooltip="{{ order.service_details.crm_remark[0].remark }}"><i class="material-icons red-text">info</i></span> -->
+						
+						<span tooltipped ng-show="order.service_details.service_status==3" class="tooltipped right" data-position="top" data-delay="50" data-tooltip="Service Confirmed"><img src="img/tick_circle.gif" /></span>
+
+						<span tooltipped ng-show="order.amc_service_details.service_status==3" class="tooltipped right" data-position="top" data-delay="50" data-tooltip="Service Confirmed"><img src="img/tick_circle.gif" /></span>
+
+				      	<p><strong>{{ services_options[order.service_details.service_id] }}</strong> | {{ variant_options[order.service_details.variant_type_id] }} <span ng-if="order.service_details.additional_variant">- {{ order.service_details.additional_variant }}</span><span ng-if="order.service_details.is_amc">( {{ order.amc_service_details.amc_label }})</span><span ng-if="order.service_details.service_date.length > 1">(Day {{ (order.order_no) }})</span>
+				      		<!-- <span class="badge red right tooltipped modal-trigger" data-target="show_lead_stage_modal" data-position="top" data-delay="50" data-tooltip="Customer will call back.">hot</span> -->
+				      	</p>
+				      	<span ng-if="order.service_details.service_date.length > 1">
+		                <p ng-hide="order.service_details.is_amc">{{ order.service_details.service_date[order.order_no-1] | date:'dd MMMM yyyy' }} at {{ order.service_details.service_time[0] | date:'HH:mm a' }}</p>
+		                </span>
+				      	<span ng-else>
+		                <p ng-hide="order.service_details.is_amc">{{ order.service_details.service_date[0] | date:'dd MMMM yyyy' }} at {{ order.service_details.service_time[0] | date:'HH:mm a' }}</p>
+		                </span>
+						<p ng-show="order.service_details.is_amc">{{ order.amc_service_details.service_date[0] | date:'dd MMMM yyyy' }} at {{ order.amc_service_details.service_time[0] | date:'HH:mm a' }}</p>
+		                <p ng-show="order.service_details.is_amc"><a class="modal-trigger" ng-click="loadAllAMC(order.service_details._id)" data-target="view_all_amcs" modal>view all amcs</a></p>
+		                <div class="divider margin-top-5"></div>
+		                <p class="margin-top-5">
+		                	<b>Address: </b><span ng-if="order.address_details.address">{{ order.address_details.address }}</span><span ng-if="order.address_details.location">, {{ order.address_details.location }}</span><span ng-if="order.address_details.landmark">, {{ order.address_details.landmark }}</span><span ng-if="order.address_details.city">, {{ cities[order.address_details.city] }}</span>
+		                </p>
+
+		                <div class="divider margin-top-5"></div>
+
+		                <p class="margin-top-5"><b>Deployment: </b> <a class="modal-trigger" ng-show="order.service_details.no_of_supervisor" ng-click="setOrderId(order._id,'supervisor',order)" data-target="update_supervisor" modal>{{ order.service_details.no_of_supervisor }} Supervisor</a><span ng-hide="order.service_details.no_of_supervisor">{{ order.service_details.no_of_supervisor }} Supervisor</span> + <a class="modal-trigger" ng-show="order.service_details.no_of_team_leader" ng-click="setOrderId(order._id,'teamleader',order)" data-target="update_teamleader" modal>{{ order.service_details.no_of_team_leader }} Team Leader</a><span ng-hide="order.service_details.no_of_team_leader">{{ order.service_details.no_of_team_leader }} Team Leader</span> + <a class="modal-trigger" ng-click="setOrderId(order._id,'janitor',order)" ng-show="order.service_details.no_of_janitor" data-target="update_janitor" modal>{{ order.service_details.no_of_janitor }} Janitor</a><span ng-hide="order.service_details.no_of_janitor">{{ order.service_details.no_of_janitor }} Janitor</span></p>
+
+		                <p class="font-size-10">
+		                	<span ng-if="order.supervisor_name.length > 0">[<b>S</b>: {{ order.supervisor_name | joinBy:',' }}]</span>
+		                	<span ng-if="order.team_leader_name.length > 0">[<b>TL:</b> {{ order.team_leader_name | joinBy:',' }}]</span>
+		                	<span ng-if="order.janitor_name.length > 0">[<b>J:</b> {{ order.janitor_name | joinBy:',' }}]</span>
+		                </p>
+
+<!-- 		                <div class="divider margin-top-5" ng-if="order.service_details.crm_remark[0].remark"></div>
+ -->						<!-- {{ order.service_details.crm_remark }} -->
+		                <!-- <p class="margin-top-5" ng-if="order.service_details.crm_remark.length > 0">
+		                	<b>Remark: </b> --><!-- {{ order.service_details.crm_remark[0].remark }} -->
+		                	<!-- <span ng-repeat="crmrk in order.service_details.crm_remark">
+		                		{{ crmrk.remark }}
+		                	</span>
+		                </p> -->
+
+		                <div class="divider margin-top-5"></div>
+
+		                <p class="left vendor_dd margin-top-10">
+
+							<b>Vendor: </b> {{ vendors[order.vendor_allocated] }}
+							<span class="margin-top-5 cursor-pointer blue-text dropdown-button" data-activates='vendorDropdown{{ order._id }}' dropdown><i class="material-icons font-size-12">mode_edit</i></span>
+							<ul id='vendorDropdown{{ order._id }}' class='dropdown-content'>
+							    <li ng-repeat="(key,value) in vendors"><a href="javascript:void(0);" ng-click="updateVendor(order._id,key,$parent.$index)">{{ value }}</a></li>
+							</ul>
+							<input name="other_vendor_allocated" ng-model="order.other_vendor_allocated" value="{{ order.other_vendor_allocated }}" id="other_vendor_allocated{{ order._id }}" ng-change="updateOtherVendor(order._id)" class="new_text_input_css margin-top-5 margin-left-10"  />
+						</p>
+
+						<span class="badge" style="bottom:10px; border: 4px solid #010101; background: #5d2605 !important; color: #ffffff;" ng-show="order.service_details.service_status==3">Service Confirmed</span>
+
+						<span class="badge" style="bottom:10px; border: 4px solid #ff0000; background: #ff0000 !important; color: #ffffff;" ng-show="order.service_details.invoice_sent==1">Invoice Sent</span>
+
+                	</div>
+
+
+		    		<!-- <div class="col l5 ">
+
+						<p>
+							<strong>Deployment</strong><br />
+							1 + 1 + 3
+						</p>
+
+						<p class="margin-top-10">
+							1 - Supervisor<br />
+							1 - Teamleader<br />
+							3 - Janitor
+						</p>
+
+		    		</div> -->
+
+            	</div>
+
+
+			</div>
+
+		</div>
+	</div>
+
+	<!-- <div class="col s12 m12 l1">
+		<div class="card small">
+			<div class="card-content deploy">
+				<span ng-show="order.team_leader_name">
+					<span ng-repeat="tl in order.team_leader_name">{{ tl }}<br /></span>
+				</span>
+				<span ng-show="order.supervisor_name">
+					<span ng-repeat="sp in order.supervisor_name">{{ sp }}<br /></span>
+				</span>
+				<span ng-show="order.janitor_name">
+					<span ng-repeat="jn in order.janitor_name">{{ jn }}<br /></span>
+				</span>
+			</div>
+		</div>
+	</div> -->
+
+
+	<div class="col s12 m12 l3">
+		<div class="card small service-card">
+		    <!-- Card Content -->
+			<div class="card-content services costing">
+		    	<div class="row margin-bottom-5">
+
+					<div class="col l12">
+
+		    			<table ng-if="order.service_details.service_date.length==1">
+		    				<!-- <thead>
+		    					<tr>
+		    						<td colspan="2">
+		    							<b>{{ order.leadmanager_details.billing_name }}<br />
+		    							{{ order.leadmanager_details.billing_address }}</b>
+		    						</td>
+		    					</tr>
+		    				</thead> -->
+					        <tbody>
+					          <tr>
+					            <td><strong>Base Rate</strong></td>
+					            <td class="right-align">Rs. {{ order.service_details.taxed_cost }}</td>
+					          </tr>
+					          <tr>
+					            <td><strong>Discount</strong></td>
+					            <td class="right-align">Rs. {{ order.service_details.discount }}</td>
+					          </tr>
+					          <tr>
+					            <td><strong>Invoice Amt. (Pre tax)</strong></td>
+					            <td class="right-align">Rs. {{ order.service_details.pre_taxed_cost }}</td>
+					          </tr>
+					          <tr>
+					            <td><b>Client Payment Expected</b></td>
+					            <td class="right-align"><b>Rs. {{ order.service_details.client_payment_expected }}</b></td>
+					          </tr>
+					          <!-- <tr>
+					            <td><strong>Invoice Amt. (Post tax)</strong></td>
+					            <td class="right-align">Rs. 4500</td>
+					          </tr> -->
+					          <tr>
+					            <td><strong>Partner Comission</strong></td>
+					            <td class="right-align">Rs. {{ order.service_details.partner_payment_payable }}</td>
+					          </tr>
+					        </tbody>
+					    </table>
+
+		    			<table ng-else-if="order.amc_service_details.service_date.length>0&&order.order_no==1">
+		    				<!-- <thead>
+		    					<tr>
+		    						<td colspan="2">
+		    							<b>{{ order.leadmanager_details.billing_name }}<br />
+		    							{{ order.leadmanager_details.billing_address }}</b>
+		    						</td>
+		    					</tr>
+		    				</thead> -->
+					        <tbody>
+					          <tr>
+					            <td><strong>Base Rate</strong></td>
+					            <td class="right-align">Rs. {{ order.service_details.taxed_cost }}</td>
+					          </tr>
+					          <tr>
+					            <td><strong>Discount</strong></td>
+					            <td class="right-align">Rs. {{ order.service_details.discount }}</td>
+					          </tr>
+					          <tr>
+					            <td><strong>Invoice Amt. (Pre tax)</strong></td>
+					            <td class="right-align">Rs. {{ order.service_details.pre_taxed_cost }}</td>
+					          </tr>
+					          <tr>
+					            <td><b>Client Payment Expected</b></td>
+					            <td class="right-align"><b>Rs. {{ order.service_details.client_payment_expected }}</b></td>
+					          </tr>
+					          <!-- <tr>
+					            <td><strong>Invoice Amt. (Post tax)</strong></td>
+					            <td class="right-align">Rs. 4500</td>
+					          </tr> -->
+					          <tr>
+					            <td><strong>Partner Comission</strong></td>
+					            <td class="right-align">Rs. {{ order.service_details.partner_payment_payable }}</td>
+					          </tr>
+					        </tbody>
+					    </table>
+
+
+		    			<table ng-else-if="order.service_details.service_date.length > 1&&order.order_no==1">
+		    				<!-- <thead>
+		    					<tr>
+		    						<td colspan="2">
+		    							<b>{{ order.leadmanager_details.billing_name }}<br />
+		    							{{ order.leadmanager_details.billing_address }}</b>
+		    						</td>
+		    					</tr>
+		    				</thead> -->
+					        <tbody>
+					          <tr>
+					            <td><strong>Base Rate</strong></td>
+					            <td class="right-align">Rs. {{ order.service_details.taxed_cost }}</td>
+					          </tr>
+					          <tr>
+					            <td><strong>Discount</strong></td>
+					            <td class="right-align">Rs. {{ order.service_details.discount }}</td>
+					          </tr>
+					          <tr>
+					            <td><strong>Invoice Amt. (Pre tax)</strong></td>
+					            <td class="right-align">Rs. {{ order.service_details.pre_taxed_cost }}</td>
+					          </tr>
+					          <tr>
+					            <td><b>Client Payment Expected</b></td>
+					            <td class="right-align"><b>Rs. {{ order.service_details.client_payment_expected }}</b></td>
+					          </tr>
+					          <!-- <tr>
+					            <td><strong>Invoice Amt. (Post tax)</strong></td>
+					            <td class="right-align">Rs. 4500</td>
+					          </tr> -->
+					          <tr>
+					            <td><strong>Partner Comission</strong></td>
+					            <td class="right-align">Rs. {{ order.service_details.partner_payment_payable }}</td>
+					          </tr>
+					        </tbody>
+					    </table>
+
+					    <table ng-else>
+		    				<!-- <thead>
+		    					<tr>
+		    						<td colspan="2">
+		    							<b>{{ order.leadmanager_details.billing_name }}<br />
+		    							{{ order.leadmanager_details.billing_address }}</b>
+		    						</td>
+		    					</tr>
+		    				</thead> -->
+					        <tbody>
+					          <tr>
+					            <td><strong>Base Rate</strong></td>
+					            <td class="right-align">Rs. 0</td>
+					          </tr>
+					          <tr>
+					            <td><strong>Discount</strong></td>
+					            <td class="right-align">Rs. 0</td>
+					          </tr>
+					          <tr>
+					            <td><strong>Invoice Amt. (Pre tax)</strong></td>
+					            <td class="right-align">Rs. 0</td>
+					          </tr>
+					          <tr>
+					            <td><b>Client Payment Expected</b></td>
+					            <td class="right-align"><b>Rs. 0</b></td>
+					          </tr>
+					          <!-- <tr>
+					            <td><strong>Invoice Amt. (Post tax)</strong></td>
+					            <td class="right-align">Rs. 4500</td>
+					          </tr> -->
+					          <tr>
+					            <td><strong>Partner Comission</strong></td>
+					            <td class="right-align">Rs. 0</td>
+					          </tr>
+					        </tbody>
+					    </table>
+
+
+		    		</div>
+
+				</div>
+
+
+				<div class="row margin-bottom-0">
+
+				  	<div class="col l6">
+
+						<p class="font-size-12">
+							<select ng-model="payment_mode" class="browser-default new-select-css" ng-change="updatePaymentMode(order._id,payment_mode,$index)">
+								<option value="">Payment Mode</option>
+								<option value="cash" ng-selected="order.payment_mode=='cash'">Cash</option>
+								<option value="cheque" ng-selected="order.payment_mode=='cheque'">Cheque</option>
+								<option value="not_received" ng-selected="order.payment_mode=='not_received'">Not Received</option>
+								<option value="paytm" ng-selected="order.payment_mode=='paytm'">Paytm</option>
+								<option value="cancelled" ng-selected="order.payment_mode=='cancelled'">Cancelled</option>
+							</select>
+						</p>
+
+					</div>
+
+					<div class="col l6">
+
+						<p class="font-size-12">
+
+							<select ng-model="payment_status" class="browser-default new-select-css" ng-change="updatePaymentStatus(order,payment_status,$index)">
+								<option value="">Payment Status</option>
+								<option value="pending" ng-selected="order.payment_status=='pending'">Pending</option>
+								<option value="part_received" ng-selected="order.payment_status=='part_received'">Part Received</option>
+								<option value="success" ng-selected="order.payment_status=='success'">Success</option>
+								<option value="cancelled" ng-selected="order.payment_status=='cancelled'">Cancelled</option>
+							</select>
+
+						</p>
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="col s12 m12 l2" ng-if="currentUser.role!='view'">
+		<div class="card small">
+		    <!-- Card Content -->
+		    <div class="card-content services costing {{ order._id }}">
+			    <button ng-hide="order.job_start_timestamp" class="btn waves-effect waves-light margin-top-10 margin-left-5 startBtn" ng-click="startJob(order._id,order.service_details._id,$index)"><i class="material-icons left">play_arrow</i>Start Job
+				</button>
+				<button ng-show="order.job_end_timestamp==undefined&&order.job_start_timestamp" class="btn waves-effect waves-light red margin-top-10 margin-left-5 stopBtn" ng-click="stopJob(order._id,order.service_details._id,$index)" data-target="order_costing_details" modal>
+				    <i class="material-icons left">stop</i>Stop Job
+				</button>
+				<p class="status-radio margin-top-10" ng-if="order.job_end_timestamp && order.job_start_timestamp">
+					<input class="with-gap" value="2" name="{{ order._id }}" type="radio" id="{{ order._id }}status1" ng-checked="order.service_details.service_status==2" ng-click="updateServiceStatus(order.service_details._id,2,order)" />
+    				<label for="{{ order._id }}status1">Success</label>
+					<input class="with-gap" value="-1" name="{{ order._id }}" type="radio" id="{{ order._id }}status2" ng-checked="order.service_details.service_status==-1" ng-click="updateServiceStatus(order.service_details._id,-1,order)" />
+    				<label for="{{ order._id }}status2">Complaint</label>
+				</p>
+				<!-- <select ng-model="job_status" ng-if="order.job_end_timestamp && order.job_start_timestamp" class="browser-default margin-top-10" ng-change="updateServiceStatus(order.service_details._id,job_status)">
+					<option value="" selected>Select Status</option>
+					<option value="2" ng-selected="order.service_details.service_status==2">Success</option>
+					<option value="-1" ng-selected="order.service_details.service_status==-1">Complaint</option>
+				</select> -->
+				<button class="btn waves-effect waves-light blue margin-top-5 margin-left-5 margin-right-5 btn-new-css" ng-click="setOrderDetails(order)" data-target="work-order" modal>
+					View/Print Work Order
+				</button>
+
+				<button class="btn waves-effect waves-light orange margin-top-5 margin-left-5 margin-right-5 btn-new-css" ng-click="setOrder(order)" data-target="order_ops_remark" modal>
+					Operations Remark
+				</button>
+
+				<button class="btn waves-effect waves-light green darken-2 margin-top-5 margin-left-5 margin-right-5 btn-new-css" ng-click="setOrder(order)" data-target="send_sms_modal" modal>
+					Send SMS
+				</button>
+				
+				<!-- <span class="left margin-left-5 margin-top-20 n-container">
+					<i class="material-icons left font-size-30">message</i>
+					<span class="n-counter">1</span>
+				</span> -->
+
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="divider .margin-top-0"></div>
+</div>
+</div>
+
+
+<div id="complaint_order_modal" class="modal modal_md modal-fixed-footer">
+    <div class="modal-content padding-bottom-0">
+		<div class="row margin-bottom-5">
+			<div class="col l12">
+				<p><b>{{ firstname }} {{ lastname }}</b></p>
+			</div>
+		</div>
+		<div class="row margin-bottom-5">
+			<div class="col l12">
+				<p>What do you like ?</p>
+				<table>
+					<tr>
+						<td>
+							<input type="checkbox" id="serviceQuality" ng-model='serviceQuality' ng-change="setServiceQuality(serviceQuality)" />
+      						<label for="serviceQuality">Quality of Service</label>
+						</td>
+						<td>
+							<input type="checkbox" id="punctuality" ng-model='punctuality' ng-change="setPunctuality(punctuality)" />
+      						<label for="punctuality">Punctuality</label>
+						</td>
+					</tr>
+						<td>
+							<input type="checkbox" id="grooming" ng-model='grooming' ng-change="setGrooming(grooming)" />
+      						<label for="grooming">Grooming</label>
+						</td>
+						<td>
+							<input type="checkbox" id="detailAttention" ng-model='detailAttention' ng-change="setDA(detailAttention)" />
+      						<label for="detailAttention">Attention to Detail</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="checkbox" id="productKnowledge" ng-model='productKnowledge' ng-change="setPK(productKnowledge)" />
+      						<label for="productKnowledge">Product Knowledge</label>
+						</td>
+						<td>
+							<input type="checkbox" id="commsCoords" ng-model='commsCoords' ng-change="setCC(commsCoords)" />
+      						<label for="commsCoords">Communication &amp; Coordination</label>
+						</td>
+					</tr>
+				</table>
+				
+
+<!-- 				<table>
+					<tr>
+						<th>Quality</th>
+						<td><div star-rating ng-model="ratingQuality" on-rating-select="rateQuality(ratingQuality)"></div></td>
+						<td>{{ ratingQuality }}</td>
+					</tr>
+					<tr>
+						<th>Time</th>
+						<td><div star-rating ng-model="ratingTime" on-rating-select="rateTime(ratingTime)"></div></td>
+						<td>{{ ratingTime }}</td>
+					</tr>
+				</table>
+ -->
+			</div>
+		</div>
+		<div class="row margin-bottom-5">
+			<div class="input-field col l12">
+				<textarea id="client_feedback" rows="1" ng-model="client_feedback" class="materialize-textarea"></textarea>
+				<label for="client_feedback">Additional Feedback</label>
+			</div>
+		</div>
+    </div>
+    <div class="modal-footer">
+    	<a class=" modal-action waves-effect waves-blue btn" ng-click="getRating()">Send</a>
+		<a class=" modal-action waves-effect waves-green btn" ng-click="addComplaint()">Update</a>
+		<a class=" modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+    </div>
+</div>
+
+
+
+<div id="order_payment_info" class="modal modal_sm">
+    <div class="modal-content">
+		<div class="row">
+			<div class="input-field col l12">
+				<textarea id="payment_remark" rows="1" ng-model="payment_remark" class="materialize-textarea"></textarea>
+				<label for="payment_remark">Payment Remark</label>
+			</div>
+		</div>
+    </div>
+    <div class="modal-footer">
+		<a class=" modal-action waves-effect waves-green btn" ng-click="updatePaymentModeDetails()">Update</a>
+		<a class=" modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+    </div>
+</div>
+
+<div id="order_account_remark" class="modal modal_md">
+    <div class="modal-content">
+		<div class="row margin-bottom-10" ng-show="account_remarks.length > 0">
+			<div class="col l12 work-order-tbl">
+				<table>
+					<thead>
+						<th>Date</th>
+						<th>Remark</th>
+						<th>Payment Mode</th>
+						<th>Updated By</th>
+					</thead>
+					<tbody>
+						<tr ng-repeat="ar in account_remarks">
+							<td>{{ ar.added_on | date:'dd MMM yyyy' }}</td>
+							<td>{{ ar.remark }}</td>
+							<td>{{ ar.payment_mode }}</td>
+							<td>Account User</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col l3">
+				<select ng-model="account_payment_mode">
+					<option value="">Payment Mode</option>
+					<option value="online">Online</option>
+					<option value="cash">Cash</option>
+					<option value="cheque">Cheque</option>
+					<option value="not_received">Not Received</option>
+				</select>
+			</div>
+			<div class="input-field col l9">
+				<input ng-model="acount_payment_status" />
+			</div>
+		</div>
+    </div>
+    <div class="modal-footer">
+		<a class=" modal-action waves-effect waves-green btn" ng-click="updatePaymentStatusDetails()">Update</a>
+		<a class=" modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+    </div>
+</div>
+
+<div id="order_ops_remark" class="modal modal_md">
+    <div class="modal-content">
+		<div class="row margin-bottom-10" ng-show="ops_remark.length > 0">
+			<div class="col l12 work-order-tbl">
+				<table>
+					<thead>
+						<th>Date</th>
+						<th>Remark</th>
+						<th>Updated By</th>
+					</thead>
+					<tbody>
+						<tr ng-repeat="ar in ops_remark">
+							<td>{{ ar.added_on | date:'dd MMM yyyy' }}</td>
+							<td>{{ ar.remark }}</td>
+							<td>{{ ar.added_by }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col l12">
+				<input ng-model="operation_remarks" />
+			</div>
+		</div>
+    </div>
+    <div class="modal-footer">
+		<a class=" modal-action waves-effect waves-green btn" ng-click="updateOpsRemark()">Update</a>
+		<a class=" modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+    </div>
+</div>
+
+<div id="send_sms_modal" class="modal modal_md">
+    <div class="modal-content">
+		<div class="row">
+			<div class="input-field col l6">
+				<input type="text" id="mobile_no" ng-model="mobile_no" />
+				<label for="mobile_no">Mobile No.</label>
+			</div>
+			<div class="input-field col l6">
+				<select ng-model="canned_sms_template" class="browser-default" ng-change="selectCannedSMS(canned_sms_template)">
+			      <option value="" selected>Select Template</option>
+			      <option value="1">CUSTOMER NOT REACHABLE ON FIRST CALL</option>
+			      <option value="2">CUSTOMER NOT REACHABLE ON FOLLOW UP FOR ORDER BOOKING CALL</option>
+			      <option value="3">CUSTOMER NOT REACHABLE ON CONFIRMATION CALL</option>
+			    </select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col l12">
+				<textarea id="sms_message" ng-model="sms_message" class="materialize-textarea"></textarea>
+				<label for="sms_message">SMS Message</label>
+			</div>
+		</div>
+    </div>
+    <div class="modal-footer">
+		<a class=" modal-action waves-effect waves-green btn" ng-click="sendCannedSMS()">SEND SMS</a>
+		<a class=" modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+    </div>
+</div>
+
+
+
+<div id="order_costing_details" class="modal modal_md">
+    <div class="modal-content">
+		<div class="row">
+			<div class="input-field col l6">
+				<input type="text" id="material_cost" ng-model="material_cost" />
+				<label for="material_cost">Material Cost</label>
+			</div>
+			<div class="input-field col l6">
+				<input type="text" id="travel_cost" ng-model="travel_cost" />
+				<label for="travel_cost">Travelling Cost</label>
+			</div>
+		</div>
+    </div>
+    <div class="modal-footer">
+		<a class=" modal-action waves-effect waves-green btn" ng-click="updateOrderDetails()">Update</a>
+		<a class=" modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+    </div>
+</div>
+
+<div id="order_payment_received_modal" class="modal modal_md">
+    <div class="modal-content">
+		<div class="row">
+			<div class="input-field col l12">
+				<input type="text" id="payment_received" ng-model="payment_received" />
+				<label for="material_cost">Amount</label>
+			</div>
+		</div>
+    </div>
+    <div class="modal-footer">
+		<a class=" modal-action waves-effect waves-green btn" ng-click="updateReceivedPayment()">Update</a>
+		<a class=" modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+    </div>
+</div>
+
+
+<div id="work-order" class="modal modal_lg modal-fixed-footer work-order-tbl">
+    <div class="modal-content" id="printThisElement">
+
+		<img style="float:right; width: 20%;" ng-if="selected_order_obj.leadmanager_details.leadsource==84" src="http://hicare.in/front_theme/images/logo.png" alt="hicarelogo">
+		<img style="float:right; width: 10%;" ng-else-if="selected_order_obj.leadmanager_details.leadsource==70" src="img/housejoy.png" alt="housejoylogo">
+		<img style="float:right; width: 20%;" ng-else src="https://www.mrhomecare.in/wp-content/themes/mrhomecare/mhc-lib/img/logo.png" alt="mhclogo">
+
+    	<h5>Work Order</h5>
+		<div class="row">
+
+			<!-- <div style="width:100%; float:left;">
+				<p style="font-size:12px; padding:5px; color:#000000; font-weight:900; margin-bottom: 0px;">Client</p>
+			</div>
+
+			<div style="width:100%; float:left;">
+				<div style="width:30%; float:left;">
+					<p style="font-size:12px; padding:5px; color:#000000; font-weight:900; margin-bottom: 0px; margin-top: 5px;">Client Name</p>
+				</div>
+				<div style="width:70%; float:left;">
+					<p style="font-size:12px; padding:5px; color:#000000; margin-bottom: 0px; margin-top: 5px;">{{ selected_order_obj.client_details.firstname }} {{ selected_order_obj.client_details.lastname }}</p>
+				</div>
+			</div> -->
+
+			<table class="highlight" cellpadding="5" style="width:70%">
+				<tbody>
+				  <tr>
+					<th colspan="2" style="font-size: 12px;padding:5px;color:#000000;">Client</th>
+				  </tr>
+				  <tr>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">Client Name</td>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">{{ selected_order_obj.client_details.firstname }} {{ selected_order_obj.client_details.lastname }}</td padding:5px;>
+				  </tr>
+				  <tr>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">Client Mobile</td>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">{{ selected_order_obj.client_details.primary_contact_no }}</td>
+				  </tr>
+				  <tr>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">Client Email</td>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">{{ selected_order_obj.client_details.primary_email_id }}</td>
+				  </tr>
+				  <tr>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">Service Date</td>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">{{ selected_order_obj.service_details.service_date[0] | date:'dd MMMM yyyy' }} at {{ selected_order_obj.service_details.service_time[0] | date:'HH:mm a' }}</td>
+				  </tr>
+				  <tr>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">Lead Source</td>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;color:#000000;">{{ lead_source_options[selected_order_obj.leadmanager_details.leadsource] }}</td>
+				  </tr>
+				  <tr>
+					<th colspan="2" style="font-size: 12px;padding:5px;color:#000000;">Service Details</th>
+				  </tr>
+				  <tr>
+					<td colspan="2" style="font-size: 12px;padding:5px;color:#000000;">
+						{{ services_options[selected_order_obj.service_details.service_id] }} - ({{ variant_options[selected_order_obj.service_details.variant_type_id] }}) <span ng-if="selected_order_obj.service_details.additional_variant">- {{ selected_order_obj.service_details.additional_variant }}</span>
+					</td>
+				  </tr>
+				  <tr>
+					<th colspan="2" style="font-size: 12px;padding:5px;color:#000000;">Site Details</th>
+				  </tr>
+				  <tr>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;"color:#000000;>Site Address</td>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">{{ selected_order_obj.address_details.address }}</td>
+				  </tr>
+				  <tr>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">Site Landmark</td>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">{{ selected_order_obj.address_details.landmark }}</td>
+				  </tr>
+				  <tr>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">Site City</td>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">{{ cities[selected_order_obj.address_details.city] }}</td>
+				  </tr>
+				  <tr>
+				  	<td style="font-size: 12px;padding:5px;vertical-align: top;color:#000000;">Manpower</td>
+				  	<td style="font-size: 12px;padding:5px;vertical-align: top;color:#000000;">
+				  		<span ng-if="selected_order_obj.service_details.no_of_supervisor">{{ selected_order_obj.service_details.no_of_supervisor }} Supervisor <span ng-if="supervisors">- {{ supervisors }}</span><br /></span>
+				  		<span ng-if="selected_order_obj.service_details.no_of_janitor">{{ selected_order_obj.service_details.no_of_janitor }} Janitor <span ng-if="janitors">- {{ janitors }}</span><br /></span>
+				  		<span ng-if="selected_order_obj.service_details.no_of_team_leader">{{ selected_order_obj.service_details.no_of_team_leader }} Teamleader <span ng-if="teamleaders">- {{ teamleaders }}</span></span>
+				  	</td>
+				  </tr>
+				  <tr>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">Notes</td>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">
+				  		<span ng-repeat="cr in selected_order_obj.service_details.crm_remark">
+				  			{{ cr.remark }}<br />
+				  		</span>
+				  	</td>
+				  </tr>
+				  <tr>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">Client Payment Expected</td>
+				  	<td style="font-size: 12px;padding:5px;color:#000000;">Rs. {{ selected_order_obj.service_details.client_payment_expected }}</td>
+				  </tr>
+				  <tr>
+				  	<td colspan="2" style="font-size: 12px;padding:5px;color:#000000;"><b>Note:</b> Kindly make the check in favour of 
+				  		<b ng-if="selected_order_obj.leadmanager_details.leadsource==84">"Hicare Services Pvt. Ltd"</b>
+				  		<b ng-else-if="selected_order_obj.leadmanager_details.leadsource==70">"Sarvaloka Services on call Pvt. ltd"</b>
+				  		<b ng-else>"Mister Homecare Services Pvt. Ltd"</b>
+				  	</td>
+				  </tr>
+				</tbody>
+	      </table>
+
+		</div>
+    </div>
+    <div class="modal-footer">
+    	<!-- <a class="modal-action waves-effect waves-light green btn" ng-click="exportToPDF()">Save as PDF</a> -->
+		<a class="modal-action waves-effect waves-light blue btn" ng-click="printWorkOrder()">Print</a>
+		<a class="modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+    </div>
+</div>
+
+<div id="update_supervisor" class="modal modal_md">
+    <div class="modal-content">
+		<div class="row">
+			<div class="input-field col l12">
+				<input type="text" id="supervisor_name" ng-model="supervisor_name" />
+				<label for="supervisor_name">Supervisor Names</label>
+			</div>
+		</div>
+    </div>
+    <div class="modal-footer">
+		<a class=" modal-action waves-effect waves-green btn" ng-click="updateSupervisor()">Update</a>
+		<a class=" modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+    </div>
+</div>
+
+<div id="update_janitor" class="modal modal_md">
+    <div class="modal-content">
+		<div class="row">
+			<div class="input-field col l12">
+				<input type="text" id="janitor_name" ng-model="janitor_name" />
+				<label for="janitor_name">Janitor Names</label>
+			</div>
+		</div>
+    </div>
+    <div class="modal-footer">
+		<a class=" modal-action waves-effect waves-green btn" ng-click="updateJanitor()">Update</a>
+		<a class=" modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+    </div>
+</div>
+
+<div id="update_teamleader" class="modal modal_md">
+    <div class="modal-content">
+		<div class="row">
+			<div class="input-field col l12">
+				<input type="text" id="teamleader_name" ng-model="teamleader_name" />
+				<label for="teamleader_name">Teamleader Names</label>
+			</div>
+		</div>
+    </div>
+    <div class="modal-footer">
+		<a class=" modal-action waves-effect waves-green btn" ng-click="updateTeamleader()">Update</a>
+		<a class=" modal-action modal-close waves-effect waves-grey btn-flat">Close</a>
+    </div>
+</div>
+
+
+<div id="view_all_amcs" class="modal modal-fixed-footer modal_md">
+    <div class="modal-content">
+		<div class="row">
+			<div class="col l12">
+
+				<table class="bordered">
+					<thead>
+					  <tr>
+						<th>AMC No.</th>
+						<th>Service Name</th>
+						<th>Service Date</th>
+						<th>Service Time</th>
+					  </tr>
+					</thead>
+
+					<tbody>
+					  <tr ng-repeat="amc in amc_services" ng-class="amc.is_done==1 ? 'amc-done-bg-color' : ''">
+					    <td>{{ amc.amc_label }}</td>
+					    <td>{{ services_options[amc.service_id] }}</td>
+					    <td>{{ amc.service_date[0] | date:'dd MMMM yyyy' }}</td>
+					    <td>{{ amc.service_time[0] | date:'HH:mm a' }}</td>
+					  </tr>
+					</tbody>
+				      </table>
+
+			</div>
+		</div>
+    </div>
+    <div class="modal-footer">
+	<a href="" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </div>
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+
+		$('.datepicker').pickadate({
+			    selectMonths: true, // Creates a dropdown to control month
+			    selectYears: 15, // Creates a dropdown of 15 years to control year
+			    format: 'yyyy-mm-dd'
+			});
+
+		$('select').material_select();
+
+	});
+
+</script>

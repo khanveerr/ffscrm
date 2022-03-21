@@ -1,0 +1,30 @@
+<div class="row margin-bottom-0">
+	<div class="col s12 m2 l2">&nbsp;</div>
+    <div class="col s12 m8 l8">
+      <div class="card">
+        <div class="card-content">
+
+            <div ng-show="isServiceConfirmed">
+                <p>You have already confirmed this service.</p>
+            </div>
+
+            <div ng-show="serviceConfirmed">
+                <p>You have confirmed this service.</p>
+            </div>
+
+            <div ng-show="isServiceCancelled">
+                <p>You have already cancelled this service.</p>
+            </div>
+            <div ng-show="serviceCancelled">
+                <p>You have cancelled this service.</p>
+            </div>
+			<h5 class="center-align" ng-show="isServiceCancelled==false&&isServiceConfirmed==false&&serviceConfirmed==false&&serviceCancelled==false">Are you confirm the service?</h5>
+        </div>
+        <div class="card-action center-align" ng-show="isServiceCancelled==false&&isServiceConfirmed==false&&serviceConfirmed==false&&serviceCancelled==false">
+        	<button class="btn waves-effect blue" ng-click="confirmService()">Yes</button>
+        	<button class="btn waves-effect red" ng-click="cancelService()">No</button>
+        </div>
+      </div>
+    </div>
+	<div class="col s12 m2 l2">&nbsp;</div>
+</div>

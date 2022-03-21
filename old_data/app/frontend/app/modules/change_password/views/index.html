@@ -1,0 +1,114 @@
+<div class="row">
+	
+	<div class="col l4">
+		&nbsp;
+	</div>
+
+	<div class="col l4">
+	
+		<div class="card-panel">
+
+
+			<div class="row margin-bottom-5">
+				<div class="input-field col l12">
+					<input id="old_password" ng-model="old_password" type="text">
+					<label for="old_password">Enter Old Password</label>
+				</div>
+			</div>
+
+			<div class="row margin-bottom-5">
+				<div class="input-field col l12">
+					<input id="new_password" ng-model="new_password" type="text">
+					<label for="new_password">Enter New Password</label>
+				</div>
+			</div>
+
+			<div class="row margin-bottom-5">
+				<div class="input-field col l12">
+					<button class="waves-effect waves-green btn" ng-click="changePassword()">Update</button>
+				</div>
+			</div>
+
+			<!-- <button class="btn waves-effect waves-light blue" ng-click="show_add_city_form()">Add</button>
+
+			<table class="bordered">
+				<thead>
+				  <tr>
+					  <th>City</th>
+					  <th>Status</th>
+				      <th>Action</th>
+				  </tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="city in cities">
+						<td>{{ city.name }}</td>
+						<td>{{ city.status_name }}</td>
+						<td><a href="#" ng-click="show_edit_form(city)">edit</a> | <a href="#" ng-click="deleteCity(city._id)">delete</a></td>
+					</tr>
+				</tbody>
+			</table> -->
+
+
+
+		</div>
+
+	</div>
+
+	<div class="col l4">
+		&nbsp;
+	</div>
+
+</div>
+
+<!-- <div class="fixed-action-btn" style="bottom: 50px; right: 19px;">
+    <a class="btn-floating btn-large red" data-target="add_lead_modal" data-position="left" data-delay="50" data-tooltip="Add Lead" modal>
+      <i class="material-icons">add</i>
+    </a>
+</div> -->
+
+
+
+
+
+	<div id="add_city" class="modal modal_md modal-fixed-footer">
+	    <div class="modal-content">
+			<h5>Add City</h5>
+			<div class="row margin-bottom-5">
+				<div class="input-field col l12">
+					<input id="city" ng-model="city" type="text">
+					<label for="city">Enter city</label>
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+			<a class=" modal-action waves-effect waves-green btn" ng-click="addCity()">Save</a>
+			<a class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+	    </div>
+	 </div>
+
+
+	 <div id="edit_city" class="modal modal_md modal-fixed-footer">
+	    <div class="modal-content">
+			<h5>Update City</h5>
+			<div class="row margin-bottom-5">
+				<div class="input-field col l12">
+					<input id="city" ng-model="city" type="text">
+					<label for="city">Enter city</label>
+				</div>
+				<div class="input-field col l12">
+					<span class="dropdown-button cursor-pointer status_dropdown margin-top-10 float-left" data-activates='statusDropdown' dropdown>{{ status_name }}</span>
+					</span>
+					<ul id='statusDropdown' class='dropdown-content my-dropdown client_type'>
+					    <li><a href="javascript:void(0);" ng-click="change_status(0)">Active</a></li>
+					    <li><a href="javascript:void(0);" ng-click="change_status(-1)">Inactive</a></li>
+					</ul>
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+			<a class=" modal-action waves-effect waves-green btn" ng-click="updateCity()">Save</a>
+			<a class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+	    </div>
+	 </div>
+
+

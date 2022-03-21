@@ -1,0 +1,311 @@
+<div class="row margin-bottom-0">
+  <div class="col s12 m12 l12">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">Recently Added Leads</span>
+        <div class="select_box" style="float: right;">
+          <!-- <select ng-model="sales_stage_filter" ng-change="filter_open_leads(date_filter,sales_stage_filter)" class="" style="float: left;">
+            <option value="" selected>All</option>
+            <option value="Contacted">Contacted</option>
+            <option value="Follow up">Follow up</option>
+            <option value="Hustling">Hustling</option>
+            <option value="In The Zone">In The Zone</option>
+            <option value="Verbal Yes">Verbal Yes</option>
+          </select> -->
+          <select ng-model="days_filter" ng-change="filter_new_leads(days_filter)" class="" style="float: left;">
+            <option value="1">Last 30 Days</option>
+            <option value="2">Between 30 to 60 Days</option>
+          </select>
+        </div>
+        <!-- <div ng-show="open_leads.length <= 0">
+          
+        </div> -->
+        <div ng-show="is_new_leads_loading == true" class="loading-box">
+          <div class="lds-css ng-scope">
+            <div style="width:100%;height:100%" class="lds-wedges">
+              <div>
+                <div>
+                  <div></div>
+                </div>
+                <div>
+                  <div></div>
+                </div>
+                <div>
+                  <div></div>
+                </div>
+                <div>
+                  <div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ng-show="is_new_leads_loading == false">
+          <h5 ng-show="new_leads.length <= 0" class="not_found">
+            Sorry, no leads found</th>
+          </h5>
+          <table ng-show="new_leads.length > 0">
+            <thead>
+              <tr>
+                  <th width="10%">Date</th>
+                  <th width="25%">Company Name</th>
+                  <th width="20%">Company POC</th>
+                  <th width="30%">Company POC Mobile No./Email Id</th>
+                  <th width="15%">Sales Stage</th>
+              </tr>
+            </thead>
+          </table>
+          <div id="followup3-scrollpane" class="followup-scroll-pane">
+            <table>
+              <tbody>
+                <tr ng-repeat="lead in new_leads">
+                  <td width="10%">{{ lead.created_date }}</td>
+                  <td width="25%">{{ lead.company_name }}</td>
+                  <td width="20%">{{ lead.company_poc }}</td>
+                  <td width="30%">{{ lead.company_poc_email }}</td>
+                  <td width="15%">{{ lead.sales_stage }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row margin-bottom-0">
+  <div class="col s12 m12 l12">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">Contract Won in the Last 90 Days</span>
+        <div ng-show="is_won_leads_loading == true" class="loading-box">
+          <div class="lds-css ng-scope">
+            <div style="width:100%;height:100%" class="lds-wedges">
+              <div>
+                <div>
+                  <div></div>
+                </div>
+                <div>
+                  <div></div>
+                </div>
+                <div>
+                  <div></div>
+                </div>
+                <div>
+                  <div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ng-show="is_won_leads_loading == false">
+          <h5 ng-show="won_leads.length <= 0" class="not_found">
+            Sorry, no leads found</th>
+          </h5>
+          <table ng-show="won_leads.length > 0">
+            <thead>
+              <tr>
+                  <th width="10%">SPOC</th>
+                  <th width="25%">Company Name</th>
+                  <th width="20%">Company POC</th>
+                  <th width="30%">Company POC Mobile No./Email Id</th>
+                  <th width="15%">Sales Stage</th>
+              </tr>
+            </thead>
+          </table>
+          <div id="followup4-scrollpane" class="followup-scroll-pane">
+            <table>
+              <tbody>
+                <tr ng-repeat="lead in won_leads">
+                  <td width="10%">{{ lead.spoc_names }}</td>
+                  <td width="25%">{{ lead.company_name }}</td>
+                  <td width="20%">{{ lead.company_poc }}</td>
+                  <td width="30%">{{ lead.company_poc_email }}</td>
+                  <td width="15%">{{ lead.sales_stage }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row margin-bottom-0">
+  <div class="col s12 m12 l12">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">Lead Reminders Set in the Next 7 Days</span>
+        <div ng-show="is_reminder_leads_loading == true" class="loading-box">
+          <div class="lds-css ng-scope">
+            <div style="width:100%;height:100%" class="lds-wedges">
+              <div>
+                <div>
+                  <div></div>
+                </div>
+                <div>
+                  <div></div>
+                </div>
+                <div>
+                  <div></div>
+                </div>
+                <div>
+                  <div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ng-show="is_reminder_leads_loading == false">
+          <h5 ng-show="reminder_leads.length <= 0" class="not_found">
+            Sorry, no leads found</th>
+          </h5>
+          <table ng-show="reminder_leads.length > 0">
+            <thead>
+              <tr>
+                  <th width="10%">SPOC</th>
+                  <th width="25%">Company Name</th>
+                  <th width="20%">Company POC</th>
+                  <th width="30%">Company POC Mobile No./Email Id</th>
+                  <th width="15%">Sales Stage</th>
+              </tr>
+            </thead>
+          </table>
+          <div id="followup2-scrollpane" class="followup-scroll-pane">
+            <table>
+              <tbody>
+                <tr ng-repeat="lead in reminder_leads">
+                  <td width="10%">{{ lead.spoc_names }}</td>
+                  <td width="25%">{{ lead.company_name }}</td>
+                  <td width="20%">{{ lead.company_poc }}</td>
+                  <td width="30%">{{ lead.company_poc_email }}</td>
+                  <td width="15%">{{ lead.sales_stage }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row margin-bottom-0">
+  <div class="col s12 m12 l12">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">Open/Lost Leads</span>
+        <div class="select_box" style="float: right;">
+          <!-- <select ng-model="sales_stage_filter" ng-change="filter_open_leads(date_filter,sales_stage_filter)" class="" style="float: left;">
+            <option value="" selected>All</option>
+            <option value="Contacted">Contacted</option>
+            <option value="Follow up">Follow up</option>
+            <option value="Hustling">Hustling</option>
+            <option value="In The Zone">In The Zone</option>
+            <option value="Verbal Yes">Verbal Yes</option>
+          </select> -->
+          <select ng-model="date_filter" ng-change="filter_open_leads(date_filter,sales_stage_filter)" class="" style="float: left;">
+            <option value="1">Current Month</option>
+            <option value="2">Last 3 Months</option>
+            <option value="3">Last 6 Months</option>
+            <option value="4">Last Year</option>
+          </select>
+        </div>
+        <!-- <div ng-show="open_leads.length <= 0">
+          
+        </div> -->
+        <div ng-show="is_open_leads_loading == true" class="loading-box">
+          <div class="lds-css ng-scope">
+            <div style="width:100%;height:100%" class="lds-wedges">
+              <div>
+                <div>
+                  <div></div>
+                </div>
+                <div>
+                  <div></div>
+                </div>
+                <div>
+                  <div></div>
+                </div>
+                <div>
+                  <div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ng-show="is_open_leads_loading == false">
+          <h5 ng-show="open_leads.length <= 0" class="not_found">
+            Sorry, no leads found</th>
+          </h5>
+          <table ng-show="open_leads.length > 0">
+            <thead>
+              <tr>
+                  <th width="25%">Company Name</th>
+                  <th width="20%">Company POC</th>
+                  <th width="30%">Company POC Mobile No./Email Id</th>
+                  <th width="15%">Reason</th>
+                  <th width="10%">Status</th>
+              </tr>
+            </thead>
+          </table>
+          <div id="followup1-scrollpane" class="followup-scroll-pane">
+            <table>
+              <tbody>
+                <tr ng-repeat="lead in open_leads">
+                  <td width="25%">{{ lead.company_name }}</td>
+                  <td width="20%">{{ lead.company_poc }}</td>
+                  <td width="30%">{{ lead.company_poc_email }}</td>
+                  <td width="15%">{{ lead.reason_label }}</td>
+                  <td width="10%">{{ lead.status_label }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    
+    $(document).ready(function(){
+      $('select').material_select();
+      // $('ul.tabs').tabs();
+      // $("#pending-amc-scrollpane").mCustomScrollbar({
+      //   autoHideScrollbar:true,
+      //   theme:"dark-2"
+      // });
+      $("#followup1-scrollpane").mCustomScrollbar({
+        autoHideScrollbar:true,
+        theme:"dark-2"
+      });
+      $("#followup2-scrollpane").mCustomScrollbar({
+        autoHideScrollbar:true,
+        theme:"dark-2"
+      });
+      $("#followup3-scrollpane").mCustomScrollbar({
+        autoHideScrollbar:true,
+        theme:"dark-2"
+      });
+      // $("#followup2-scrollpane").mCustomScrollbar({
+      //   autoHideScrollbar:true,
+      //   theme:"dark-2"
+      // });
+      // $("#followup3-scrollpane").mCustomScrollbar({
+      //   autoHideScrollbar:true,
+      //   theme:"dark-2"
+      // });
+    });
+
+</script>

@@ -1,0 +1,421 @@
+<div class="card-panel z-depth-0 filter-card">
+		<div class="card small padding-bottom-10">
+			<div class="row margin-bottom-0">
+				<div class="input-field col l1">
+					<input type="date" placeholder="From Date" ng-model="from_date" class="datepicker margin-top-5">
+				</div>
+				<div class="input-field col l1">
+					<input type="date" placeholder="To Date" ng-model="to_date" class="datepicker margin-top-5">
+				</div>
+				<div class="input-field col l2">
+					<input type="text" ng-model="m_manpower" placeholder="Mumbai Manpower" class="margin-top-5">
+				</div>
+				<div class="input-field col l2">
+					<input type="text" ng-model="b_manpower" placeholder="Bangalore Manpower" class="margin-top-5">
+				</div>
+				<div class="input-field col l2">
+					<input type="text" ng-model="d_manpower" placeholder="Delhi Manpower" class="margin-top-5">
+				</div>
+				<div class="input-field col l2">
+					<button class="btn waves-effect waves-light blue" ng-click="addManpower()">Add</button>
+					<button class="btn waves-effect waves-light green" ng-click="searchManpower()">Search</button>
+				</div>
+			</div>
+	</div>
+</div>
+
+
+
+<div class="row">
+	<div class="col l12">
+
+		<table class="bordered">
+			<thead>
+			  <tr>
+				  <th>Service Date</th>
+			      <th>Mumbai</th>
+			      <th>Bangalore</th>
+			      <th>Delhi</th>
+			      <!-- <th>Action</th> -->
+			  </tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="manpower in manpowers">
+					<td>{{ manpower.service_date | date:'dd MMM yyyy' }}</td>
+					<td>
+						<span ng-if="currentUser.city==1 && currentUser.role == 'operations'">
+							<input value="{{ manpower.manpower_details[0].no_of_manpower }}" ng-model="manpower.manpower_details[0].no_of_manpower" ng-change="updateManpower(0,manpower.manpower_details[0].no_of_manpower,manpower)" />
+						</span>
+						<span ng-else>
+							{{ manpower.manpower_details[0].no_of_manpower }}
+						</span>
+					</td>
+					<td>
+						<span ng-if="currentUser.city==2 && currentUser.role == 'operations'">
+							<input value="{{ manpower.manpower_details[1].no_of_manpower }}" ng-model="manpower.manpower_details[1].no_of_manpower" ng-change="updateManpower(1,manpower.manpower_details[1].no_of_manpower,manpower)" />
+						</span>
+						<span ng-else>
+							{{ manpower.manpower_details[1].no_of_manpower }}
+						</span>
+					</td>
+					<td>
+						<span ng-if="currentUser.city==3 && currentUser.role == 'operations'">
+							<input value="{{ manpower.manpower_details[2].no_of_manpower }}" ng-model="manpower.manpower_details[2].no_of_manpower" ng-change="updateManpower(2,manpower.manpower_details[2].no_of_manpower,manpower)" />
+						</span>
+						<span ng-else>
+							{{ manpower.manpower_details[2].no_of_manpower }}
+						</span>
+					</td>
+					<!-- <td>
+						<a class="cursor-pointer"><i class="material-icons">mode_edit</i></a>&nbsp;
+						<a class="cursor-pointer"><i class="material-icons">delete</i></a>
+					</td> -->
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+
+</div>
+
+<!-- <div class="fixed-action-btn" style="bottom: 50px; right: 19px;">
+    <a class="btn-floating btn-large red" data-target="add_lead_modal" data-position="left" data-delay="50" data-tooltip="Add Lead" modal>
+      <i class="material-icons">add</i>
+    </a>
+</div> -->
+
+
+<div id="add_lead_modal" class="modal modal_sm">
+    <div class="modal-content">
+	<div class="row">
+		<div class="input-field col l12">
+			<input id="mobile_no" type="text" ng-model="searchVal" ng-change="searchClient()">
+			<label for="mobile_no">Enter Mobile Number</label>
+		</div>
+		<div class="col l12">
+
+			<table class="bordered" id="filter_client">
+				<thead>
+				  <tr>
+
+				      <th>Client Name</th>
+				      <th>Client Mobile No. {{ clients.length }}</th>
+				  </tr>
+				</thead>
+
+				<tbody>
+				  <tr ng-repeat="client in clients" ng-click="getClientInfo(client)">
+
+				    <td>{{ client.firstname }} {{ client.lastname }}</td>
+				    <td>{{ client.primary_contact_no }}</td>
+				  </tr>
+				  <!-- <tr>
+				    <td>
+					<input name="phone_group[]" type="checkbox" id="check2" value="3478" />
+					<label for="check2"></label>
+				    </td>
+				    <td>Aasheesh Dwivedi</td>
+				    <td>9089876543</td>
+				  </tr>
+				  <tr>
+				    <td>
+					<input name="phone_group[]" type="checkbox" id="check3" value="3489" />
+					<label for="check3"></label>
+				    </td>
+				    <td>Tanveer Khan</td>
+				    <td>9768328844</td>
+				  </tr> -->
+				</tbody>
+			      </table>
+
+			<table class="bordered" id="create_client" ng-if="clients.length<=0">
+				<tr>
+					<td>Not found, <a id="cr_client" data-target="add_user_modal" class="cursor-pointer" modal>create</a></td>
+				</tr>
+			</table>
+
+		</div>
+	</div>
+    </div>
+    <div class="modal-footer">
+		<a class=" modal-action waves-effect waves-green btn" ng-click="getAllClients();">Ok</a>
+		<a class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+</div>
+
+<div id="add_user_modal" class="modal modal_md modal-fixed-footer">
+    <div class="modal-content">
+      <h4>Add new user</h4>
+
+      <div class="row">
+		<div class="input-field col l6">
+			<input id="client_firstname" ng-model="firstname" type="text">
+			<label for="client_firstname">Enter First Name</label>
+		</div>
+		<div class="input-field col l6">
+			<input id="client_lastname" ng-model="lastname" type="text">
+			<label for="client_lastname">Enter Last Name</label>
+		</div>
+	</div>
+      <div class="row">
+		<div class="input-field col l6">
+			<input id="client_mobile_no" ng-model="primary_contact_no" type="text" value="{{ searchVal }}">
+			<label for="client_mobile_no">Enter Mobile Number</label>
+		</div>
+		<div class="input-field col l6">
+			<input id="client_email_id" ng-model="primary_email_id" type="text">
+			<label for="client_email_id">Enter Email Id</label>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="input-field col l12">
+			<textarea id="client_address" ng-model="address" class="materialize-textarea"></textarea>
+			<label for="client_address">Enter your address</label>
+		</div>
+	</div>
+      <div class="row">
+		<div class="input-field col l6">
+			<input id="landmark" ng-model="landmark" type="text">
+			<label for="landmark">Enter your landmark</label>
+		</div>
+		<div class="input-field col l6">
+			<select id="city" class="browser-default" ng-model="client_city">
+			    <option value="" disabled selected>City</option>
+			    <option value="{{ key }}" ng-repeat="(key,value) in cities">{{ value }}</option>
+			</select>
+			<!-- <label for="city">City</label> -->
+		</div>
+	</div>
+
+    </div>
+    <div class="modal-footer">
+	<a class=" modal-action waves-effect waves-green btn" ng-click="saveClient()">Create</a>
+      <a class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+</div>
+
+
+<div id="add_inspection_modal" class="modal modal_lg modal-fixed-footer">
+    <div class="modal-content">
+	    <h4>Add new inspection</h4>
+		
+		<div class="row">
+			
+			<div class="input-field col l6">
+		
+
+				<div class="row">
+					<div class="input-field col l6">
+						<input id="inspector_name" ng-model="inspector_name" type="text">
+						<label for="inspector_name">Inspector Name</label>
+					</div>
+					<div class="input-field col l6">
+						<input id="inspector_contact" ng-model="inspector_contact" type="text">
+						<label for="inspector_contact">Inspector Contact</label>
+					</div>
+				</div>
+			    <div class="row">
+					<div class="input-field col l6">
+						<input id="variant_type" ng-model="variant_type" type="text">
+						<label for="variant_type">BHK</label>
+					</div>
+					<div class="input-field col l6">
+						<input id="additional_variant" ng-model="additional_variant" type="text">
+						<label for="additional_variant">Approx Sq. Ft.</label>
+					</div>
+				</div>
+
+			    <div class="row">
+					<div class="input-field col l6">
+						<select id="site_type" ng-model="site_type" class="browser-default">
+						    <option value="" disabled selected>Site Type</option>
+						    <option value="Apartment">Apartment</option>
+						    <option value="Office">Office</option>
+						    <option value="Commercial Kitchen">Commercial Kitchen</option>
+						    <option value="Bunglow/Row House">Bunglow/Row House</option>
+						    <option value="Duplex">Duplex</option>
+						    <option value="Other">Other</option>
+						</select>
+					</div>
+					<div class="input-field col l6">
+						<select id="site_condition" ng-model="site_condition" class="browser-default">
+						    <option value="" disabled selected>Site Condition</option>
+						    <option value="Renovated">Renovated</option>
+						    <option value="Move in/out">Move in/out</option>
+						    <option value="In use">In use</option>
+						    <option value="Closed">Closed</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="input-field col l12">
+						<textarea id="customer_notes" ng-model="customer_notes" class="materialize-textarea"></textarea>
+						<label for="customer_notes">Customer Special Notes/Request</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col l12">
+						<textarea id="reason_additional_manpower" ng-model="reason_additional_manpower" class="materialize-textarea"></textarea>
+						<label for="reason_additional_manpower">Reason for additional manpower</label>
+					</div>
+				</div>
+
+
+			</div>
+
+			<div class="input-field col l6">
+
+				<div class="row">
+			    	<div class="col l12">
+			    		<div class="row">
+			    			<div class="input-field col l6">
+								<select id="service" ng-model="service">
+								    <option value="" disabled selected>Select</option>
+								    <option value="Deep Cleaning">Deep Cleaning</option>
+								    <option value="Express Cleaning">Express Cleaning</option>
+								    <option value="Sofa Shampooing">Sofa Shampooing</option>
+								    <option value="Chair Shampooing">Chair Shampooing</option>
+								    <option value="Carpet Shampooing">Carpet Shampooing</option>
+								    <option value="Marble Crystalization">Marble Crystalization</option>
+								    <option value="Pest Control">Pest Control</option>
+								    <option value="Electrical Safety Audit">Electrical Safety Audit</option>
+								    <option value="Intensive Cleaning">Intensive Cleaning</option>
+								    <option value="Painting">Painting</option>
+								    <option value="Kitchen Cleaning">Kitchen Cleaning</option>
+								    <option value="Bathroom Cleaning">Bathroom Cleaning</option>
+								    <option value="Other">Other</option>
+								</select>
+								<label for="services">Service</label>    				
+			    			</div>
+			    			<div class="input-field col l6">
+								<input id="manpower_deployment" ng-model="manpower_deployment" type="text">
+								<label for="manpower_deployment">Manpower</label>
+							</div>
+			    			<div class="input-field col l6">
+								<textarea id="comments" ng-model="comments" class="materialize-textarea"></textarea>
+								<label for="comments">Comments</label>
+							</div>
+			    			<div class="input-field col l6">
+								<button class="btn waves-effect waves-light" ng-click="addDeployment()">Add</button>
+							</div>
+			    		</div>
+			    	</div>
+			    	<div class="input-field col l12" ng-if="manpower_deployment_arr.length > 0">
+						<table>
+							<thead>
+							  	<tr>
+							    	<th>Services</th>
+							    	<th>Manpower Deployment</th>
+							    	<th>Comments</th>
+							  	</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="md in manpower_deployment_arr">
+								    <td>{{ md.service }}</td>
+								    <td>{{ md.manpower_deployment }}</td>
+								    <td><a tooltipped class="tooltipped cursor-pointer" data-position="left" data-delay="50" data-tooltip="{{ md.comments }}"><i class="material-icons">message</i></a></td>
+								</tr>
+							</tbody>
+						</table>    		
+			    	</div>
+				</div>
+
+
+			</div>
+
+		</div>
+
+	    
+    </div>
+    <div class="modal-footer">
+	<a class=" modal-action waves-effect waves-green btn" ng-show="isUpdateInspection" ng-click="updateInspection()">Update</a>
+	<a class=" modal-action waves-effect waves-green btn" ng-hide="isUpdateInspection" ng-click="saveInspection()">Save</a>
+      <a class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+</div>
+
+
+<div id="select_address" class="modal modal_md modal-fixed-footer">
+	    <div class="modal-content">
+	    	<div ng-show="isNewAddress">
+			<h5>Add Address</h5>
+			<div class="row margin-bottom-5">
+				<div class="input-field col l12">
+					<textarea id="client_address" ng-model="address" class="materialize-textarea"></textarea>
+					<label for="client_address">Enter your address</label>
+				</div>
+			</div>
+		    <div class="row margin-bottom-5">
+				<div class="input-field col l6">
+					<input id="landmark" ng-model="landmark" type="text">
+					<label for="landmark">Enter your landmark</label>
+				</div>
+				<div class="input-field col l6">
+					<select id="city" ng-model="city">
+					    <option value="" disabled selected>Select</option>
+					    <option value="1">Mumbai</option>
+					    <option value="2">Bangalore</option>
+					    <option value="3">New Delhi</option>
+					    <option value="11">Pune</option>
+					</select>
+					<label for="city">City</label>
+				</div>
+			</div>
+			<div class="row center margin-bottom-5">
+				<div class="input-field col l12">
+					<button class="waves-effect waves-light btn" ng-click="saveAddress()">Save</button>
+					<button class="waves-effect waves-light btn grey" ng-click="cancelAddAddress()">Cancel</button>
+				</div>
+			</div>
+			</div>
+			<div class="row margin-bottom-5" ng-hide="isNewAddress">
+				<div class="col l12">
+
+					<table class="bordered">
+						<thead>
+						  <tr>
+						      <th>
+						      	Select Address
+						      	<button class="waves-effect waves-light btn right" ng-click="addNewAddress()">Add Address</button>
+						      </th>
+						  </tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="ad in addresses">
+							    <td>
+								<input name="address_group" type="radio" id="{{ad._id}}" value="{{ad._id}}" ng-click="setAddress(ad)" />
+								<label for="{{ad._id}}">{{ad.address}} ,{{ad.landmark}}, {{ cities[ad.city]}}</label>
+							    </td>
+							  </tr>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+		<a class=" modal-action waves-effect waves-green btn" ng-click="addEditLead()">Ok</a>
+		<a class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+	    </div>
+	  </div>
+
+
+
+<script type="text/javascript">
+	
+	$(document).ready(function(){
+
+		$('select').material_select();
+
+		$('.datepicker').pickadate({
+		    selectMonths: true, // Creates a dropdown to control month
+		    selectYears: 15, // Creates a dropdown of 15 years to control year
+		    format: 'yyyy-mm-dd'
+		});
+
+
+	});
+
+</script>
