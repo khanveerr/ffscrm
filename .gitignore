@@ -1,7 +1,6 @@
 apis/public/hot
 apis/public/storage
 apis/storage/*.key
-apis/vendor
 apis/.env
 apis/.env.backup
 apis/.phpunit.result.cache
