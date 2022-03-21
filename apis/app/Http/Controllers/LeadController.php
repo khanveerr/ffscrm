@@ -1327,14 +1327,9 @@ class LeadController extends Controller
 		// );
 
         $industries = array(
-			'Residential – Developer' => 'Residential – Developer',
-			'Residential – CHS/RWA' => 'Residential – CHS/RWA',
-			'Commercial Buildings/IT Parks' => 'Commercial Buildings/IT Parks',
-			'Commercial Offices & Branches' => 'Commercial Offices & Branches',
-			'Industrial - Manufacturing' => 'Industrial - Manufacturing',
-			'Industrial - Warehousing' => 'Industrial - Warehousing',
-			'Retail & Hospitality' => 'Retail & Hospitality',
-			'Education & Others' => 'Education & Others'
+			'Food Service' => 'Food Service',
+			'Facility Management' => 'Facility Management',
+			'FS+FM' => 'FS+FM'
 		);
 
 
